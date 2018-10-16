@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="arrImages">
+        <item>@drawable/refresh_1</item>
+        <item>@drawable/refresh_2</item>
+        <item>@drawable/refresh_3</item>
+        <item>@drawable/refresh_4</item>
+        <item>@drawable/refresh_5</item>
+        <item>@drawable/refresh_6</item>
+        <item>@drawable/refresh_7</item>
+        <item>@drawable/refresh_8</item>
+        <item>@drawable/refresh_9</item>
+        <item>@drawable/refresh_10</item>
+        <item>@drawable/refresh_11</item>
+        <item>@drawable/refresh_12</item>
+        <item>@drawable/refresh_13</item>
+        <item>@drawable/refresh_14</item>
+        <item>@drawable/refresh_15</item>
+        <item>@drawable/refresh_16</item>
+        <item>@drawable/refresh_17</item>
+        <item>@drawable/refresh_18</item>
+        <item>@drawable/refresh_19</item>
+        <item>@drawable/refresh_20</item>
+        <item>@drawable/refresh_21</item>
+        <item>@drawable/refresh_22</item>
+        <item>@drawable/refresh_23</item>
+        <item>@drawable/refresh_24</item>
+    </array>
+</resources>

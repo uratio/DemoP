@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".scanbank.ScanOpenCVActivity">
+    <ImageView
+        android:id="@+id/img_huaishi"
+        android:layout_width="250dp"
+        android:layout_height="160dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="100dp"
+        android:background="#ccc"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:layout_marginLeft="30dp"
+        android:textSize="16sp"
+        android:textColor="#333"
+        android:text="图片:"/>
+
+    <Button
+        android:id = "@+id/btn_gray_process"
+        android:layout_width = "70dp"
+        android:layout_height = "70dp"
+        android:layout_below = "@id/img_huaishi"
+        android:layout_marginLeft="45dp"
+        android:layout_marginTop="47dp"
+        android:text="相机"/>
+
+    <Button
+        android:id = "@+id/btn_pic"
+        android:layout_width = "70dp"
+        android:layout_height = "70dp"
+        android:layout_below = "@id/img_huaishi"
+        android:layout_marginLeft="197dp"
+        android:layout_marginTop="47dp"
+        android:text="照片"/>
+
+    <!--   <ImageView
+          android:id="@+id/title"
+          android:layout_width="220dp"
+          android:layout_height="wrap_content"
+          android:layout_alignParentRight="false"
+          android:layout_alignParentTop="true"
+          android:background="@drawable/title" /> -->
+
+
+    <TextView
+        android:id="@+id/mttext"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_below="@+id/btn_pic"
+        android:layout_marginTop="27dp"
+        android:text="**********卡号*********"
+        android:textColor="@android:color/black"
+        android:textSize="45px"
+        android:layout_marginLeft="50dp"
+        android:textStyle="bold"/>
+
+</RelativeLayout>

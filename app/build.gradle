@@ -1,0 +1,52 @@
+apply plugin: 'com.android.application'
+apply plugin: 'org.greenrobot.greendao'
+
+android {
+    compileSdkVersion 28
+    defaultConfig {
+        applicationId "com.uratio.demop"
+        minSdkVersion 21
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['src/main/jniLibs']
+        }
+    }
+}
+//greendao配置
+greendao {
+    //版本号，升级时可配置,对应当前数据库版本
+    schemaVersion 1
+    //由GreenDao自动生成代码所在的包名，默认的是在项目包下面新建一个gen
+    daoPackage 'com.uratio.demop.greendao'
+    //设置自动生成代码的目录
+    targetGenDir 'src/main/java'
+}
+
+dependencies {
+    implementation 'com.android.support:appcompat-v7:28.+'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    //    implementation fileTree(include: ['*.aar'], dir: 'libs')
+    implementation 'com.android.support:design:28.+'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    implementation project(':PullToRefresh')
+    implementation project(':myptr')
+    implementation project(':RefreshLibrary')
+    implementation 'io.card:android-sdk:5.5.1'
+    implementation project(':openCVLibrary320')
+    //    implementation 'cglib:cglib-nodep:3.2.8'
+    implementation 'org.greenrobot:greendao:3.2.2'
+}

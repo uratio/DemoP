@@ -1,0 +1,48 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <style name="MainStyle" parent="Theme.AppCompat.Light.NoActionBar">
+        <!--<item name="android:windowAnimationStyle">@style/AnimationActivity</item>-->
+        <!--<item name="android:windowAnimationStyle">@style/Animation.AppCompat.Dialog</item>-->
+        <!--<item name="panelMenuListTheme">@style/Theme.AppCompat.CompactMenu</item>-->
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <!-- Panel attributes -->
+        <!--<item name="listChoiceBackgroundIndicator">@drawable/abc_list_selector_holo_dark</item>-->
+
+    </style>
+
+    <style name="TestStyle" parent="Base.Theme.AppCompat.Light.DarkActionBar">
+
+    </style>
+
+    <!--<style name="AnimationActivity" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/anim_enter_right_translater</item>
+        <item name="android:activityOpenExitAnimation">@anim/anim_enter_left_translater</item>
+        <item name="android:activityCloseEnterAnimation">@anim/anim_exit_left_translater</item>
+        <item name="android:activityCloseExitAnimation">@anim/anim_exit_right_translater</item>
+    </style>-->
+
+    <!--<style name="AnimationActivity" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/activity_open_enter</item>
+        <item name="android:activityOpenExitAnimation">@anim/activity_open_exit</item>
+        <item name="android:activityCloseEnterAnimation">@anim/activity_close_enter</item>
+        <item name="android:activityCloseExitAnimation">@anim/activity_close_exit</item>
+    </style>-->
+
+    <!--<style name="AnimationActivity" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@android:anim/slide_in_left</item>
+        <item name="android:activityOpenExitAnimation">@android:anim/slide_out_right</item>
+        <item name="android:activityCloseEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:activityCloseExitAnimation">@android:anim/fade_out</item>
+    </style>-->
+</resources>
