@@ -31,6 +31,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.uratio.demop.count.CountDownActivity;
 import com.uratio.demop.gl.OpenGLActivity;
 import com.uratio.demop.phone.RecorderService;
 import com.uratio.demop.refresh.RefreshActivity;
@@ -296,6 +297,9 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.to_thread:
                 startActivity(new Intent(MainActivity.this, ThreadTestActivity.class));
+                break;
+            case R.id.to_count:
+                startActivity(new Intent(MainActivity.this, CountDownActivity.class));
                 break;
         }
     }

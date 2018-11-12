@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="4800px"
+                android:src="@drawable/bg_gjj"
+                android:scaleType="fitStart"
+                android:visibility="gone"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/string_text"
+                android:padding="20px"
+                android:textColor="#000"
+                android:textSize="32px"
+                android:lineSpacingMultiplier="1.5"/>
+
+            <com.uratio.demop.count.CustomerGuide
+                android:layout_width="350dp"
+                android:layout_height="500dp"
+                app:paintColor="#333"/>
+        </RelativeLayout>
+    </LinearLayout>
+</ScrollView>

@@ -1,9 +1,22 @@
 package com.uratio.demop.runnable;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
+import com.google.gson.Gson;
 import com.uratio.demop.R;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ThreadTestActivity extends AppCompatActivity {
     private Thread1 thread1;
@@ -18,10 +31,75 @@ public class ThreadTestActivity extends AppCompatActivity {
     private Thread mThread4;
     private Thread mThread5;
 
+    private RadioGroup radioGroup;
+    private RadioButton btn2;
+    private int index;
+    private boolean flag = true;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_thread_test);
+
+        NumberProgressBar progress = findViewById(R.id.progress);
+        progress.setProgress(30);
+
+        CustomProgressBar progress2 = findViewById(R.id.progress2);
+        progress2.setProgress(30);
+        progress2.setMax(100);
+        progress2.setTvMax("工100");
+        progress2.setProgress(30);
+        progress2.setTvProgress("30了");
+        progress2.setBarColor(0xFFEC715D);
+//        progress2.setBarColor();
+
+        radioGroup = findViewById(R.id.radioGroup);
+        btn2 = findViewById(R.id.btn2);
+
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId){
+                    case R.id.btn1:
+                        index = checkedId;
+                        Log.i("data", "onCheckedChanged: btn1="+checkedId);
+                        break;
+                    case R.id.btn2:
+                        index = checkedId;
+                        Log.i("data", "onCheckedChanged: btn2="+checkedId);
+                        break;
+                    case R.id.btn3:
+                        Log.i("data", "onCheckedChanged: btn3="+checkedId);
+                        if (flag) {
+                            Dialog dialog = new Dialog(ThreadTestActivity.this);
+                            dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                                @Override
+                                public void onCancel(DialogInterface dialog) {
+                                    btn2.setChecked(true);
+                                    dialog.dismiss();
+                                }
+                            });
+                            dialog.show();
+                            /*final AlertDialog.Builder builder = new AlertDialog.Builder(ThreadTestActivity.this);
+                            builder.setMessage("弹框")
+                                    .setCancelable(false)
+                                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            radioGroup.check(index);
+                                            builder.create().dismiss();
+                                        }
+                                    })
+                                    .show();*/
+                        }else {
+                            index = checkedId;
+                        }
+                        break;
+                }
+                Log.i("data", "onCheckedChanged: index="+index);
+            }
+        });
 
         thread1 = new Thread1();
         thread2 = new Thread2();

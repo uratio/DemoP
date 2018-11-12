@@ -100,6 +100,8 @@
         </activity>
         <activity android:name=".runnable.ThreadTestActivity">
         </activity>
+        <activity android:name=".count.CountDownActivity">
+        </activity>
     </application>
 
 </manifest>

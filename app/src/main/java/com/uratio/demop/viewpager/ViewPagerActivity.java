@@ -1,5 +1,6 @@
 package com.uratio.demop.viewpager;
 
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +11,8 @@ import com.uratio.demop.R;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Retrofit;
+
 public class ViewPagerActivity extends AppCompatActivity {
 
     @Override
@@ -17,6 +20,7 @@ public class ViewPagerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_pager);
 
+        TabLayout tabLayout = findViewById(R.id.tabLayout);
         ViewPager viewPager = findViewById(R.id.viewPager);
 
         List<Fragment> fragments = new ArrayList<>();
@@ -29,5 +33,9 @@ public class ViewPagerActivity extends AppCompatActivity {
 //        }
 
         viewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager(),fragments));
+
+        tabLayout.setTabMode(TabLayout.MODE_FIXED);
+
+        Retrofit.Builder retrofit = new Retrofit.Builder();
     }
 }
