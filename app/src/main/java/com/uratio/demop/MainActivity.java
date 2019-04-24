@@ -21,36 +21,58 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.view.menu.MenuPopupHelper;
 import android.util.ArrayMap;
 import android.util.Log;
 import android.view.DisplayCutout;
+import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.PopupMenu;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.uratio.demop.count.CountDownActivity;
 import com.uratio.demop.gl.OpenGLActivity;
+import com.uratio.demop.img.ImageActivity;
+import com.uratio.demop.list.RcvListActivity;
+import com.uratio.demop.lottery.LotteryActivity;
+import com.uratio.demop.pdf.PDFViewActivity;
+import com.uratio.demop.pdf.PdfActivity;
 import com.uratio.demop.phone.RecorderService;
 import com.uratio.demop.refresh.RefreshActivity;
 import com.uratio.demop.runnable.ThreadTestActivity;
 import com.uratio.demop.scanbank.ScanIOCardActivity;
 import com.uratio.demop.scanbank.ScanOpenCVActivity;
 import com.uratio.demop.shortcut.TestActivity;
+import com.uratio.demop.sliding.SlidingActivity;
 import com.uratio.demop.text.TextActivity;
 import com.uratio.demop.viewpager.ViewPagerActivity;
 import com.uratio.demop.viewstub.ViewStubActivity;
+import com.uratio.demop.web.WebActivity;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
     private TextView textView;
     private Handler handler = new Handler();
+    private PopupMenu popupMenu;
+    private Button btnMenu;
+
+    private View popupView;
+    private PopupWindow popupWindow;
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
@@ -92,7 +114,10 @@ public class MainActivity extends AppCompatActivity {
             startService();
         }
 
-        List<ShortcutInfo> infos = new ArrayList<>();
+        /**
+         * 动态使用ShortcutManager
+         */
+        /*List<ShortcutInfo> infos = new ArrayList<>();
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N_MR1) {
@@ -100,13 +125,13 @@ public class MainActivity extends AppCompatActivity {
 
                 //得到，使用ShortcutInfo.Builder设置属性
                 shortcutManager.getMaxShortcutCountPerActivity();
-                for(int i = 0;i < shortcutManager.getMaxShortcutCountPerActivity(); i++){
+                for (int i = 0; i < shortcutManager.getMaxShortcutCountPerActivity(); i++) {
                     Intent intent = new Intent(this, TestActivity.class);
                     intent.setAction(Intent.ACTION_VIEW);
-                    intent.putExtra("msg", "我和朋友" + (1+i) + "聊天");
+                    intent.putExtra("msg", "我和朋友" + (1 + i) + "聊天");
                     ShortcutInfo info = new ShortcutInfo.Builder(this, "id" + i)
-                            .setShortLabel("名"+(1+i))
-                            .setLongLabel("朋友:" + (1+i))//优先选择长名称显示
+                            .setShortLabel("名" + (1 + i))
+                            .setLongLabel("朋友:" + (1 + i))//优先选择长名称显示
                             .setIcon(Icon.createWithResource(this, R.mipmap.ic_launcher_round))
                             .setIntent(intent)
                             .build();
@@ -116,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
                 shortcutManager.setDynamicShortcuts(infos);
 
             }
-        }
+        }*/
         NotificationListenerService service = new NotificationListenerService() {
             @Override
             public void onNotificationPosted(StatusBarNotification sbn) {
@@ -143,6 +168,111 @@ public class MainActivity extends AppCompatActivity {
                 super.onNotificationRemoved(sbn, rankingMap, reason);
             }
         };
+
+        btnMenu = findViewById(R.id.to_menu);
+        popupMenu = new PopupMenu(this, btnMenu);
+        popupMenu.getMenuInflater().inflate(R.menu.main_menu, popupMenu.getMenu());
+        popupMenu.setOnMenuItemClickListener(this);
+//        setIconsVisible(popupMenu.getMenu(), true);
+        setIconEnable(popupMenu.getMenu(),true);
+
+        //使用反射，强制显示菜单图标
+//        try {
+//            Field field = popupMenu.getClass().getDeclaredField("mPopup");
+//            field.setAccessible(true);
+//            MenuPopupHelper mHelper = (MenuPopupHelper) field.get(popupMenu);
+//            mHelper.setForceShowIcon(true);
+//        } catch (IllegalAccessException e) {
+//            e.printStackTrace();
+//        } catch (NoSuchFieldException e) {
+//            e.printStackTrace();
+//        }
+
+        popupView = getLayoutInflater().inflate(R.layout.layout_popupwindow, null);
+        popupWindow = new PopupWindow(popupView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        popupWindow.setFocusable(true);
+        popupView.findViewById(R.id.layout1).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                switch (v.getId()){
+//                    case R.id.layout1:
+                Toast.makeText(MainActivity.this, "按钮1", Toast.LENGTH_SHORT).show();
+//                        break;
+//                    case R.id.layout2:
+//                        Toast.makeText(MainActivity.this, "按钮2", Toast.LENGTH_SHORT).show();
+//                        break;
+//                    case R.id.layout3:
+//                        Toast.makeText(MainActivity.this, "切换其他账号", Toast.LENGTH_SHORT).show();
+//                        break;
+//                }
+            }
+        });
+        popupView.findViewById(R.id.layout2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                switch (v.getId()){
+//                    case R.id.layout1:
+//                        Toast.makeText(MainActivity.this, "按钮1", Toast.LENGTH_SHORT).show();
+//                        break;
+//                    case R.id.layout2:
+                Toast.makeText(MainActivity.this, "按钮2", Toast.LENGTH_SHORT).show();
+//                        break;
+//                    case R.id.layout3:
+//                        Toast.makeText(MainActivity.this, "切换其他账号", Toast.LENGTH_SHORT).show();
+//                        break;
+//                }
+            }
+        });
+        popupView.findViewById(R.id.layout3).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                switch (v.getId()){
+//                    case R.id.layout1:
+//                        Toast.makeText(MainActivity.this, "按钮1", Toast.LENGTH_SHORT).show();
+//                        break;
+//                    case R.id.layout2:
+//                        Toast.makeText(MainActivity.this, "按钮2", Toast.LENGTH_SHORT).show();
+//                        break;
+//                    case R.id.layout3:
+                Toast.makeText(MainActivity.this, "切换其他账号", Toast.LENGTH_SHORT).show();
+//                        break;
+//                }
+            }
+        });
+    }
+
+    /**
+     * 解决不显示menu icon的问题
+     *
+     * @param menu
+     * @param flag
+     */
+    private void setIconsVisible(Menu menu, boolean flag) {
+        //判断menu是否为空
+        if (menu != null) {
+            try {
+                //如果不为空,就反射拿到menu的setOptionalIconsVisible方法
+                Method method = menu.getClass().getDeclaredMethod("setOptionalIconsVisible", Boolean.TYPE);
+                //暴力访问该方法
+                method.setAccessible(true);
+                //调用该方法显示icon
+                method.invoke(menu, flag);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void setIconEnable(Menu menu, boolean enable) {
+        try {
+            Class<?> clazz = Class.forName("com.android.internal.view.menu.MenuBuilder");
+            Method m = clazz.getDeclaredMethod("setOptionalIconsVisible", boolean.class);
+            m.setAccessible(true);
+            //传入参数
+            m.invoke(menu, enable);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void testMethod() {
@@ -273,7 +403,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void clickView(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.to_ViewPager:
                 startActivity(new Intent(MainActivity.this, ViewPagerActivity.class));
                 break;
@@ -301,6 +431,53 @@ public class MainActivity extends AppCompatActivity {
             case R.id.to_count:
                 startActivity(new Intent(MainActivity.this, CountDownActivity.class));
                 break;
+            case R.id.to_menu:
+//                try {
+//                    Field field = popupMenu.getClass().getDeclaredField("mPopup");
+//                    field.setAccessible(true);
+//                    MenuPopupHelper mHelper = (MenuPopupHelper) field.get(popupMenu);
+//                    mHelper.setForceShowIcon(true);
+//                } catch (IllegalAccessException e) {
+//                    e.printStackTrace();
+//                } catch (NoSuchFieldException e) {
+//                    e.printStackTrace();
+//                }
+                popupMenu.show();
+                break;
+            case R.id.to_menu2:
+                if (popupWindow != null) {
+                    if (popupWindow.isShowing()) {
+                        popupWindow.dismiss();
+                    } else {
+//                        popupWindow.showAsDropDown(view);//锚点View（附着在View的周围）
+                        popupWindow.showAsDropDown(view, 0, 40);
+//                        popupWindow.showAtLocation(popupView, Gravity.TOP, 0, 0);
+                    }
+                } else {
+
+                }
+                break;
+            case R.id.to_pdf:
+                startActivity(new Intent(MainActivity.this, PdfActivity.class));
+                break;
+            case R.id.to_pdf2:
+                startActivity(new Intent(MainActivity.this, PDFViewActivity.class));
+                break;
+            case R.id.to_sliding:
+                startActivity(new Intent(MainActivity.this, SlidingActivity.class));
+                break;
+            case R.id.to_img:
+                startActivity(new Intent(MainActivity.this, ImageActivity.class));
+                break;
+            case R.id.to_list:
+                startActivity(new Intent(MainActivity.this, RcvListActivity.class));
+                break;
+            case R.id.to_web:
+                startActivity(new Intent(MainActivity.this, WebActivity.class));
+                break;
+            case R.id.to_lottery:
+                startActivity(new Intent(MainActivity.this, LotteryActivity.class));
+                break;
         }
     }
 
@@ -315,10 +492,25 @@ public class MainActivity extends AppCompatActivity {
                     textView.setText("我是子线程中的view");
                 } catch (Exception e) {
                     e.printStackTrace();
-                    Log.i("Main_Runnable", "run: "+e.getMessage());
+                    Log.i("Main_Runnable", "run: " + e.getMessage());
                 }
             }
         }).start();
 
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu1:
+                break;
+            case R.id.menu2:
+                break;
+            case R.id.menu3:
+                break;
+            case R.id.menu4:
+                break;
+        }
+        return true;
     }
 }

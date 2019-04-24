@@ -1,17 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shortcut
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:enabled="true"
-    android:icon="@mipmap/ic_launcher"
-    android:shortcutDisabledMessage="@string/bukeyong"
-    android:shortcutId="settings"
-    android:shortcutLongLabel="@string/kuaijieceshi"
-    android:shortcutShortLabel="@string/ceshirukou">
+<shortcuts
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:enabled="true"
+        android:icon="@mipmap/ic_launcher"
+        android:shortcutDisabledMessage="@string/bukeyong2"
+        android:shortcutId="settings2"
+        android:shortcutLongLabel="@string/kuaijieceshi2"
+        android:shortcutShortLabel="@string/ceshirukou2">
 
-    <intent
-        android:action="android.intent.action.VIEW"
-        android:targetClass="com.uratio.demop.shortcut.TestActivity"
-        android:targetPackage="com.uratio.demop"/>
-    <categories android:name="android.shortcut.conversation"/>
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetClass="com.uratio.demop.shortcut.TestActivity2"
+            android:targetPackage="com.uratio.demop"/>
+        <categories android:name="android.shortcut.conversation"/>
 
-</shortcut>
+    </shortcut>
+    <shortcut
+        android:enabled="true"
+        android:icon="@mipmap/ic_launcher"
+        android:shortcutDisabledMessage="@string/bukeyong3"
+        android:shortcutId="settings3"
+        android:shortcutLongLabel="@string/kuaijieceshi3"
+        android:shortcutShortLabel="@string/ceshirukou3">
+
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetClass="com.uratio.demop.shortcut.TestActivity3"
+            android:targetPackage="com.uratio.demop"/>
+        <categories android:name="android.shortcut.conversation"/>
+
+    </shortcut>
+
+</shortcuts>

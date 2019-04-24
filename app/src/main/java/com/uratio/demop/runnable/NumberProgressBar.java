@@ -2,6 +2,7 @@
 package com.uratio.demop.runnable;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -14,6 +15,8 @@ import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
+
+import com.uratio.demop.R;
 
 
 public class NumberProgressBar extends View {
@@ -134,6 +137,10 @@ public class NumberProgressBar extends View {
 //        sR = dip2px(context, 6);
         jR = dip2px(context, 6);
         bott = dip2px(context, 6);
+
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.NumberProgressBar);
+
+        progress = a.getInteger(R.styleable.NumberProgressBar_nProgress, 0);
         initData();
     }
 

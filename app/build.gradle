@@ -3,6 +3,7 @@ apply plugin: 'org.greenrobot.greendao'
 
 android {
     compileSdkVersion 28
+//    buildToolsVersion '28.0.1'
     defaultConfig {
         applicationId "com.uratio.demop"
         minSdkVersion 21
@@ -52,4 +53,11 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
+    implementation 'com.joanzapata.pdfview:android-pdfview:1.0.4@aar'
+    implementation 'com.github.barteksc:android-pdf-viewer:2.8.2'
+    implementation 'com.bigkoo:ConvenientBanner:2.1.4'
+    implementation project(':ultimaterecyclerview')
+    //高斯模糊
+    implementation 'jp.wasabeef:glide-transformations:2.0.1'
+    implementation project(':Roundimageview')
 }

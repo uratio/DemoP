@@ -29,34 +29,40 @@
             android:layout_height="wrap_content"
             android:text="按钮三"/>
     </RadioGroup>
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="numberPassword"/>
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"/>
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textVisiblePassword"/>
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textWebPassword"/>
     <com.uratio.demop.runnable.NumberProgressBar
         android:id="@+id/progress"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_margin="30dp"/>
+        android:layout_margin="30dp"
+        app:nProgress="70"/>
     <com.uratio.demop.runnable.CustomProgressBar
         android:id="@+id/progress2"
         android:layout_width="match_parent"
         android:layout_height="30dp"
-        android:layout_margin="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
         app:backColor="#F3F3F3"
         app:textColorMax="#888888"
         app:textColorProgress="#FFFFFF"
-        app:textSizeRadio="1.5"/>
+        app:textSizeRadio="1.5"
+        app:cProgress="36"/>
+    <com.uratio.demop.runnable.EquitiesProgressBar
+        android:id="@+id/progress3"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        app:progress="36"
+        app:max="36"/>
+    <com.uratio.demop.runnable.EquitiesProgressBar2
+        android:id="@+id/progress4"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginRight="150dp"
+        app:progress="0"
+        app:max="36"/>
+    <com.uratio.demop.runnable.DrawText
+        android:layout_width="match_parent"
+        android:layout_height="240dp"/>
+    <!--<com.bigkoo.convenientbanner.ConvenientBanner-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="200dp"/>-->
 </LinearLayout>

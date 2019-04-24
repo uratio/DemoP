@@ -52,6 +52,9 @@ public class CustomProgressBar extends View {
                 case R.styleable.CustomProgressBar_textSizeRadio:
                     textSizeRadio = 1.5f;
                     break;
+                case R.styleable.CustomProgressBar_cProgress:
+                    progress = a.getInteger(attr,0);
+                    break;
             }
 
         }

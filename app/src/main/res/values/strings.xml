@@ -1,9 +1,12 @@
 <resources>
     <string name="app_name">DemoP</string>
 
-    <string name="bukeyong">不可用</string>
-    <string name="kuaijieceshi">快捷测试</string>
-    <string name="ceshirukou">测试入口</string>
+    <string name="bukeyong2">不可用2</string>
+    <string name="bukeyong3">不可用3</string>
+    <string name="kuaijieceshi2">快捷测试2</string>
+    <string name="kuaijieceshi3">快捷测试3</string>
+    <string name="ceshirukou2">测试入口2</string>
+    <string name="ceshirukou3">测试入口3</string>
 
     <string name="string_text">1：【改】用户初次登录会员中心状态和未登录状态优化，首次登录，我的界面头像右侧应展示用户手机号，例：133****1698，用户填写姓名后则手机号变更为姓名
 2：【新】添加[首页][工具][我的]导航页面的背景信息，见原型

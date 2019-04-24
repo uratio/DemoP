@@ -12,13 +12,16 @@
     <declare-styleable name="CustomerGuide">
         <attr name="paintColor" format="color"/>
     </declare-styleable>
-
+    <declare-styleable name="NumberProgressBar">
+        <attr name="nProgress" format="integer"/>
+    </declare-styleable>
     <declare-styleable name="CustomProgressBar">
         <attr name="backColor" format="color" />
         <attr name="barColor" format="color" />
         <attr name="textColorProgress" format="color" />
         <attr name="textColorMax" format="color" />
         <attr name="textSizeRadio" format="float" />
+        <attr name="cProgress" format="integer" />
     </declare-styleable>
     <declare-styleable name="EquitiesProgressBar">
         <attr name="headerWidth" format="dimension" />
@@ -30,7 +33,10 @@
         <attr name="progressTextSize" format="dimension" />
         <attr name="progressTextBgWidth" format="dimension" />
         <attr name="progressTextBgHeight" format="dimension"/>
+        <attr name="progressHeight" format="dimension"/>
+        <attr name="dRadian" format="integer"/>
         <attr name="max" format="integer"/>
         <attr name="progress" format="integer"/>
+        <attr name="eSpace" format="integer"/>
     </declare-styleable>
 </resources>

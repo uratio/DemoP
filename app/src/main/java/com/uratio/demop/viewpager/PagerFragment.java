@@ -2,25 +2,61 @@ package com.uratio.demop.viewpager;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 import com.uratio.demop.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class PagerFragment extends Fragment {
-    private RcvAdapter adapter;
+    private OrderViewAdapter adapter;
+
+    private ProgressBar mProgress;
+    private TextView mLoadMore;
+    private LinearLayout mLoadMoreView;
+
+    private UltimateRecyclerView mOrderList;
+    private List<Integer> list = new ArrayList<>();
+
+
     private int page = 1;
+
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what){
+                case 0:
+                    mOrderList.setRefreshing(false);
+                    break;
+                case 1:
+                    if (list == null || list.size() < 1) {
+//                        ViewUtils.setVisibility(layoutEmpty, View.VISIBLE);
+                    } else {
+//                        ViewUtils.setVisibility(layoutEmpty, View.GONE);
+                        mProgress.setVisibility(View.GONE);
+                        mLoadMore.setText("加载完成");
+                    }
+                    break;
+            }
+        }
+    };
 
     public static PagerFragment newInstance(int index) {
         PagerFragment fragment = new PagerFragment();
@@ -51,24 +87,57 @@ public class PagerFragment extends Fragment {
                 break;
         }
 
-        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
-
-        LinearLayoutManager layout = new LinearLayoutManager(getContext());
-        layout.setOrientation(LinearLayoutManager.HORIZONTAL);
-        recyclerView.setLayoutManager(layout);
-
-        final List<Integer> list = new ArrayList<>();
+        mOrderList = view.findViewById(R.id.recyclerView);
 
         for (int i = 0; i < 12; i++) {
             list.add(i + 1);
         }
-        adapter = new RcvAdapter(getContext(), list);
-        recyclerView.setAdapter(adapter);
+
+//        LinearLayoutManager layout = new LinearLayoutManager(getContext());
+//        layout.setOrientation(LinearLayoutManager.VERTICAL);
+//        recyclerView.setLayoutManager(layout);
+
+        mOrderList.setLayoutManager(new LinearLayoutManager(getActivity()));
+        adapter = new OrderViewAdapter(getActivity(), list);
+        mLoadMoreView = (LinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.adapter_loadmore_item, null);
+        mProgress = (ProgressBar) mLoadMoreView.findViewById(R.id.progress);
+        mLoadMore = (TextView) mLoadMoreView.findViewById(R.id.content);
+        mOrderList.setLoadMoreView(mLoadMoreView);
+        mOrderList.setAdapter(adapter);
+        mOrderList.enableDefaultSwipeRefresh(false);
+        mOrderList.reenableLoadmore();
+        adapter.internalExecuteLoadingView();
+
+        mOrderList.setAdapter(adapter);
 
         // 设置加载更多监听
-        recyclerView.addOnScrollListener(new EndlessRecyclerOnScrollListener() {
+//        mOrderList.addOnScrollListener(new EndlessRecyclerOnScrollListener() {
+//            @Override
+//            public void onLoadMore() {
+//                Log.i("data", "onLoadMore:  加载更多 ");
+//                page++;
+//                if (page <= 2) {
+//                    // 加载更多
+//                    list.add(14);
+//                    list.add(15);
+//                    list.add(16);
+//                    list.add(17);
+//                    list.add(18);
+//                    list.add(19);
+//                    adapter.notifyDataSetChanged();
+//                }
+//            }
+//        });
+        mOrderList.setDefaultOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onLoadMore() {
+            public void onRefresh() {
+                Log.i("data", "onLoadMore:  下拉刷新 ");
+                handler.sendEmptyMessageDelayed(0,2000);
+            }
+        });
+        mOrderList.setOnLoadMoreListener(new UltimateRecyclerView.OnLoadMoreListener() {
+            @Override
+            public void loadMore(int itemsCount, int maxLastVisiblePosition) {
                 Log.i("data", "onLoadMore:  加载更多 ");
                 page++;
                 if (page <= 2) {
@@ -81,9 +150,9 @@ public class PagerFragment extends Fragment {
                     list.add(19);
                     adapter.notifyDataSetChanged();
                 }
+                handler.sendEmptyMessageDelayed(1,2000);
             }
         });
-
 
         return view;
     }

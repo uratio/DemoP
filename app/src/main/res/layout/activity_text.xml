@@ -11,11 +11,21 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
-        <com.uratio.demop.ui.CircleView
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_margin="20dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <com.uratio.demop.ui.CircleView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="20dp"/>
+            <com.uratio.demop.text.MessageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="9"
+                android:textColor="#3f0"
+                android:textSize="33sp"/>
+        </LinearLayout>
 
         <EditText
             android:id="@+id/editText"
@@ -27,15 +37,72 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:lineSpacingExtra="5dp"
-            android:padding="30dp"
+            android:padding="10dp"
+            android:maxLines="3"
+            android:ellipsize="start"
             android:text="@string/string_text"
             android:textColor="#333"
             android:textIsSelectable="true"
-            android:textSize="17sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editText"/>
+            android:textSize="17sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:lineSpacingExtra="5dp"
+            android:padding="10dp"
+            android:maxLines="3"
+            android:ellipsize="none"
+            android:text="@string/string_text"
+            android:textColor="#333"
+            android:textIsSelectable="true"
+            android:textSize="17sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:lineSpacingExtra="5dp"
+            android:padding="10dp"
+            android:maxLines="3"
+            android:ellipsize="middle"
+            android:text="@string/string_text"
+            android:textColor="#333"
+            android:textIsSelectable="true"
+            android:textSize="17sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:lineSpacingExtra="5dp"
+            android:padding="10dp"
+            android:maxLines="3"
+            android:ellipsize="end"
+            android:text="@string/string_text"
+            android:textColor="#333"
+            android:textIsSelectable="true"
+            android:textSize="17sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:lineSpacingExtra="5dp"
+            android:padding="10dp"
+            android:maxLines="3"
+            android:ellipsize="marquee"
+            android:text="@string/string_text"
+            android:textColor="#333"
+            android:textIsSelectable="true"
+            android:textSize="17sp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:lineSpacingExtra="5dp"
+            android:padding="10dp"
+            android:singleLine="true"
+            android:ellipsize="middle"
+            android:text="@string/string_text"
+            android:textColor="#333"
+            android:textIsSelectable="true"
+            android:textSize="17sp"/>
 
     </LinearLayout>
 </ScrollView>

@@ -1,0 +1,71 @@
+<com.uratio.demop.sliding.SwipeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="122px"
+    android:background="#f7f7f7"
+    android:paddingLeft="13px"
+    android:scrollbars="none">
+
+    <RelativeLayout
+        android:id="@+id/layout_content"
+        android:layout_width="match_parent"
+        android:layout_height="120px"
+        android:background="#fff"
+        android:gravity="center_vertical"
+        android:paddingLeft="18px"
+        android:paddingRight="18px">
+
+        <TextView
+            android:id="@+id/item_image"
+            android:layout_width="88px"
+            android:layout_height="88px"
+            android:gravity="center"
+            android:text="标题"
+            android:textColor="#333"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/item_titleOrCounselor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16px"
+            android:layout_marginTop="4px"
+            android:layout_toRightOf="@+id/item_image"
+            android:ellipsize="end"
+            android:lines="1"
+            android:maxEms="13"
+            android:text="item的标题"
+            android:textColor="#333"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/item_timeOrJobTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/item_titleOrCounselor"
+            android:layout_below="@+id/item_titleOrCounselor"
+            android:layout_marginTop="16px"
+            android:text="文章描述"
+            android:textColor="#999999"
+            android:textSize="12sp"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_delete"
+        android:layout_width="120px"
+        android:layout_height="120px"
+        android:layout_toRightOf="@+id/layout_content"
+        android:background="#f00"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="删 除"
+            android:textColor="#fff"/>
+    </LinearLayout>
+
+</com.uratio.demop.sliding.SwipeLayout>

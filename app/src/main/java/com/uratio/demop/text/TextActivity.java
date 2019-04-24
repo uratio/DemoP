@@ -4,6 +4,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.ArrayMap;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
@@ -14,6 +15,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.uratio.demop.R;
+
+import org.w3c.dom.Text;
+
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class TextActivity extends AppCompatActivity {
     private static final String TAG = "TextActivity";
@@ -27,6 +36,8 @@ public class TextActivity extends AppCompatActivity {
 
         textView = findViewById(R.id.tv_text);
         editText = findViewById(R.id.editText);
+
+        editText.setText(fromDouble("1.004")+"   "+fromDouble("1.009"));
 
         editText.setCustomSelectionActionModeCallback(new ActionMode.Callback() {
             private Menu mMenu;
@@ -198,5 +209,18 @@ public class TextActivity extends AppCompatActivity {
      */
     public enum SelectMode{
         COPY,CUT
+    }
+
+    private DecimalFormat df = new DecimalFormat("#0.00");
+    public String fromDouble(String price) {
+        double parseDouble = 0;
+        if (price == null || "".equals(price)){
+            return "0.0";
+        }else {
+            parseDouble = Double.parseDouble(price.replace(",",""));
+        }
+        BigDecimal bigDecimal = new BigDecimal(parseDouble);
+        double doubleValue = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+        return df.format(doubleValue) + "";
     }
 }

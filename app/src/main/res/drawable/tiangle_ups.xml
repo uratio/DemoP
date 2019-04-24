@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:top="16dp">
+        <shape>
+            <solid android:color="#FFF"/>
+            <corners android:radius="20px"/>
+        </shape>
+    </item>
+    <!-- 正三角 -->
+    <item>
+        <rotate
+            android:fromDegrees="45"
+            android:pivotX="-40%"
+            android:pivotY="87%">
+            <shape android:shape="rectangle">
+                <size
+                    android:width="16dp"
+                    android:height="16dp" />
+                <solid android:color="#fff" />
+            </shape>
+        </rotate>
+    </item>
+</layer-list>

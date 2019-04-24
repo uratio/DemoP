@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300px"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="300px"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-1px"
+        android:layout_below="@+id/img"
+        android:background="@drawable/bg_circle_fff"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/layout1"
+            android:layout_width="300px"
+            android:layout_height="80px"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="80px"
+                android:layout_height="match_parent"
+                android:padding="15px"
+                android:src="@drawable/icon_gjj"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="按钮1"
+                android:textColor="#333"
+                android:textSize="15sp"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="#ccc"/>
+
+        <LinearLayout
+            android:id="@+id/layout2"
+            android:layout_width="300px"
+            android:layout_height="80px"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="80px"
+                android:layout_height="match_parent"
+                android:padding="15px"
+                android:src="@drawable/icon_gjj"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="按钮2"
+                android:textColor="#333"
+                android:textSize="15sp"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="#ccc"/>
+
+        <LinearLayout
+            android:id="@+id/layout3"
+            android:layout_width="300px"
+            android:layout_height="80px"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="80px"
+                android:layout_height="match_parent"
+                android:padding="15px"
+                android:src="@drawable/icon_gjj"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="切换其他账号"
+                android:textColor="#333"
+                android:textSize="15sp"/>
+        </LinearLayout>
+    </LinearLayout>
+    <ImageView
+        android:id="@+id/img"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingRight="30px"
+        android:scaleType="fitEnd"
+        android:src="@drawable/tiangle_up"/>
+</RelativeLayout>

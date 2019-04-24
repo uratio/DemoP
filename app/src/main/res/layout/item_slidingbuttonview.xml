@@ -1,0 +1,74 @@
+<com.uratio.demop.sliding.SlidingButtonView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="122px"
+    android:scrollbars="none"
+    android:paddingLeft="13px"
+    android:background="#f7f7f7">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/layout_delete"
+            android:layout_width="120px"
+            android:layout_height="120px"
+            android:orientation="vertical"
+            android:layout_toRightOf="@+id/layout_content"
+            android:gravity="center"
+            android:background="#f00">
+            <TextView
+                android:id="@+id/tv_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="删 除"
+                android:textColor="#fff"/>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout_content"
+            android:layout_width="wrap_content"
+            android:layout_height="120px"
+            android:gravity="center_vertical"
+            android:paddingLeft="18px"
+            android:paddingRight="18px"
+            android:background="#fff">
+
+            <com.uratio.demop.sliding.CityTextView
+                android:id="@+id/item_image"
+                android:layout_width="90px"
+                android:layout_height="88px"
+                android:gravity="center"
+                android:textColor="#333"
+                android:textSize="14sp"
+                android:text="标题"/>
+
+            <TextView
+                android:id="@+id/item_titleOrCounselor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16px"
+                android:layout_marginTop="4px"
+                android:layout_toRightOf="@+id/item_image"
+                android:ellipsize="end"
+                android:lines="1"
+                android:maxEms="13"
+                android:textColor="#333"
+                android:textSize="14sp"
+                android:text="item的标题"/>
+
+            <TextView
+                android:id="@+id/item_timeOrJobTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/item_titleOrCounselor"
+                android:layout_below="@+id/item_titleOrCounselor"
+                android:layout_marginTop="16px"
+                android:textColor="#999999"
+                android:textSize="12sp"
+                android:text="文章描述"/>
+
+        </RelativeLayout>
+    </RelativeLayout>
+</com.uratio.demop.sliding.SlidingButtonView>

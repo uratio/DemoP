@@ -57,6 +57,11 @@ public class ThreadTestActivity extends AppCompatActivity {
         radioGroup = findViewById(R.id.radioGroup);
         btn2 = findViewById(R.id.btn2);
 
+        EquitiesProgressBar progress3 = findViewById(R.id.progress3);
+//        progress3.setProgress(6);
+
+
+
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {

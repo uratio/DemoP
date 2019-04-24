@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#fff"
     tools:context=".MainActivity">
 
     <TextView
@@ -32,16 +33,19 @@
             android:id="@+id/to_ViewPager"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="clickView"
             android:text="viewpager"/>
         <Button
             android:id="@+id/to_ViewStub"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="clickView"
             android:text="viewstub"/>
         <Button
             android:id="@+id/to_refresh"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="clickView"
             android:text="refresh"/>
 
     </LinearLayout>
@@ -53,11 +57,13 @@
             android:id="@+id/to_IOCard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="clickView"
             android:text="扫描IOCard"/>
         <Button
             android:id="@+id/to_OpenCV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="clickView"
             android:text="扫描OpenCV"/>
         <Button
             android:id="@+id/to_text"
@@ -88,10 +94,86 @@
             android:layout_height="wrap_content"
             android:onClick="clickView"
             android:text="倒计时"/>
+        <Button
+            android:id="@+id/to_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="clickView"
+            android:text="菜单"/>
+        <Button
+            android:id="@+id/to_menu2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="clickView"
+            android:text="菜单2"/>
     </LinearLayout>
-    <ImageView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:scaleType="centerInside"
-        android:src="@drawable/icon_gjj"/>
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/to_pdf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="clickView"
+            android:text="PDF"/>
+        <Button
+            android:id="@+id/to_pdf2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="clickView"
+            android:text="PDF2"/>
+        <Button
+            android:id="@+id/to_sliding"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="clickView"
+            android:text="侧滑删除"/>
+        <Button
+            android:id="@+id/to_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="clickView"
+            android:text="img"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/to_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="clickView"
+            android:text="列表"/>
+        <Button
+            android:id="@+id/to_web"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="clickView"
+            android:text="网页"/>
+        <Button
+            android:id="@+id/to_lottery"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="clickView"
+            android:text="抽奖"/>
+    </LinearLayout>
+    <com.uratio.demop.CustomPopupView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_margin="20px"
+        android:orientation="vertical"
+        android:visibility="gone">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_margin="10dp"
+            android:text="发的哈撒附近考虑到哈萨克缴费"/>
+    </com.uratio.demop.CustomPopupView>
+
+    <com.uratio.demop.sliding.CityTextView
+        android:id="@+id/item_image"
+        android:layout_width="170px"
+        android:layout_height="100px"/>
 </LinearLayout>
