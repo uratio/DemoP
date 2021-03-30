@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merger version="3"><dataSet config="main"><source path="E:\TestProjects\DemoP\PullToRefresh\src\main\jniLibs"/></dataSet><dataSet config="debug"><source path="E:\TestProjects\DemoP\PullToRefresh\src\debug\jniLibs"/></dataSet></merger>
+<merger version="3"><dataSet config="main"><source path="F:\AndroidStudioProjects\DemoP\PullToRefresh\src\main\jniLibs"/></dataSet><dataSet config="debug"><source path="F:\AndroidStudioProjects\DemoP\PullToRefresh\src\debug\jniLibs"/></dataSet></merger>

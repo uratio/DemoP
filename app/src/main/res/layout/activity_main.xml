@@ -158,6 +158,12 @@
             android:layout_height="wrap_content"
             android:onClick="clickView"
             android:text="抽奖"/>
+        <Button
+            android:id="@+id/to_wave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="clickView"
+            android:text="波浪"/>
     </LinearLayout>
     <com.uratio.demop.CustomPopupView
         android:layout_width="match_parent"

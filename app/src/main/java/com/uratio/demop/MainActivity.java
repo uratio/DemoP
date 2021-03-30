@@ -56,6 +56,7 @@ import com.uratio.demop.sliding.SlidingActivity;
 import com.uratio.demop.text.TextActivity;
 import com.uratio.demop.viewpager.ViewPagerActivity;
 import com.uratio.demop.viewstub.ViewStubActivity;
+import com.uratio.demop.wave.WaveActivity;
 import com.uratio.demop.web.WebActivity;
 
 import java.lang.reflect.Field;
@@ -477,6 +478,9 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
                 break;
             case R.id.to_lottery:
                 startActivity(new Intent(MainActivity.this, LotteryActivity.class));
+                break;
+            case R.id.to_wave:
+                startActivity(new Intent(MainActivity.this, WaveActivity.class));
                 break;
         }
     }
