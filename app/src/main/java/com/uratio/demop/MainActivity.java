@@ -489,17 +489,17 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     protected void onResume() {
         super.onResume();
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    textView.setText("我是子线程中的view");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Log.i("Main_Runnable", "run: " + e.getMessage());
-                }
-            }
-        }).start();
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                try {
+//                    textView.setText("我是子线程中的view");
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                    Log.i("Main_Runnable", "run: " + e.getMessage());
+//                }
+//            }
+//        }).start();
 
     }
 

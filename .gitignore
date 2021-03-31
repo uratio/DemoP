@@ -5,6 +5,10 @@
 /.idea/modules.xml
 /.idea/workspace.xml
 .DS_Store
+#是忽略根目录下的build文件 ，假如其他目录有build 不会被忽略
 /build
+#忽略任何目录下的build 文件
+build/
 /captures
+/*/build
 .externalNativeBuild

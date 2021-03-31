@@ -1,185 +1,203 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="#fff"
+    android:orientation="vertical"
     tools:context=".MainActivity">
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Hello World!"
-        android:background="#9e2"/>
 
     <TextView
         android:id="@+id/text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="10dp"
         android:gravity="center_horizontal"
         android:text="客服热线(8：00-22:00)"
-        android:textSize="18sp"
-        android:textColor="#888"/>
+        android:textColor="#888"
+        android:textSize="18sp" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
         <Button
             android:id="@+id/to_ViewPager"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="clickView"
-            android:text="viewpager"/>
+            android:text="viewpager" />
+
         <Button
             android:id="@+id/to_ViewStub"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="clickView"
-            android:text="viewstub"/>
+            android:text="viewstub" />
+
         <Button
             android:id="@+id/to_refresh"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="clickView"
-            android:text="refresh"/>
+            android:text="refresh" />
 
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
         <Button
             android:id="@+id/to_IOCard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="clickView"
-            android:text="扫描IOCard"/>
+            android:text="扫描IOCard" />
+
         <Button
             android:id="@+id/to_OpenCV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="clickView"
-            android:text="扫描OpenCV"/>
+            android:text="扫描OpenCV" />
+
         <Button
             android:id="@+id/to_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="clickView"
-            android:text="文本选择"/>
+            android:text="文本选择" />
+
         <Button
             android:id="@+id/to_openGL"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="clickView"
-            android:text="openGL"/>
+            android:text="openGL" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
         <Button
             android:id="@+id/to_thread"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="clickView"
-            android:text="线程"/>
+            android:text="线程" />
+
         <Button
             android:id="@+id/to_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="clickView"
-            android:text="倒计时"/>
+            android:text="倒计时" />
+
         <Button
             android:id="@+id/to_menu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="clickView"
-            android:text="菜单"/>
+            android:text="菜单" />
+
         <Button
             android:id="@+id/to_menu2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="clickView"
-            android:text="菜单2"/>
+            android:text="菜单2" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
         <Button
             android:id="@+id/to_pdf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="clickView"
-            android:text="PDF"/>
+            android:text="PDF" />
+
         <Button
             android:id="@+id/to_pdf2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="clickView"
-            android:text="PDF2"/>
+            android:text="PDF2" />
+
         <Button
             android:id="@+id/to_sliding"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="clickView"
-            android:text="侧滑删除"/>
+            android:text="侧滑删除" />
+
         <Button
             android:id="@+id/to_img"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="clickView"
-            android:text="img"/>
+            android:text="img" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
         <Button
             android:id="@+id/to_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="clickView"
-            android:text="列表"/>
+            android:text="列表" />
+
         <Button
             android:id="@+id/to_web"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="clickView"
-            android:text="网页"/>
+            android:text="网页" />
+
         <Button
             android:id="@+id/to_lottery"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="clickView"
-            android:text="抽奖"/>
+            android:text="抽奖" />
+
         <Button
             android:id="@+id/to_wave"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="clickView"
-            android:text="波浪"/>
+            android:text="波浪" />
     </LinearLayout>
+
     <com.uratio.demop.CustomPopupView
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_margin="20px"
         android:orientation="vertical"
         android:visibility="gone">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_margin="10dp"
-            android:text="发的哈撒附近考虑到哈萨克缴费"/>
+            android:text="发的哈撒附近考虑到哈萨克缴费" />
     </com.uratio.demop.CustomPopupView>
 
     <com.uratio.demop.sliding.CityTextView
         android:id="@+id/item_image"
         android:layout_width="170px"
-        android:layout_height="100px"/>
+        android:layout_height="100px" />
 </LinearLayout>
