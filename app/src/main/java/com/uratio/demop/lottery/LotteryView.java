@@ -12,6 +12,7 @@ import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -432,10 +433,12 @@ public class LotteryView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width,
                                int height) {
+        Log.e("data", "surfaceChanged: width=" + width);
     }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
+        Log.e("data", "surfaceCreated: width=" + getWidth());
         paddingSize = getMeasuredWidth() * paddingSizeRadio / 2 / rulerWidth;
         itemSpace = getMeasuredWidth() * itemSpaceRadio / 2 / rulerWidth;
 

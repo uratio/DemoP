@@ -59,7 +59,7 @@ public class BezierView2 extends View {
 
         mAnimator.setDuration(1000);
         mAnimator.setRepeatCount(-1);
-//        mAnimator.start();
+        mAnimator.start();
     }
 
     @Override

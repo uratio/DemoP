@@ -13,7 +13,7 @@ import com.uratio.demop.R;
 public class WaveActivity extends AppCompatActivity {
     private WaveBallProgress waveBall;
     private SineWave sineWave;
-    private View view;
+    private View viewAnim;
 
     private Handler handler = new Handler() {
         @Override
@@ -41,11 +41,15 @@ public class WaveActivity extends AppCompatActivity {
 
         handler.sendEmptyMessage(0);
 
-        view = findViewById(R.id.view);
-        view.setAnimation(AnimationUtils.loadAnimation(this, R.anim.anim_cycle_interpolator));
+        viewAnim = findViewById(R.id.view);
     }
 
-    public void ClickView(View view) {
-        view.getAnimation().start();
+    public void onClickView(View view) {
+        switch (view.getId()) {
+            case R.id.btn_start:
+                viewAnim.setAnimation(AnimationUtils.loadAnimation(this, R.anim.anim_cycle_interpolator));
+                viewAnim.getAnimation().start();
+                break;
+        }
     }
 }
