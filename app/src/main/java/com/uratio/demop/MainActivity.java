@@ -485,7 +485,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     protected void onResume() {
         super.onResume();
 
-        new Thread(new Runnable() {
+        /*new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -495,7 +495,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
                     Log.i("Main_Runnable", "run: " + e.getMessage());
                 }
             }
-        }).start();
+        }).start();*/
 
     }
 

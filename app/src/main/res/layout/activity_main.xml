@@ -10,17 +10,10 @@
     tools:context=".MainActivity">
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Hello World!"
-        android:background="#9e2"/>
-
-    <TextView
         android:id="@+id/text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_margin="10dp"
         android:gravity="center_horizontal"
         android:text="客服热线(8：00-22:00)"
         android:textSize="18sp"
