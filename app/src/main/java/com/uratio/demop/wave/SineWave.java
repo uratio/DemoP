@@ -15,9 +15,9 @@ import android.view.animation.LinearInterpolator;
 
 public class SineWave extends View implements Runnable {
     private Paint mPaint = null;
-    private static float amplifier = 30.0f;
-    private static float frequency = 1.2f;    //2Hz
-    private static float phase = 45.0f;         //相位
+    private static float amplifier = 30.0f;     //振幅
+    private static float frequency = 1.2f;    //频率
+    private static float phase = 45.0f;       //相位
     private int height = 0;
     private int width = 0;
     private static float px = -1, py = -1;
@@ -108,7 +108,7 @@ public class SineWave extends View implements Runnable {
         amplifier = (amplifier * 2 > height) ? (height / 2) : amplifier;
         mPaint.setAlpha(200);
         mPaint.setStrokeWidth(5);
-        float cy = height / 2;
+        float cy = height / 2;// centerY：高度中心 y 坐标
 
 
         float startY = cy - amplifier * (float) (Math.sin(phase * 2 * (float) Math.PI / 360.0f));
