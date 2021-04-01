@@ -1,30 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:scrollbars="none"
     tools:context=".wave.WaveActivity">
 
-    <com.uratio.demop.wave.WaveBallProgress
-        android:id="@+id/wave_ball"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_margin="10dp"/>
-
-    <com.uratio.demop.wave.VoiceWaveView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <com.uratio.demop.wave.BezierView2
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_marginTop="20dp"/>
+        <com.uratio.demop.wave.WaveBallProgress
+            android:id="@+id/wave_ball"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="10dp" />
 
-    <com.uratio.demop.wave.SineWave
-        android:id="@+id/sine_wave"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"/>
+        <com.uratio.demop.wave.VoiceWaveView
+            android:layout_width="match_parent"
+            android:layout_height="100dp" />
 
-</LinearLayout>
+        <com.uratio.demop.wave.BezierView2
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginTop="20dp" />
+
+        <com.uratio.demop.wave.SineWave
+            android:id="@+id/sine_wave"
+            android:layout_width="match_parent"
+            android:layout_height="100dp" />
+
+        <Button
+            android:id="@+id/btn_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onClickView"
+            android:text="开始" />
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="5dp"
+            android:layout_height="5dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/shape_circle_10" />
+
+        <com.uratio.demop.wave.SineWaveView
+            android:layout_width="match_parent"
+            android:layout_height="100dp" />
+    </LinearLayout>
+</ScrollView>
