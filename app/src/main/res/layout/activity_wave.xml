@@ -32,27 +32,21 @@
             android:layout_width="match_parent"
             android:layout_height="100dp" />
 
+        <com.uratio.demop.wave.SineWaveView
+            android:layout_width="match_parent"
+            android:layout_height="100dp"/>
+
+        <com.uratio.demop.wave.WaveView
+            android:id="@+id/wave_view"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"/>
+
         <Button
-            android:id="@+id/btn_start"
+            android:id="@+id/btn_volume"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onClickView"
-            android:text="开始" />
-
-        <View
-            android:id="@+id/view"
-            android:layout_width="5dp"
-            android:layout_height="5dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/shape_circle_10" />
-
-        <com.uratio.demop.wave.SineWaveView
-            android:layout_width="match_parent"
-            android:layout_height="100dp" />
-
-        <com.uratio.demop.wave.WaveView
-            android:layout_width="match_parent"
-            android:layout_height="50dp"/>
+            android:text="设置声音"/>
     </LinearLayout>
 </ScrollView>

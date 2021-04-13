@@ -24,11 +24,11 @@ public class SineWaveView extends View {
     private static final int WAVE_PAINT_COLOR = 0x533cbabf;
 
     // 第一个波纹移动的速度
-    private int oneSeep = 8;
+    private int oneSeep = 6;
     // 第二个波纹移动的速度
-    private int twoSeep = 8;
+    private int twoSeep = oneSeep;
     // 第三个波纹移动的速度
-    private int threeSeep = 8;
+    private int threeSeep = oneSeep;
 
     // 第一个波纹移动速度的像素值
     private int oneSeepPx;
@@ -55,10 +55,10 @@ public class SineWaveView extends View {
 
     //振幅（根据声音大小动态修改）
     private float amplitude = 45.0f;
-    //周期
-    private float period;
     //频率
     private float frequency;
+    //周期
+    private float period;
     //相位（随坐标移动发生变化）
     private float phase;
 
@@ -104,8 +104,8 @@ public class SineWaveView extends View {
 //        int x = (int) (amplitude * (Math.sin(frequency * 2 * Math.PI)));
 //        Log.e(TAG, "init: 一个波x轴长度 x=" + x);
         oneNowOffSet = dpChangPx(0);
-        twoNowOffSet = dpChangPx(135);
-        threeNowOffSet = dpChangPx(270);
+        twoNowOffSet = dpChangPx(100);
+        threeNowOffSet = dpChangPx(200);
     }
 
     // 绘画方法
@@ -115,51 +115,35 @@ public class SineWaveView extends View {
         canvas.setDrawFilter(mDrawFilter);
 
         oneNowOffSet = oneNowOffSet + oneSeepPx;
-
         twoNowOffSet = twoNowOffSet + twoSeepPx;
-
         threeNowOffSet = threeNowOffSet + threeSeepPx;
 
-        if (oneNowOffSet >= viewWidth) {
+        //超过一个周期置为 0
+        if (oneNowOffSet >= period) {
             oneNowOffSet = 0;
         }
-        if (twoNowOffSet >= viewWidth) {
+        if (twoNowOffSet >= period) {
             twoNowOffSet = 0;
         }
-        if (threeNowOffSet >= viewWidth) {
+        if (threeNowOffSet >= period) {
             threeNowOffSet = 0;
         }
 
         reSet();
 
-        Log.e("fmy", Arrays.toString(twoWave));
+//        Log.e("fmy", Arrays.toString(twoWave));
 
 
-        float cy = viewHeight / 2;
-        float startY =
-                cy - amplitude * (float) (Math.sin(oneNowOffSet * 2 * (float) Math.PI / 360.0f));
-        float endY =
-                cy - amplitude * (float) (Math.sin(oneNowOffSet * 2 * (float) Math.PI / 360.0f + 2 * Math.PI * 1));
-//
-        LinearGradient gradient = new LinearGradient(0, startY, viewWidth, endY,
+        int lineHeight = 3;
+
+        LinearGradient gradient = new LinearGradient(0, 0, viewWidth, lineHeight,
                 0xFF13E4F4, 0xFF266BDE, Shader.TileMode.REPEAT);
         mPaint.setShader(gradient);
 
-//        mPath.reset();
-
-//        mPath.setFillType(Path.FillType.INVERSE_WINDING);
-//        mPaint.setStyle(Paint.Style.FILL);
-//        mPaint.setShader(null);
-//        mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-//        mPaint.setColor(getResources().getColor(android.R.color.transparent));
-//        canvas.drawPath(mPath, mPaint);
-
-        int lineHeight = 5;
-
         /**
          * 简谐运动表达式；
-         *      x = A sin(wt + φ) = A sin(2π/T*t + φ) = A sin(2πft + φ)
-         *      y = A sin(wx + φ) = A sin(2π/T*x + φ) = A sin(2πfx + φ)
+         *      x = A sin(ωt + φ) = A sin(2π/T*t + φ) = A sin(2πft + φ)
+         *      y = A sin(ωx + φ) = A sin(2π/T*x + φ) = A sin(2πfx + φ)
          *
          *          (ωx+φ)——相位
          *          A: 振幅
@@ -170,15 +154,17 @@ public class SineWaveView extends View {
          *          φ：初相位
          */
 
-        for (int i = 0; i < viewWidth; i++) {
+        mPaint.setStrokeWidth(3);
 
-//            canvas.drawLine(i,
-//                    cy - amplitude * (float) (Math.sin(phase * 2 * (float) Math.PI / 360.0f + 2 * Math.PI * frequency * i / viewWidth)), (float) (i + 1), cy - amplitude * (float) (Math.sin(phase * 2 * (float) Math.PI / 360.0f + 2 * Math.PI * frequency * (i + 1) / viewWidth)), mPaint);
+//        LinearGradient gradient = null;
+        for (int i = 0; i < viewWidth; i++) {
 
             canvas.drawLine(i, viewHeight - amplitude - oneWave[i] - lineHeight, i,
                     viewHeight - amplitude - oneWave[i], mPaint);
+
             canvas.drawLine(i, viewHeight - amplitude - twoWave[i] - lineHeight, i,
                     viewHeight - amplitude - twoWave[i], mPaint);
+
             canvas.drawLine(i, viewHeight - amplitude - threeWave[i] - lineHeight, i,
                     viewHeight - amplitude - threeWave[i], mPaint);
         }
@@ -189,29 +175,26 @@ public class SineWaveView extends View {
     }
 
     public void reSet() {
-        // one是指 走到此处的波纹的位置 (这个理解方法看个人了)
+        // one是指 走到此处的波纹的位置
         int one = viewWidth - oneNowOffSet;
         // 把未走过的波纹放到最前面 进行重新拼接
         System.arraycopy(wave, oneNowOffSet, oneWave, 0, one);
         // 把已走波纹放到最后
-        System.arraycopy(wave, 0, oneWave, one, oneNowOffSet);
+        System.arraycopy(wave, (int) (viewWidth - period), oneWave, one, oneNowOffSet);
 
-        // one是指 走到此处的波纹的位置 (这个理解方法看个人了)
+        // two是指 走到此处的波纹的位置
         int two = viewWidth - twoNowOffSet;
         // 把未走过的波纹放到最前面 进行重新拼接
         System.arraycopy(wave, twoNowOffSet, twoWave, 0, two);
         // 把已走波纹放到最后
-        System.arraycopy(wave, 0, twoWave, two, twoNowOffSet);
+        System.arraycopy(wave, (int) (viewWidth - period), twoWave, two, twoNowOffSet);
 
-
-        // one是指 走到此处的波纹的位置 (这个理解方法看个人了)
+        // three是指 走到此处的波纹的位置
         int three = viewWidth - threeNowOffSet;
         // 把未走过的波纹放到最前面 进行重新拼接
         System.arraycopy(wave, threeNowOffSet, threeWave, 0, three);
         // 把已走波纹放到最后
-        System.arraycopy(wave, 0, threeWave, three, threeNowOffSet);
-
-
+        System.arraycopy(wave, (int) (viewWidth - period), threeWave, three, threeNowOffSet);
     }
 
     // 大小改变
@@ -227,12 +210,15 @@ public class SineWaveView extends View {
         oneWave = new float[w];
         twoWave = new float[w];
         threeWave = new float[w];
-        // 设置波形图周期
-        double zq = (Math.PI * 2 / w );
+        // 设置波形图周期（一个周期有多长的）
+        period = w * 0.8f;
+        frequency = 1 / period;
+        //角速度
+//        double ω = (2 * Math.PI / period) = 2 * Math.PI * frequency;
 
         // 计算每个点y坐标
         for (int i = 0; i < viewWidth; i++) {
-            wave[i] = (float) (amplitude * Math.sin(zq * i));
+            wave[i] = (float) (amplitude * Math.sin(2 * Math.PI * frequency * i));
         }
 
 

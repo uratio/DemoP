@@ -15,7 +15,7 @@ import android.view.animation.LinearInterpolator;
 
 public class SineWave extends View implements Runnable {
     private Paint mPaint = null;
-    private static float amplifier = 30.0f;     //振幅
+    private static float amplifier = 45.0f;     //振幅
     private static float frequency = 1.2f;    //频率
     private static float phase = 45.0f;       //相位
     private int height = 0;
@@ -110,12 +110,13 @@ public class SineWave extends View implements Runnable {
         mPaint.setStrokeWidth(5);
         float cy = height / 2;// centerY：高度中心 y 坐标
 
+        phase = phase + 6;
+        if (phase > width / frequency) {
+            phase = 0;
+        }
 
-        float startY = cy - amplifier * (float) (Math.sin(phase * 2 * (float) Math.PI / 360.0f));
-        float endY =
-                cy - amplifier * (float) (Math.sin(phase * 2 * (float) Math.PI / 360.0f + 2 * Math.PI * frequency));
-        LinearGradient gradient = new LinearGradient(0, startY, width,
-                endY, 0xFF7Bf0F9, 0xFF6E9CE9, Shader.TileMode.REPEAT);
+        LinearGradient gradient = new LinearGradient(0, 0, width,
+                1, 0xFF7Bf0F9, 0xFF6E9CE9, Shader.TileMode.REPEAT);
         mPaint.setShader(gradient);
 
         //必须先减去一个浪的宽度，以便第一遍动画能够刚好位移出一个波浪，形成无限波浪的效果
@@ -128,14 +129,14 @@ public class SineWave extends View implements Runnable {
 
         //float py=this.py-this.getTop();
 
-        mPath.moveTo(0, startY);
+//        mPath.moveTo(0, startY);
+//        for (int i = 0; i < width - 1; i++) {
+//            mPath.rQuadTo((float) i, cy - amplifier * (float) (Math.sin(phase * 2 * (float) Math.PI / 360.0f + 2 * Math.PI * frequency * i / width)), (float) (i + 1), cy - amplifier * (float) (Math.sin(phase * 2 * (float) Math.PI / 360.0f + 2 * Math.PI * frequency * (i + 1) / width)));
+//        }
+//        canvas.drawPath(mPath, mPaint);
+
+
         for (int i = 0; i < width - 1; i++) {
-            mPath.rQuadTo((float) i, cy - amplifier * (float) (Math.sin(phase * 2 * (float) Math.PI / 360.0f + 2 * Math.PI * frequency * i / width)), (float) (i + 1), cy - amplifier * (float) (Math.sin(phase * 2 * (float) Math.PI / 360.0f + 2 * Math.PI * frequency * (i + 1) / width)));
-        }
-        canvas.drawPath(mPath, mPaint);
-
-
-        /*for (int i = 0; i < width - 1; i++) {
             canvas.drawLine((float) i,
                     cy - amplifier * (float) (Math.sin(phase * 2 * (float) Math.PI / 360.0f + 2 * Math.PI * frequency * i / width)), (float) (i + 1), cy - amplifier * (float) (Math.sin(phase * 2 * (float) Math.PI / 360.0f + 2 * Math.PI * frequency * (i + 1) / width)), mPaint);
             float point =
@@ -157,8 +158,9 @@ public class SineWave extends View implements Runnable {
         mPaint.setColor(Color.BLUE);
         mPaint.setTextSize(20);
         canvas.drawText("(x=" + Float.toString(px) + ",y=" + Float.toString(py) + ")", 20,
-                this.getHeight() - 20, mPaint);*/
+                this.getHeight() - 20, mPaint);
 
+        postInvalidate();
     }
 
 
