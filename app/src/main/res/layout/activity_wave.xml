@@ -50,5 +50,9 @@
         <com.uratio.demop.wave.SineWaveView
             android:layout_width="match_parent"
             android:layout_height="100dp" />
+
+        <com.uratio.demop.wave.WaveView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"/>
     </LinearLayout>
 </ScrollView>
