@@ -1,6 +1,7 @@
 package com.uratio.demop;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -109,7 +110,8 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED || ContextCompat
                 .checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED || ContextCompat
                 .checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_PHONE_STATE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
                     Manifest.permission.RECORD_AUDIO}, 1111);
         } else {
             startService();
@@ -175,7 +177,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         popupMenu.getMenuInflater().inflate(R.menu.main_menu, popupMenu.getMenu());
         popupMenu.setOnMenuItemClickListener(this);
 //        setIconsVisible(popupMenu.getMenu(), true);
-        setIconEnable(popupMenu.getMenu(),true);
+        setIconEnable(popupMenu.getMenu(), true);
 
         //使用反射，强制显示菜单图标
 //        try {
@@ -190,7 +192,8 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
 //        }
 
         popupView = getLayoutInflater().inflate(R.layout.layout_popupwindow, null);
-        popupWindow = new PopupWindow(popupView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        popupWindow = new PopupWindow(popupView, LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
         popupWindow.setFocusable(true);
         popupView.findViewById(R.id.layout1).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -240,6 +243,8 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
 //                }
             }
         });
+
+        verifyStoragePermissions(this);
     }
 
     /**
@@ -338,7 +343,8 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 1111) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -482,6 +488,21 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             case R.id.to_wave:
                 startActivity(new Intent(MainActivity.this, WaveActivity.class));
                 break;
+        }
+    }
+
+    public static void verifyStoragePermissions(Activity activity) {
+        // Check if we have read or write permission
+        int writePermission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int readPermission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE);
+
+        if (writePermission != PackageManager.PERMISSION_GRANTED || readPermission != PackageManager.PERMISSION_GRANTED) {
+            // We don't have permission so prompt the user
+            ActivityCompat.requestPermissions(
+                    activity,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    1000
+            );
         }
     }
 

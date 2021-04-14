@@ -7,8 +7,6 @@ import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 
 import com.uratio.demop.R;
 
@@ -19,6 +17,7 @@ public class WaveActivity extends AppCompatActivity implements Runnable {
     private WaveBallProgress waveBall;
     private SineWave sineWave;
     private WaveView waveView;
+    private WaveMoveView waveMoveView;
 
     private MediaRecorder mMediaRecorder;
     private boolean isAlive = true;
@@ -33,14 +32,18 @@ public class WaveActivity extends AppCompatActivity implements Runnable {
                     break;
                 case 1:
                     if(mMediaRecorder==null) return;
-                    double ratio = (double) mMediaRecorder.getMaxAmplitude() / 100;
+                    int maxAmplitude = mMediaRecorder.getMaxAmplitude();
+                    double ratio = (double) maxAmplitude / 100;
                     double db = 0;// 分贝
                     //默认的最大音量是100,可以修改，但其实默认的，在测试过程中就有不错的表现
                     //你可以传自定义的数字进去，但需要在一定的范围内，比如0-200，就需要在xml文件中配置maxVolume
                     //同时，也可以配置灵敏度sensibility
-                    if (ratio > 1)
-                        db = 20 * Math.log10(ratio);
+                    double v = Math.log10(ratio);
+                    if (ratio > 1) {
+                        db = 20 * v;
+                    }
                     waveView.setVolume((int) db);
+                    waveMoveView.setVolume(maxAmplitude);
                     break;
             }
         }
@@ -61,6 +64,7 @@ public class WaveActivity extends AppCompatActivity implements Runnable {
         handler.sendEmptyMessage(0);
 
         waveView = findViewById(R.id.wave_view);
+        waveMoveView = findViewById(R.id.wave_line_view);
 
         if (mMediaRecorder == null)
             mMediaRecorder = new MediaRecorder();
@@ -68,7 +72,7 @@ public class WaveActivity extends AppCompatActivity implements Runnable {
         mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.AMR_NB);
         mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT);
-        File file = new File(Environment.getExternalStorageDirectory().getPath(), "hello.log");
+        File file = new File(Environment.getExternalStorageDirectory().getPath(), "helloP.log");
         if (!file.exists()) {
             try {
                 file.createNewFile();
@@ -80,10 +84,10 @@ public class WaveActivity extends AppCompatActivity implements Runnable {
         mMediaRecorder.setMaxDuration(1000 * 60 * 10);
         try {
             mMediaRecorder.prepare();
+            mMediaRecorder.start();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        mMediaRecorder.start();
 
         Thread thread = new Thread(this);
         thread.start();
@@ -91,9 +95,6 @@ public class WaveActivity extends AppCompatActivity implements Runnable {
 
     public void onClickView(View view) {
         switch (view.getId()) {
-            case R.id.btn_volume:
-                waveView.setVolume(32);
-                break;
         }
     }
 
