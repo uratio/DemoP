@@ -49,6 +49,7 @@ import com.uratio.demop.pdf.PDFViewActivity;
 import com.uratio.demop.pdf.PdfActivity;
 import com.uratio.demop.phone.RecorderService;
 import com.uratio.demop.refresh.RefreshActivity;
+import com.uratio.demop.ripple.RippleActivity;
 import com.uratio.demop.runnable.ThreadTestActivity;
 import com.uratio.demop.scanbank.ScanIOCardActivity;
 import com.uratio.demop.scanbank.ScanOpenCVActivity;
@@ -487,6 +488,9 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
                 break;
             case R.id.to_wave:
                 startActivity(new Intent(MainActivity.this, WaveActivity.class));
+                break;
+            case R.id.to_ripple:
+                startActivity(new Intent(MainActivity.this, RippleActivity.class));
                 break;
         }
     }
