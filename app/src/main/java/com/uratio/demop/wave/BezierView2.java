@@ -69,16 +69,32 @@ public class BezierView2 extends View {
 
         int halfItem = 150;
 
-        LinearGradient gradient = new LinearGradient(-mItemWidth + mOffsetX, halfItem, -mItemWidth + mOffsetX, mItemWidth,
+        LinearGradient gradient = new LinearGradient(-mItemWidth + mOffsetX, halfItem, -mItemWidth + mOffsetX,
+                mItemWidth,
                 0xFF7Bf0F9, 0xFF6E9CE9, Shader.TileMode.REPEAT);
         paint.setShader(gradient);
 
         //必须先减去一个浪的宽度，以便第一遍动画能够刚好位移出一个波浪，形成无限波浪的效果
-        mPath.moveTo(-mItemWidth + mOffsetX, halfItem);
-        for (int i = -mItemWidth; i < mItemWidth + getWidth(); i += mItemWidth) {
-            mPath.rQuadTo(halfItem / 2, -100, halfItem, 0);
-            mPath.rQuadTo(halfItem / 2, 100, halfItem, 0);
-        }
+//        mPath.moveTo(-mItemWidth + mOffsetX, halfItem);
+//        for (int i = -mItemWidth; i < mItemWidth + getWidth(); i += mItemWidth) {
+//            mPath.rQuadTo(halfItem / 2, -100, halfItem, 0);
+//            mPath.rQuadTo(halfItem / 2, 100, halfItem, 0);
+//        }
+
+//        mPath.moveTo(5, 100);
+//
+//        for (int i = 0; i < 20; i++) {
+//            //rQuadTo
+//            mPath.rQuadTo(20, mItemWidth, 40, 0);
+//            mPath.rQuadTo(20, -mItemWidth, 40, 0);
+//        }
+
+        //其实位置
+        mPath.moveTo(100, 100);
+//rQuardto的位置是相对的
+        mPath.rQuadTo(20, 20, 40, 0);
+        mPath.rQuadTo(20, -20, 40, 0);
+
         canvas.drawPath(mPath, paint);
     }
 }

@@ -78,4 +78,12 @@
             <enum name="three" value="3" />
         </attr>
     </declare-styleable>
+
+    <declare-styleable name="RecordButton">
+        <attr name="rb_startColor" format="color" />
+        <attr name="rb_endColor" format="color" />
+        <attr name="rb_duration" format="integer" />
+        <attr name="rb_scope" format="float" />
+        <attr name="rb_line_width" format="dimension" />
+    </declare-styleable>
 </resources>

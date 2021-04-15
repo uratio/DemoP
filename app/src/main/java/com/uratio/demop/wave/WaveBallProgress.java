@@ -17,6 +17,8 @@ import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.uratio.demop.utils.DisplayUtils;
+
 /**
  * 水晶球波浪进度条
  * Created by chz on 2015/12/14.
@@ -209,8 +211,8 @@ public class WaveBallProgress extends View {
              */
             mWaveSpeedA = w / 30;
             mWaveSpeedB = w / 51;
-            mWaveHeightA = DisplayUtils.dip2px(getContext(), 10);
-            mWaveHeightB = DisplayUtils.dip2px(getContext(), 5);
+            mWaveHeightA = DisplayUtils.dp2px(getContext(), 10);
+            mWaveHeightB = DisplayUtils.dp2px(getContext(), 5);
             if (h / 10 < mWaveHeightA) {
                 mWaveHeightA = h / 10;
                 mWaveHeightB = h / 20;
