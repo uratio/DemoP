@@ -173,7 +173,7 @@ public class RecordButton extends View {
                     @Override
                     public void onAnimationUpdate(ValueAnimator animation) {
                         float progress = (float) animation.getAnimatedValue();
-                        Log.e(TAG, "onAnimationUpdate: progress=" + progress);
+//                        Log.e(TAG, "onAnimationUpdate: progress=" + progress);
                         alphaOne = 1 - progress * scope;
                         radiusOne = radius + interval * progress;
                         lineWOne = alphaOne * lineW;

@@ -75,11 +75,11 @@ public class BezierView2 extends View {
         paint.setShader(gradient);
 
         //必须先减去一个浪的宽度，以便第一遍动画能够刚好位移出一个波浪，形成无限波浪的效果
-//        mPath.moveTo(-mItemWidth + mOffsetX, halfItem);
-//        for (int i = -mItemWidth; i < mItemWidth + getWidth(); i += mItemWidth) {
-//            mPath.rQuadTo(halfItem / 2, -100, halfItem, 0);
-//            mPath.rQuadTo(halfItem / 2, 100, halfItem, 0);
-//        }
+        mPath.moveTo(-mItemWidth + mOffsetX, halfItem);
+        for (int i = -mItemWidth; i < mItemWidth + getWidth(); i += mItemWidth) {
+            mPath.rQuadTo(halfItem / 2, -100, halfItem, 0);
+            mPath.rQuadTo(halfItem / 2, 100, halfItem, 0);
+        }
 
 //        mPath.moveTo(5, 100);
 //
@@ -90,10 +90,10 @@ public class BezierView2 extends View {
 //        }
 
         //其实位置
-        mPath.moveTo(100, 100);
-//rQuardto的位置是相对的
-        mPath.rQuadTo(20, 20, 40, 0);
-        mPath.rQuadTo(20, -20, 40, 0);
+//        mPath.moveTo(100, 100);
+////rQuardto的位置是相对的
+//        mPath.rQuadTo(20, 20, 40, 0);
+//        mPath.rQuadTo(20, -20, 40, 0);
 
         canvas.drawPath(mPath, paint);
     }

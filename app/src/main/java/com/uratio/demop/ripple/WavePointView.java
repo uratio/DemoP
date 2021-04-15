@@ -12,19 +12,39 @@ import android.graphics.Shader;
 import android.os.SystemClock;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 
 import com.uratio.demop.utils.DisplayUtils;
 
+import java.util.Arrays;
+
 public class WavePointView extends View {
     private static final String TAG = WavePointView.class.getSimpleName();
 
     // 波纹颜色
-    private static final int WAVE_PAINT_COLOR = 0x533cbabf;
+    private static final float DEF_LINE_WIDTH = 2;
+
+    // 画笔
+    private Paint mPaint1;
+    private Paint mPaint2;
+    private Paint mPaint3;
+    private Path mPath1;
+    private Path mPath2;
+    private Path mPath3;
+
+    // 创建画布过滤
+    private DrawFilter mDrawFilter;
+    // view的宽度
+    private int viewWidth;
+    // view中心高度
+    private float halfH;
+    // 画笔宽度
+    private float lineW;
 
     // 第一个波纹移动的速度
-    private int oneSeep = 3;
+    private int oneSeep = 0;
     // 第二个波纹移动的速度
     private int twoSeep = oneSeep;
     // 第三个波纹移动的速度
@@ -38,7 +58,10 @@ public class WavePointView extends View {
     private int threeSeepPx;
 
     // 存放原始波纹的每个y坐标点
-    private float wave[];
+    private float[] wave;
+    private float[] wave1;
+    private float[] wave2;
+    private float[] wave3;
 
     // 第一个波纹当前移动的距离（相当于初相位）
     private int offSetOne;
@@ -49,27 +72,10 @@ public class WavePointView extends View {
 
     //振幅（根据声音大小动态修改）
     private float amplitude = 45.0f;
-    //频率
-    private float frequency;
     //周期
     private float period;
     //相位（随坐标移动发生变化）
     private float phase;
-
-    // 画笔
-    private Paint mPaint1;
-    private Paint mPaint2;
-    private Paint mPaint3;
-    private float lineW;
-
-    // 创建画布过滤
-    private DrawFilter mDrawFilter;
-
-    // view的宽度
-    private int viewWidth;
-
-    // view中心高度
-    private float halfH;
 
     // xml布局构造方法
     public WavePointView(Context context, AttributeSet attrs) {
@@ -79,34 +85,32 @@ public class WavePointView extends View {
 
     // 初始化
     private void init(Context context) {
-        lineW = DisplayUtils.dp2px(context, 2) / 2f;
+        lineW = DisplayUtils.dp2px(context, DEF_LINE_WIDTH);
         // 创建画笔
         mPaint1 = new Paint();
-        // 设置画笔颜色
-        mPaint1.setColor(WAVE_PAINT_COLOR);
         // 设置绘画风格为实线
-        mPaint1.setStyle(Style.FILL);
+        mPaint1.setStyle(Style.STROKE);
         // 抗锯齿
         mPaint1.setAntiAlias(true);
         mPaint1.setStrokeWidth(lineW);
 
         mPaint2 = new Paint();
-        // 设置画笔颜色
-        mPaint2.setColor(WAVE_PAINT_COLOR);
         // 设置绘画风格为实线
-        mPaint2.setStyle(Style.FILL);
+        mPaint2.setStyle(Style.STROKE);
         // 抗锯齿
         mPaint2.setAntiAlias(true);
         mPaint2.setStrokeWidth(lineW);
 
         mPaint3 = new Paint();
-        // 设置画笔颜色
-        mPaint3.setColor(WAVE_PAINT_COLOR);
         // 设置绘画风格为实线
-        mPaint3.setStyle(Style.FILL);
+        mPaint3.setStyle(Style.STROKE);
         // 抗锯齿
         mPaint3.setAntiAlias(true);
         mPaint3.setStrokeWidth(lineW);
+
+        mPath1 = new Path();
+        mPath2 = new Path();
+        mPath3 = new Path();
 
         // 设置图片过滤波和抗锯齿
         mDrawFilter = new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG);
@@ -118,14 +122,6 @@ public class WavePointView extends View {
         twoSeepPx = DisplayUtils.dp2px(context, twoSeep);
         // 第三个波的像素移动值
         threeSeepPx = DisplayUtils.dp2px(context, threeSeep);
-
-        // 每个波当前起始位置相差 一个波长 x 的 1/6
-//        int x = (int) (amplitude * (Math.sin(frequency * 2 * Math.PI)));
-//        Log.e(TAG, "init: 一个波x轴长度 x=" + x);
-        offSetOne = DisplayUtils.dp2px(context, 0);
-        offSetTwo = DisplayUtils.dp2px(context, 100);
-        offSetThree = DisplayUtils.dp2px(context, 200);
-
     }
 
     // 绘画方法
@@ -134,20 +130,10 @@ public class WavePointView extends View {
         super.onDraw(canvas);
         canvas.setDrawFilter(mDrawFilter);
 
-        offSetOne = offSetOne + oneSeepPx;
-        offSetTwo = offSetTwo + twoSeepPx;
-        offSetThree = offSetThree + threeSeepPx;
+        canvas.translate(0, halfH);
 
-        //超过一个周期置为 0
-        if (offSetOne >= period) {
-            offSetOne = 0;
-        }
-        if (offSetTwo >= period) {
-            offSetTwo = 0;
-        }
-        if (offSetThree >= period) {
-            offSetThree = 0;
-        }
+//        canvas.drawLine(0, 0, viewWidth, 0, mPaint1);
+
 
         /**
          * 简谐运动表达式；
@@ -163,29 +149,56 @@ public class WavePointView extends View {
          *          φ：初相位
          */
 
+        mPath1.reset();
+        mPath2.reset();
+        mPath3.reset();
+
+        mPath1.moveTo(0, wave[offSetOne]);
+        mPath2.moveTo(0, wave[offSetTwo]);
+        mPath3.moveTo(0, wave[offSetThree]);
         for (int i = 0; i < viewWidth; i++) {
-            canvas.drawLine(i, amplitude - wave[offSetOne + i], i, amplitude - wave[offSetOne +i] + lineW * 2, mPaint1);
-            canvas.drawLine(i, amplitude - wave[offSetTwo + i], i, amplitude - wave[offSetTwo + i] + lineW * 2, mPaint2);
-            canvas.drawLine(i, amplitude - wave[offSetThree + i], i, amplitude - wave[offSetThree + i] + lineW * 2, mPaint3);
+            // 使用path绘制：同速度，不同偏移量，初相位相同
+//            mPath1.lineTo(i, wave[offSetOne + i]);
+//            mPath2.lineTo(i, wave[offSetTwo + i]);
+//            mPath3.lineTo(i, wave[offSetThree + i]);
 
-//            canvas.drawLine(i, halfH - wave[offSetOne + i] - lineW, i, halfH - wave[offSetOne +i] + lineW, mPaint1);
-//            canvas.drawLine(i, halfH - wave[offSetTwo + i] - lineW, i, halfH - wave[offSetTwo + i] + lineW, mPaint2);
-//            canvas.drawLine(i, halfH - wave[offSetThree + i] - lineW , i, halfH - wave[offSetThree + i] + lineW, mPaint3);
+            // 使用path绘制：同速度，同偏移量，初相位不同
+            mPath1.lineTo(i, wave1[offSetOne + i]);
+            mPath2.lineTo(i, wave2[offSetOne + i]);
+            mPath3.lineTo(i, wave3[offSetOne + i]);
 
+            // 直接绘制
+//            canvas.drawLine(i, wave[offSetOne + i] - lineW / 2f, i, wave[offSetOne +i] + lineW / 2f, mPaint1);
+//            canvas.drawLine(i, wave[offSetTwo + i] - lineW / 2f, i, wave[offSetTwo + i] + lineW / 2f, mPaint2);
+//            canvas.drawLine(i, wave[offSetThree + i] - lineW / 2f , i, wave[offSetThree + i] + lineW / 2f, mPaint3);
 
         }
+        canvas.drawPath(mPath1, mPaint1);
+        canvas.drawPath(mPath2, mPaint2);
+        canvas.drawPath(mPath3, mPaint3);
 
-        Path path = new Path();
-        path.moveTo(0,100);
-//        path.rQuadTo();
-        for (int i = 0; i < viewWidth - 1; i++) {
-        }
-        path.rQuadTo(viewWidth / 2, halfH * 2 - wave[viewWidth / 2] - lineW * 2, viewWidth, halfH * 2 - wave[viewWidth]);
-        path.rQuadTo(viewWidth / 2, - (halfH * 2 - wave[viewWidth / 2] - lineW * 2), viewWidth, halfH * 2 - wave[viewWidth]);
-        canvas.drawPath(path, mPaint1);
+        // 更新偏移量
+        resetOffset();
 
         SystemClock.sleep(5);
         postInvalidate();
+    }
+
+    private void resetOffset() {
+        offSetOne = offSetOne + oneSeepPx;
+        offSetTwo = offSetTwo + twoSeepPx;
+        offSetThree = offSetThree + threeSeepPx;
+
+        //超过一个周期置为 0
+        if (offSetOne >= period) {
+            offSetOne = 0;
+        }
+        if (offSetTwo >= period) {
+            offSetTwo = 0;
+        }
+        if (offSetThree >= period) {
+            offSetThree = 0;
+        }
     }
 
     // 大小改变
@@ -198,32 +211,33 @@ public class WavePointView extends View {
 
         // 设置波形图周期（一个周期有多长的）
         period = w * 0.8f;
-        frequency = 1 / period;
         // 初始化保存波形图的数组(保证最后一个坐标有整个波长的位移空间)
         wave = new float[(int) (w + period)];
+        wave1 = new float[(int) (w + period)];
+        wave2 = new float[(int) (w + period)];
+        wave3 = new float[(int) (w + period)];
+
+        offSetOne = 0;
+        offSetTwo = (int) (period / 3);
+        offSetThree = (int) (period * 2 / 3);
 
         // 计算每个点y坐标
         for (int i = 0; i < w + period; i++) {
-            wave[i] = (float) (amplitude * Math.sin(2 * Math.PI * frequency * i));
+            wave[i] = (float) (amplitude * Math.sin(2f * Math.PI / period * i));
+            wave1[i] = (float) (amplitude * Math.sin(2f * Math.PI / period * i));
+            wave2[i] = (float) (amplitude * Math.sin(2f * Math.PI / period * i + 2f * Math.PI / 3));
+            wave3[i] = (float) (amplitude * Math.sin(2f * Math.PI / period * i - 2f * Math.PI / 3));
         }
 
         if (mPaint1 != null) {
-            mPaint1.setShader(new LinearGradient(0, 0, w, h, 0xFF13E4F4, 0xFF266BDE, Shader.TileMode.REPEAT));
+            mPaint1.setShader(new LinearGradient(0, 0, w, h, 0xFF266BDE, 0xFF13E4F4, Shader.TileMode.REPEAT));
         }
         if (mPaint2 != null) {
             mPaint2.setShader(new LinearGradient(0, 0, w, h, 0xFF9C27B0, 0xFF3F51B5, Shader.TileMode.REPEAT));
 
         }
         if (mPaint3 != null) {
-            mPaint3.setShader(new LinearGradient(0, 0, w, h, 0xFF03A9F4, 0xFF673AB7, Shader.TileMode.REPEAT));
+            mPaint3.setShader(new LinearGradient(0, 0, w, h, 0xFF03A9F4, 0xFFBC0BDE, Shader.TileMode.REPEAT));
         }
     }
-
-    // dp换算成px 为了让移动速度在各个分辨率的手机的都差不多
-    public int dpChangPx(int dp) {
-        DisplayMetrics metrics = new DisplayMetrics();
-        ((WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(metrics);
-        return (int) (metrics.density * dp + 0.5f);
-    }
-
 }
