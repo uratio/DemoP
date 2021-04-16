@@ -11,17 +11,12 @@ import android.graphics.Path;
 import android.graphics.Shader;
 import android.os.SystemClock;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 
 import com.uratio.demop.utils.DisplayUtils;
 
-import java.util.Arrays;
-
-public class WavePointView extends View {
-    private static final String TAG = WavePointView.class.getSimpleName();
+public class WavePointView3 extends View {
+    private static final String TAG = WavePointView3.class.getSimpleName();
 
     // 波纹颜色
     private static final float DEF_LINE_WIDTH = 2;
@@ -69,16 +64,24 @@ public class WavePointView extends View {
     private int offSetTwo;
     // 第三个波纹当前移动的距离
     private int offSetThree;
+    private int offSet1;
+    private int offSet2;
+    private int offSet3;
 
     //振幅（根据声音大小动态修改）
     private float amplitude = 45.0f;
+    private float amplitudeP = 1f;
     //周期
     private float period;
-    //相位（随坐标移动发生变化）
-    private float phase;
+    private float period1;
+    private float period2;
+    private float period3;
+
+    private int startIndex = 0;
+    private int endIndex = 0;
 
     // xml布局构造方法
-    public WavePointView(Context context, AttributeSet attrs) {
+    public WavePointView3(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context);
     }
@@ -171,13 +174,13 @@ public class WavePointView extends View {
         /**
          * 使用path绘制：同速度，同偏移量，初相位不同
          */
-        mPath1.moveTo(0, wave1[offSetOne]);
-        mPath2.moveTo(0, wave2[offSetOne]);
-        mPath3.moveTo(0, wave3[offSetOne]);
+        mPath1.moveTo(0, wave1[offSet1]);
+        mPath2.moveTo(0, wave2[offSet2]);
+        mPath3.moveTo(0, wave3[offSet3]);
         for (int i = 1; i < viewWidth; i++) {
-            mPath1.lineTo(i, wave1[offSetOne + i]);
-            mPath2.lineTo(i, wave2[offSetOne + i]);
-            mPath3.lineTo(i, wave3[offSetOne + i]);
+            mPath1.lineTo(i, amplitudeP * wave1[offSet1 + i]);
+            mPath2.lineTo(i, amplitudeP * wave2[offSet2 + i]);
+            mPath3.lineTo(i, amplitudeP * wave3[offSet3 + i]);
         }
         canvas.drawPath(mPath1, mPaint1);
         canvas.drawPath(mPath2, mPaint2);
@@ -217,6 +220,21 @@ public class WavePointView extends View {
         if (offSetThree >= period) {
             offSetThree = 0;
         }
+
+        offSet1 = offSet1 + oneSeepPx;
+        offSet2 = offSet2 + twoSeepPx;
+        offSet3 = offSet3 + threeSeepPx;
+
+        //超过一个周期置为 0
+        if (offSet1 >= period1) {
+            offSet1 = 0;
+        }
+        if (offSet2 >= period2) {
+            offSet2 = 0;
+        }
+        if (offSet3 >= period3) {
+            offSet3 = 0;
+        }
     }
 
     // 大小改变
@@ -227,13 +245,20 @@ public class WavePointView extends View {
         viewWidth = w;
         halfH = h / 2f;
 
+        startIndex = w;
+        endIndex = w;
+
         // 设置波形图周期（一个周期有多长的）
         period = w * 0.8f;
+        period1 = w * 0.8f;
+        period2 = w * 0.8f;
+        period3 = w;
+
         // 初始化保存波形图的数组(保证最后一个坐标有整个波长的位移空间)
         wave = new float[(int) (w + period)];
-        wave1 = new float[(int) (w + period)];
-        wave2 = new float[(int) (w + period)];
-        wave3 = new float[(int) (w + period)];
+        wave1 = new float[(int) (w + period1)];
+        wave2 = new float[(int) (w + period2)];
+        wave3 = new float[(int) (w + period3)];
 
         offSetOne = 0;
         offSetTwo = (int) (period / 3);
@@ -242,9 +267,15 @@ public class WavePointView extends View {
         // 计算每个点y坐标
         for (int i = 0; i < w + period; i++) {
             wave[i] = (float) (amplitude * Math.sin(2f * Math.PI / period * i));
-            wave1[i] = (float) (amplitude * Math.sin(2f * Math.PI / period * i));
-            wave2[i] = (float) (amplitude * Math.sin(2f * Math.PI / period * i + Math.PI / 2));
-            wave3[i] = (float) (amplitude * Math.sin(2f * Math.PI / period * i + Math.PI));
+        }
+        for (int i = 0; i < w + period1; i++) {
+            wave1[i] = (float) (amplitude * Math.sin(2f * Math.PI / period1 * i));
+        }
+        for (int i = 0; i < w + period2; i++) {
+            wave2[i] = (float) (amplitude * Math.sin(2f * Math.PI / period2 * i + Math.PI));
+        }
+        for (int i = 0; i < w + period3; i++) {
+            wave3[i] = (float) (amplitude * Math.sin(2f * Math.PI / period3 * i + 20));
         }
 
         if (mPaint1 != null) {

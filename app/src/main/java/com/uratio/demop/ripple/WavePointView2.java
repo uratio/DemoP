@@ -11,17 +11,12 @@ import android.graphics.Path;
 import android.graphics.Shader;
 import android.os.SystemClock;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 
 import com.uratio.demop.utils.DisplayUtils;
 
-import java.util.Arrays;
-
-public class WavePointView extends View {
-    private static final String TAG = WavePointView.class.getSimpleName();
+public class WavePointView2 extends View {
+    private static final String TAG = WavePointView2.class.getSimpleName();
 
     // 波纹颜色
     private static final float DEF_LINE_WIDTH = 2;
@@ -78,7 +73,7 @@ public class WavePointView extends View {
     private float phase;
 
     // xml布局构造方法
-    public WavePointView(Context context, AttributeSet attrs) {
+    public WavePointView2(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context);
     }
@@ -243,8 +238,8 @@ public class WavePointView extends View {
         for (int i = 0; i < w + period; i++) {
             wave[i] = (float) (amplitude * Math.sin(2f * Math.PI / period * i));
             wave1[i] = (float) (amplitude * Math.sin(2f * Math.PI / period * i));
-            wave2[i] = (float) (amplitude * Math.sin(2f * Math.PI / period * i + Math.PI / 2));
-            wave3[i] = (float) (amplitude * Math.sin(2f * Math.PI / period * i + Math.PI));
+            wave2[i] = (float) (amplitude * Math.sin(2f * Math.PI / period * i + 2f * Math.PI / 3));
+            wave3[i] = (float) (amplitude * Math.sin(2f * Math.PI / period * i - 2f * Math.PI / 3));
         }
 
         if (mPaint1 != null) {
