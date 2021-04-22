@@ -127,7 +127,7 @@ public class WavePointView2 extends View {
 
         canvas.translate(0, halfH);
 
-//        canvas.drawLine(0, 0, viewWidth, 0, mPaint1);
+        canvas.drawLine(0, 0, viewWidth, 0, mPaint1);
 
 
         /**

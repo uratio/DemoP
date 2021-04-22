@@ -1,36 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <LinearLayout
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <RelativeLayout
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            >
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="4800px"
-                android:src="@drawable/bg_gjj"
-                android:scaleType="fitStart"
-                android:visibility="gone"/>
+            android:layout_gravity="bottom"
+            android:orientation="vertical">
+
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/string_text"
-                android:padding="20px"
-                android:textColor="#000"
-                android:textSize="32px"
-                android:lineSpacingMultiplier="1.5"/>
+                android:layout_height="100dp"
+                android:background="#eee"
+                android:gravity="center"
+                android:text="内容1" />
 
-            <com.uratio.demop.count.CustomerGuide
-                android:layout_width="350dp"
-                android:layout_height="500dp"
-                app:paintColor="#333"/>
-        </RelativeLayout>
-    </LinearLayout>
-</ScrollView>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:background="#eee"
+                android:gravity="center"
+                android:text="内容2" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="#38fabd">
+
+            <TextView
+                android:id="@+id/text3"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:gravity="center"
+                android:text="区域二" />
+        </LinearLayout>
+    </FrameLayout>
+</RelativeLayout>
