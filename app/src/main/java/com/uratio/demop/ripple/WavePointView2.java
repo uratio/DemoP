@@ -21,6 +21,7 @@ public class WavePointView2 extends View {
     // 波纹颜色
     private static final float DEF_LINE_WIDTH = 2;
 
+    private int[][] colors = {{0xFF9C27B0, 0xFF00BCD4}, {0xFF8BC34A, 0xFFFF5722}, {0xFF3F51B5, 0xFFFFEB3B}};
     // 画笔
     private Paint mPaint1;
     private Paint mPaint2;
@@ -243,14 +244,16 @@ public class WavePointView2 extends View {
         }
 
         if (mPaint1 != null) {
-            mPaint1.setShader(new LinearGradient(0, 0, w, h, 0xFF266BDE, 0xFF13E4F4, Shader.TileMode.REPEAT));
+            mPaint1.setShader(new LinearGradient(0, 0, w, h, colors[0], null, Shader.TileMode.CLAMP));
+            mPaint1.setAlpha(255);
         }
         if (mPaint2 != null) {
-            mPaint2.setShader(new LinearGradient(0, 0, w, h, 0xFF9C27B0, 0xFF3F51B5, Shader.TileMode.REPEAT));
-
+            mPaint2.setShader(new LinearGradient(0, 0, w, h, colors[1], null, Shader.TileMode.CLAMP));
+            mPaint2.setAlpha(180);
         }
         if (mPaint3 != null) {
-            mPaint3.setShader(new LinearGradient(0, 0, w, h, 0xFF03A9F4, 0xFFBC0BDE, Shader.TileMode.REPEAT));
+            mPaint3.setShader(new LinearGradient(0, 0, w, h, colors[2], null, Shader.TileMode.CLAMP));
+            mPaint3.setAlpha(120);
         }
     }
 }

@@ -18,7 +18,7 @@ import android.view.View;
 import com.uratio.demop.R;
 import com.uratio.demop.utils.DisplayUtils;
 
-public class WavePointView4 extends View {
+public class WavePointView5 extends View {
     private static final String TAG = WavePointView5.class.getSimpleName();
 
     // 波纹颜色
@@ -104,16 +104,16 @@ public class WavePointView4 extends View {
     private int step = 1;
     private boolean canDraw = true;
 
-    public WavePointView4(Context context) {
+    public WavePointView5(Context context) {
         this(context, null);
     }
 
     // xml布局构造方法
-    public WavePointView4(Context context, AttributeSet attrs) {
+    public WavePointView5(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public WavePointView4(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public WavePointView5(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context, attrs);
     }
