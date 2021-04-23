@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#aaa"
     tools:context=".ripple.RippleActivity">
 
     <com.uratio.demop.ripple.RecordButton
@@ -21,13 +22,19 @@
 
     <com.uratio.demop.ripple.WavePointView3
         android:layout_width="match_parent"
-        android:layout_height="100dp"/>
+        android:layout_height="100dp"
+        android:visibility="gone"/>
 
     <com.uratio.demop.ripple.WavePointView4
         android:layout_width="match_parent"
         android:layout_height="100dp"/>
 
     <com.uratio.demop.ripple.WavePointView5
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:visibility="gone"/>
+
+    <com.uratio.demop.ripple.WavePointSurfaceView
         android:layout_width="match_parent"
         android:layout_height="100dp"/>
 

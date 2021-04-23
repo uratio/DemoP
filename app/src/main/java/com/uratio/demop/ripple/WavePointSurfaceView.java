@@ -3,23 +3,30 @@ package com.uratio.demop.ripple;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.DrawFilter;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.PaintFlagsDrawFilter;
 import android.graphics.Path;
+import android.graphics.PixelFormat;
+import android.graphics.PorterDuff;
 import android.graphics.Shader;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 import android.view.View;
 
 import com.uratio.demop.R;
 import com.uratio.demop.utils.DisplayUtils;
+import com.uratio.demop.wave.VoiceWaveView;
 
-public class WavePointView4 extends View {
-    private static final String TAG = WavePointView5.class.getSimpleName();
+public class WavePointSurfaceView extends SurfaceView implements SurfaceHolder.Callback {
+    private static final String TAG = WavePointSurfaceView.class.getSimpleName();
 
     // 波纹颜色
     private static final int DEF_START_COLOR = 0xFF266BDE;
@@ -27,11 +34,17 @@ public class WavePointView4 extends View {
     // 波纹宽度
     private static final float DEF_LINE_WIDTH = 2;
     // 移动速度
-    private static final int DEF_SPEED = 9;
+    private static final int DEF_SPEED = 4;
     // 振幅
     private static final float DEF_AMPLITUDE = 60f;
     // 开始结束时振幅比例
     private static final float DEF_AMPLITUDE_RADIO = 0.5f;
+
+    private static final long SLEEP_TIME = 5;
+    private Context mContext;
+    private SurfaceHolder mHolder;
+    private final Object mSurfaceLock = new Object();
+    private DrawThread mThread;
 
     //渐变颜色
     private int startColor;
@@ -47,8 +60,6 @@ public class WavePointView4 extends View {
     private Path mPath2;
     private Path mPath3;
 
-    // 创建画布过滤
-    private DrawFilter mDrawFilter;
     // view的宽度
     private int viewWidth;
     // view中心高度
@@ -104,16 +115,16 @@ public class WavePointView4 extends View {
     private int step = 1;
     private boolean canDraw = true;
 
-    public WavePointView4(Context context) {
+    public WavePointSurfaceView(Context context) {
         this(context, null);
     }
 
     // xml布局构造方法
-    public WavePointView4(Context context, AttributeSet attrs) {
+    public WavePointSurfaceView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public WavePointView4(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public WavePointSurfaceView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context, attrs);
     }
@@ -128,37 +139,28 @@ public class WavePointView4 extends View {
         amplitude = a.getFloat(R.styleable.WavePointView_wp_amplitude, DEF_AMPLITUDE);
         amplitudeP = a.getFloat(R.styleable.WavePointView_wp_amplitude_radio, DEF_AMPLITUDE_RADIO);
 
+        mHolder = getHolder();
+        mHolder.addCallback(this);
 
         lineW = DisplayUtils.dp2px(context, DEF_LINE_WIDTH);
         // 创建画笔
-        mPaint1 = new Paint();
-        // 设置绘画风格为实线
-        mPaint1.setStyle(Style.STROKE);
-        // 抗锯齿
-        mPaint1.setAntiAlias(true);
-        mPaint1.setStrokeWidth(lineW);
-
-        mPaint2 = new Paint();
-        // 设置绘画风格为实线
-        mPaint2.setStyle(Style.STROKE);
-        // 抗锯齿
-        mPaint2.setAntiAlias(true);
-        mPaint2.setStrokeWidth(lineW);
-
-        mPaint3 = new Paint();
-        // 设置绘画风格为实线
-        mPaint3.setStyle(Style.STROKE);
-        // 抗锯齿
-        mPaint3.setAntiAlias(true);
-        mPaint3.setStrokeWidth(lineW);
+        mPaint1 = createPaint();
+        mPaint2 = createPaint();
+        mPaint3 = createPaint();
 
         mPath1 = new Path();
         mPath2 = new Path();
         mPath3 = new Path();
+    }
 
-        // 设置图片过滤波和抗锯齿
-        mDrawFilter = new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG);
-
+    private Paint createPaint() {
+        Paint paint = new Paint();
+        // 设置绘画风格为实线
+        paint.setStyle(Style.STROKE);
+        // 抗锯齿
+        paint.setAntiAlias(true);
+        paint.setStrokeWidth(lineW);
+        return paint;
     }
 
     @Override
@@ -216,12 +218,63 @@ public class WavePointView4 extends View {
         }
     }
 
-    // 绘画方法
     @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-        canvas.setDrawFilter(mDrawFilter);
+    public void surfaceCreated(SurfaceHolder holder) {
+        //设置画布  背景透明
+        setZOrderOnTop(true);
+        mHolder.setFormat(PixelFormat.TRANSLUCENT);
 
+        mThread = new DrawThread(holder);
+        mThread.start();
+    }
+
+    @Override
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+
+    }
+
+    @Override
+    public void surfaceDestroyed(SurfaceHolder holder) {
+        synchronized (mSurfaceLock) {  //这里需要加锁，否则doDraw中有可能会crash
+            canDraw = false;
+        }
+    }
+
+    private class DrawThread extends Thread {
+        private SurfaceHolder mHolder;
+
+        public DrawThread(SurfaceHolder holder) {
+            super(TAG);
+            mHolder = holder;
+        }
+
+        @Override
+        public void run() {
+            while (canDraw) {
+                synchronized (mSurfaceLock) {
+                    Canvas canvas = mHolder.lockCanvas();
+                    if (canvas != null) {
+                        //绘制内容
+                        doDraw(canvas);
+                        mHolder.unlockCanvasAndPost(canvas);
+                    }
+                }
+                try {
+                    Thread.sleep(SLEEP_TIME);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    /**
+     * 绘制内容
+     */
+    private void doDraw(Canvas canvas) {
+        //清除之前绘制内容
+        canvas.drawColor(Color.WHITE, PorterDuff.Mode.CLEAR);
+        //移动画笔到中心高度
         canvas.translate(0, halfH);
 
         mPath1.reset();
@@ -247,12 +300,6 @@ public class WavePointView4 extends View {
         canvas.drawPath(mPath1, mPaint1);
         canvas.drawPath(mPath2, mPaint2);
         canvas.drawPath(mPath3, mPaint3);
-
-
-        if (canDraw) {
-            SystemClock.sleep(5);
-            postInvalidate();
-        }
     }
 
     /**

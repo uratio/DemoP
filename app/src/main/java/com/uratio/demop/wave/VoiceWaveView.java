@@ -120,8 +120,8 @@ public class VoiceWaveView extends SurfaceView implements SurfaceHolder.Callback
 
     @Override
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
-//        setZOrderOnTop(true);//设置画布  背景透明
-//        mHolder.setFormat(PixelFormat.TRANSLUCENT);
+        setZOrderOnTop(true);//设置画布  背景透明
+        mHolder.setFormat(PixelFormat.TRANSLUCENT);
 
         mThread = new DrawThread(surfaceHolder);
         mThread.setRun(true);
