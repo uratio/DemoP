@@ -4,26 +4,20 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.DrawFilter;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
-import android.graphics.PaintFlagsDrawFilter;
 import android.graphics.Path;
 import android.graphics.PixelFormat;
 import android.graphics.PorterDuff;
 import android.graphics.Shader;
-import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.View;
 
 import com.uratio.demop.R;
 import com.uratio.demop.utils.DisplayUtils;
-import com.uratio.demop.wave.VoiceWaveView;
 
 public class WavePointSurfaceView extends SurfaceView implements SurfaceHolder.Callback {
     private static final String TAG = WavePointSurfaceView.class.getSimpleName();
@@ -113,7 +107,6 @@ public class WavePointSurfaceView extends SurfaceView implements SurfaceHolder.C
      *      6: 回到阶段 1，并停止绘画
      */
     private int step = 1;
-    private boolean canDraw = true;
 
     public WavePointSurfaceView(Context context) {
         this(context, null);
@@ -225,6 +218,7 @@ public class WavePointSurfaceView extends SurfaceView implements SurfaceHolder.C
         mHolder.setFormat(PixelFormat.TRANSLUCENT);
 
         mThread = new DrawThread(holder);
+        mThread.setRun(true);
         mThread.start();
     }
 
@@ -236,12 +230,15 @@ public class WavePointSurfaceView extends SurfaceView implements SurfaceHolder.C
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
         synchronized (mSurfaceLock) {  //这里需要加锁，否则doDraw中有可能会crash
-            canDraw = false;
+            if (mThread != null) {
+                mThread.setRun(false);
+            }
         }
     }
 
     private class DrawThread extends Thread {
         private SurfaceHolder mHolder;
+        private boolean mIsRun = false;
 
         public DrawThread(SurfaceHolder holder) {
             super(TAG);
@@ -250,8 +247,11 @@ public class WavePointSurfaceView extends SurfaceView implements SurfaceHolder.C
 
         @Override
         public void run() {
-            while (canDraw) {
+            while (true) {
                 synchronized (mSurfaceLock) {
+                    if (!mIsRun) {
+                        return;
+                    }
                     Canvas canvas = mHolder.lockCanvas();
                     if (canvas != null) {
                         //绘制内容
@@ -265,6 +265,10 @@ public class WavePointSurfaceView extends SurfaceView implements SurfaceHolder.C
                     e.printStackTrace();
                 }
             }
+        }
+
+        public void setRun(boolean isRun) {
+            this.mIsRun = isRun;
         }
     }
 
@@ -294,7 +298,7 @@ public class WavePointSurfaceView extends SurfaceView implements SurfaceHolder.C
         } else {
             //回到阶段1，停止绘制
             step = 1;
-            canDraw = false;
+            mThread.setRun(false);
         }
 
         canvas.drawPath(mPath1, mPaint1);
