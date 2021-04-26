@@ -13,6 +13,7 @@ import android.graphics.Shader;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 import com.uratio.demop.R;
@@ -27,7 +28,7 @@ public class WavePointView4 extends View {
     // 波纹宽度
     private static final float DEF_LINE_WIDTH = 2;
     // 移动速度
-    private static final int DEF_SPEED = 9;
+    private static final int DEF_SPEED = 10;
     // 振幅
     private static final float DEF_AMPLITUDE = 60f;
     // 开始结束时振幅比例
@@ -68,6 +69,10 @@ public class WavePointView4 extends View {
     private float[] wave2;
     private float[] wave3;
 
+    // 波2、3的初相位百分比
+    private float phaseRatio2 = 0.25f;
+    private float phaseRatio3 = 0.5f;
+
     //振幅（根据声音大小动态修改）
     private float amplitude;
     private float amplitudeP;
@@ -85,6 +90,8 @@ public class WavePointView4 extends View {
     private float stepOneH1;
     private float stepOneH2;
     private float stepOneH3;
+    //过渡阶段1：相对于正常振幅百分比
+    private float stepOneRadio = 0.2f;
     //过渡阶段2：周期
     private float stepTwoW;
     //过渡阶段2：振幅
@@ -161,13 +168,6 @@ public class WavePointView4 extends View {
 
     }
 
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        float manHeight = Math.max(amplitude * 2 + lineW, getMeasuredHeight());
-        setMeasuredDimension(getMeasuredWidth(), (int) manHeight);
-    }
-
     // 大小改变
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
@@ -181,11 +181,11 @@ public class WavePointView4 extends View {
 
         //过渡阶段：周长
         stepOneW1 = period / 4;
-        stepOneW2 = period * 5 / 12;
-        stepOneW3 = period * 7 / 12;
-        stepOneH1 = amplitude * amplitudeP * 0.2f;
-        stepOneH2 = amplitude * amplitudeP * 0.4f;
-        stepOneH3 = amplitude * amplitudeP * 0.4f;
+        stepOneW2 = period * (0.75f - phaseRatio2 + ((phaseRatio2 > 0.5f) ? 0.5f : 0));
+        stepOneW3 = period * (0.75f - phaseRatio3 + ((phaseRatio3 > 0.5f) ? 0.5f : 0));
+        stepOneH1 = amplitude * amplitudeP * stepOneRadio;
+        stepOneH2 = amplitude * amplitudeP * stepOneRadio * (1 + phaseRatio2 / 2);
+        stepOneH3 = amplitude * amplitudeP * stepOneRadio * (1 + phaseRatio3 / 2);
 
         stepTwoW = period / 2;
         stepTwoH1 = amplitude * amplitudeP / 2f + stepOneH1;
@@ -200,8 +200,8 @@ public class WavePointView4 extends View {
         // 计算每个点y坐标
         for (int i = 0; i < w + period * 2; i++) {
             wave1[i] = (float) (amplitude * Math.sin(2f * Math.PI / period * i));
-            wave2[i] = (float) (amplitude * Math.sin(2f * Math.PI / period * i + 2f * Math.PI / 3));
-            wave3[i] = (float) (amplitude * Math.sin(2f * Math.PI / period * i - 2f * Math.PI / 3));
+            wave2[i] = (float) (amplitude * Math.sin(2f * Math.PI / period * i + 2f * Math.PI * phaseRatio2));
+            wave3[i] = (float) (amplitude * Math.sin(2f * Math.PI / period * i + 2f * Math.PI * phaseRatio3));
         }
 
         if (mPaint1 != null) {
@@ -214,6 +214,13 @@ public class WavePointView4 extends View {
         if (mPaint3 != null) {
             mPaint3.setShader(new LinearGradient(0, 0, w, h, colors3, null, Shader.TileMode.CLAMP));
         }
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        float manHeight = Math.max(amplitude * 2 + lineW, getMeasuredHeight());
+        setMeasuredDimension(getMeasuredWidth(), (int) manHeight);
     }
 
     // 绘画方法
@@ -282,25 +289,28 @@ public class WavePointView4 extends View {
             mPath3.moveTo(viewWidth - offSet, 0);
         }
 
+        float pm2 = phaseRatio2 > 0.5f ? 1 : -1;
+        float pm3 = phaseRatio3 > 0.5f ? 1 : -1;
+
         // 汇合阶段
         mPath1.rQuadTo(stepOneW1 / 4, 0, stepOneW1 / 2, stepOneH1);
         mPath1.rQuadTo(stepOneW1 / 4, stepOneH1, stepOneW1 / 2, stepOneH1);
 
-        mPath2.rQuadTo(stepOneW2 / 4, 0, stepOneW2 / 2, -stepOneH2);
-        mPath2.rQuadTo(stepOneW2 / 4, -stepOneH2, stepOneW2 / 2, -stepOneH2);
+        mPath2.rQuadTo(stepOneW2 / 4, 0, stepOneW2 / 2, stepOneH2 * pm2);
+        mPath2.rQuadTo(stepOneW2 / 4, stepOneH2 * pm2, stepOneW2 / 2, stepOneH2 * pm2);
 
-        mPath3.rQuadTo(stepOneW3 / 4, 0, stepOneW3 / 2, stepOneH3);
-        mPath3.rQuadTo(stepOneW3 / 4, stepOneH3, stepOneW3 / 2, stepOneH3);
+        mPath3.rQuadTo(stepOneW3 / 4, 0, stepOneW3 / 2, stepOneH3 * pm3);
+        mPath3.rQuadTo(stepOneW3 / 4, stepOneH3 * pm3, stepOneW3 / 2, stepOneH3 * pm3);
 
         // 过渡2阶段
         mPath1.rQuadTo(stepTwoW / 4, 0, stepTwoW / 2, -stepTwoH1);
         mPath1.rQuadTo(stepTwoW / 4, -stepTwoH1, stepTwoW / 2, -stepTwoH1);
 
-        mPath2.rQuadTo(stepTwoW / 4, 0, stepTwoW / 2, stepTwoH2);
-        mPath2.rQuadTo(stepTwoW / 4, stepTwoH2, stepTwoW / 2, stepTwoH2);
+        mPath2.rQuadTo(stepTwoW / 4, 0, stepTwoW / 2, stepTwoH2 * pm2 * -1);
+        mPath2.rQuadTo(stepTwoW / 4, stepTwoH2 * pm2 * -1, stepTwoW / 2, stepTwoH2 * pm2 * -1);
 
-        mPath3.rQuadTo(stepTwoW / 4, 0, stepTwoW / 2, -stepTwoH3);
-        mPath3.rQuadTo(stepTwoW / 4, -stepTwoH3, stepTwoW / 2, -stepTwoH3);
+        mPath3.rQuadTo(stepTwoW / 4, 0, stepTwoW / 2, stepTwoH3 * pm3 * -1);
+        mPath3.rQuadTo(stepTwoW / 4, stepTwoH3 * pm3 * -1, stepTwoW / 2, stepTwoH3 * pm3 * -1);
 
         if (offSet > stepOneW1 + stepTwoW) {
             for (int i = 0; i < viewWidth + period - stepOneW1 - stepTwoW; i++) {
@@ -338,35 +348,57 @@ public class WavePointView4 extends View {
         mPath2.moveTo(-offSet, 0);
         mPath3.moveTo(-offSet, 0);
 
-        for (int i = 0; i < viewWidth + period - stepOneW1 - stepTwoW; i++) {
-            mPath1.lineTo(i - offSet, wave1[(int) (2*(stepOneW1 + stepTwoW) - viewWidth + i)] * amplitudeP);
+        float spring1 = period - stepOneW1 - stepTwoW;
+        if (spring1 > 0) {
+            spring1 = (period / 4 - spring1)*2;
+        } else {
+            spring1 = -spring1*2;
         }
-        for (int i = 0; i < viewWidth + period - stepOneW2 - stepTwoW; i++) {
-            mPath3.lineTo(i - offSet, wave2[(int) (2*(stepOneW2 + stepTwoW) - viewWidth + i)] * amplitudeP);
+        float spring2 = period - stepOneW2 - stepTwoW;
+        if (spring2 > 0) {
+            spring2 = (period / 4 - spring2)*2;
+        } else {
+            spring2 = -spring2*2;
         }
-        for (int i = 0; i < viewWidth + period - stepOneW3 - stepTwoW; i++) {
-            mPath2.lineTo(i - offSet, wave3[(int) (2*(stepOneW3 + stepTwoW) - viewWidth + i)] * amplitudeP);
+        float spring3 = period - stepOneW3 - stepTwoW;
+        if (spring3 > 0) {
+            spring3 = (period / 4 - spring3)*2;
+        } else {
+            spring3 = -spring3*2;
         }
+        for (int i = 0; i < viewWidth + period - (stepOneW1 + stepTwoW) + spring1; i++) {
+            mPath1.lineTo(i - offSet, wave1[(int) (period / 4 + i)] * amplitudeP);
+        }
+        for (int i = 0; i < viewWidth + period - (stepOneW2 + stepTwoW) + spring2; i++) {
+            mPath2.lineTo(i - offSet, wave2[(int) (period / 4 + i)] * amplitudeP);
+        }
+        for (int i = 0; i < viewWidth + period - (stepOneW3 + stepTwoW) + spring3; i++) {
+            mPath3.lineTo(i - offSet, wave3[(int) (period / 4 + i)] * amplitudeP);
+        }
+
+        float pm1 = wave1[(int) (period / 4 + viewWidth + period - (stepOneW1 + stepTwoW) + spring1)] > 0 ? -1 : 1;
+        float pm2 = wave2[(int) (period / 4 + viewWidth + period - (stepOneW2 + stepTwoW) + spring2)] > 0 ? -1 : 1;
+        float pm3 = wave3[(int) (period / 4 + viewWidth + period - (stepOneW3 + stepTwoW) + spring3)] > 0 ? -1 : 1;
 
         // 过渡2阶段
-        mPath1.rQuadTo(stepTwoW / 4, 0, stepTwoW / 2, stepTwoH1);
-        mPath1.rQuadTo(stepTwoW / 4, stepTwoH1, stepTwoW / 2, stepTwoH1);
+        mPath1.rQuadTo(stepTwoW / 4, 0, stepTwoW / 2, stepTwoH1 * pm1);
+        mPath1.rQuadTo(stepTwoW / 4, stepTwoH1 * pm1, stepTwoW / 2, stepTwoH1 * pm1);
 
-        mPath3.rQuadTo(stepTwoW / 4, 0, stepTwoW / 2, -stepTwoH2);
-        mPath3.rQuadTo(stepTwoW / 4, -stepTwoH2, stepTwoW / 2, -stepTwoH2);
+        mPath2.rQuadTo(stepTwoW / 4, 0, stepTwoW / 2, stepTwoH2 * pm2);
+        mPath2.rQuadTo(stepTwoW / 4, stepTwoH2 * pm2, stepTwoW / 2, stepTwoH2 * pm2);
 
-        mPath2.rQuadTo(stepTwoW / 4, 0, stepTwoW / 2, stepTwoH3);
-        mPath2.rQuadTo(stepTwoW / 4, stepTwoH3, stepTwoW / 2, stepTwoH3);
+        mPath3.rQuadTo(stepTwoW / 4, 0, stepTwoW / 2, stepTwoH3 * pm3);
+        mPath3.rQuadTo(stepTwoW / 4, stepTwoH3 * pm3, stepTwoW / 2, stepTwoH3 * pm3);
 
         // 汇合阶段
-        mPath1.rQuadTo(stepOneW1 / 4, 0, stepOneW1 / 2, -stepOneH1);
-        mPath1.rQuadTo(stepOneW1 / 4, -stepOneH1, stepOneW1 / 2, -stepOneH1);
+        mPath1.rQuadTo(stepOneW1 / 4, 0, stepOneW1 / 2, stepOneH1 * pm1 * -1);
+        mPath1.rQuadTo(stepOneW1 / 4, stepOneH1 * pm1 * -1, stepOneW1 / 2, stepOneH1 * pm1 * -1);
 
-        mPath3.rQuadTo(stepOneW2 / 4, 0, stepOneW2 / 2, stepOneH2);
-        mPath3.rQuadTo(stepOneW2 / 4, stepOneH2, stepOneW2 / 2, stepOneH2);
+        mPath2.rQuadTo(stepOneW2 / 4, 0, stepOneW2 / 2, stepOneH2 * pm2 * -1);
+        mPath2.rQuadTo(stepOneW2 / 4, stepOneH2 * pm2 * -1, stepOneW2 / 2, stepOneH2 * pm2 * -1);
 
-        mPath2.rQuadTo(stepOneW3 / 4, 0, stepOneW3 / 2, -stepOneH3);
-        mPath2.rQuadTo(stepOneW3 / 4, -stepOneH3, stepOneW3 / 2, -stepOneH3);
+        mPath3.rQuadTo(stepOneW3 / 4, 0, stepOneW3 / 2, stepOneH3 * pm3 * -1);
+        mPath3.rQuadTo(stepOneW3 / 4, stepOneH3 * pm3 * -1, stepOneW3 / 2, stepOneH3 * pm3 * -1);
 
         mPath1.rLineTo(viewWidth, 0);
 

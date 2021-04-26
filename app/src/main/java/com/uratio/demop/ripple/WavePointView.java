@@ -2,6 +2,7 @@ package com.uratio.demop.ripple;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.DrawFilter;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
@@ -132,7 +133,14 @@ public class WavePointView extends View {
 
         canvas.translate(0, halfH);
 
-//        canvas.drawLine(0, 0, viewWidth, 0, mPaint1);
+        Paint paint = new Paint();
+        // 设置绘画风格为实线
+        paint.setStyle(Style.STROKE);
+        // 抗锯齿
+        paint.setAntiAlias(true);
+        paint.setStrokeWidth(1);
+        paint.setColor(Color.RED);
+        canvas.drawLine(0, 0, viewWidth, 0, paint);
 
 
         /**

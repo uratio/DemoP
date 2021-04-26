@@ -2,6 +2,7 @@ package com.uratio.demop.ripple;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.DrawFilter;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
@@ -128,7 +129,14 @@ public class WavePointView2 extends View {
 
         canvas.translate(0, halfH);
 
-        canvas.drawLine(0, 0, viewWidth, 0, mPaint1);
+        Paint paint = new Paint();
+        // 设置绘画风格为实线
+        paint.setStyle(Style.STROKE);
+        // 抗锯齿
+        paint.setAntiAlias(true);
+        paint.setStrokeWidth(1);
+        paint.setColor(Color.RED);
+        canvas.drawLine(0, 0, viewWidth, 0, paint);
 
 
         /**
@@ -240,7 +248,7 @@ public class WavePointView2 extends View {
             wave[i] = (float) (amplitude * Math.sin(2f * Math.PI / period * i));
             wave1[i] = (float) (amplitude * Math.sin(2f * Math.PI / period * i));
             wave2[i] = (float) (amplitude * Math.sin(2f * Math.PI / period * i + 2f * Math.PI / 3));
-            wave3[i] = (float) (amplitude * Math.sin(2f * Math.PI / period * i - 2f * Math.PI / 3));
+            wave3[i] = (float) (amplitude * Math.sin(2f * Math.PI / period * i + 4f * Math.PI / 3));
         }
 
         if (mPaint1 != null) {
