@@ -8,6 +8,7 @@
     tools:context=".ripple.RippleActivity">
 
     <com.uratio.demop.ripple.RecordButton
+        android:id="@+id/record_button"
         android:layout_width="match_parent"
         android:layout_height="100dp"/>
 

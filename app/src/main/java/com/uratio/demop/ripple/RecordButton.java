@@ -12,7 +12,6 @@ import android.graphics.Rect;
 import android.graphics.Shader;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
@@ -60,6 +59,8 @@ public class RecordButton extends View {
     private Bitmap bmSpeaking;
     private boolean isButton = true;
 
+    //动画
+    private ValueAnimator animator;
     private RecordButtonListener listener;
 
     public void setRecordButtonListener(RecordButtonListener listener) {
@@ -163,7 +164,7 @@ public class RecordButton extends View {
     }
 
     public void start() {
-        final ValueAnimator animator = ValueAnimator.ofFloat(0, 1);
+        animator = ValueAnimator.ofFloat(0, 1);
         animator.setDuration(duration);
         animator.setRepeatCount(ValueAnimator.INFINITE);
         animator.setRepeatMode(ValueAnimator.RESTART);
@@ -218,6 +219,12 @@ public class RecordButton extends View {
     public void setButton(boolean button) {
         isButton = button;
         invalidate();
+    }
+
+    public void onDestroy() {
+        if (animator != null) {
+            animator.cancel();
+        }
     }
 
     public interface RecordButtonListener {
