@@ -39,7 +39,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ripple.RippleActivity"></activity>
+        <activity android:name=".wave.voice.VoiceWaveActivity"></activity>
+        <activity android:name=".ripple.RippleActivity" />
         <activity android:name=".wave.WaveActivity" />
         <activity
             android:name=".MainActivity"

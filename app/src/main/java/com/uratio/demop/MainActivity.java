@@ -59,6 +59,7 @@ import com.uratio.demop.text.TextActivity;
 import com.uratio.demop.viewpager.ViewPagerActivity;
 import com.uratio.demop.viewstub.ViewStubActivity;
 import com.uratio.demop.wave.WaveActivity;
+import com.uratio.demop.wave.voice.VoiceWaveActivity;
 import com.uratio.demop.web.WebActivity;
 
 import java.lang.reflect.Field;
@@ -491,6 +492,9 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
                 break;
             case R.id.to_ripple:
                 startActivity(new Intent(MainActivity.this, RippleActivity.class));
+                break;
+            case R.id.to_voice_wave:
+                startActivity(new Intent(MainActivity.this, VoiceWaveActivity.class));
                 break;
         }
     }

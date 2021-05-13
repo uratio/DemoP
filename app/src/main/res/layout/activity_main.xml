@@ -194,6 +194,13 @@
             android:onClick="clickView"
             android:text="波纹" />
 
+        <Button
+            android:id="@+id/to_voice_wave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="clickView"
+            android:text="声音波纹" />
+
     </LinearLayout>
 
     <com.uratio.demop.CustomPopupView
