@@ -1,5 +1,8 @@
 package com.uratio.demop.wave.voice;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -9,12 +12,18 @@ import android.graphics.PixelFormat;
 import android.graphics.PorterDuff;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.animation.LinearInterpolator;
 
+import com.uratio.demop.lottery.LotteryView;
+import com.uratio.demop.ripple.WavePointSurfaceView;
 import com.uratio.demop.utils.DisplayUtils;
 
 import java.util.Arrays;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -24,39 +33,46 @@ import java.util.concurrent.ThreadLocalRandom;
 public class WaveSurfaceView extends SurfaceView implements SurfaceHolder.Callback {
     private static final String TAG = WaveSurfaceView.class.getSimpleName();
 
-    private static final long SLEEP_TIME = 5;
-    private Context mContext;
-    private SurfaceHolder mHolder;
     private final Object mSurfaceLock = new Object();
     private DrawThread mThread;
+    private SurfaceHolder mHolder;
 
     private Paint mPaint;
     private int color = 0xFFFF6D26;
 
-    private int width;
-    private int height;
+    private int minHeight = 40;
+    private int halfHeight;
     private int lineW = 2;
     private int spaceW = 4;
     private int startX = 0;
-    private float[] waves;
+    private int[] waves;
+    private int[] wavesTarget;
 
-    private long drawTime;
-    private int invalidateTime = 100;
-
-    /**
-     * 灵敏度
-     */
-    private int sensibility = 4;
-
+    //最大音量
     private int maxVolume = 100;
+    //一般高度上线
+    private int halfMaxH;
+    //当前音量（半个view的高度）
+    private int currentVolume;
 
-    private boolean canDraw = true;
+    //
+    private ValueAnimator animSum;
+    private ValueAnimator[] animators;
+    // 动画持续时间
+    private long durationSum = 1000;
+    // 动画持续时间
+    private long duration = 400;
+    //是否可绘制
+    private boolean canDraw;
+    //动画结束可进行下一个动画
+    private boolean nextPrepared;
+
+    private boolean isFirst = true;
 
     public WaveSurfaceView(Context context) {
         this(context, null);
     }
 
-    // xml布局构造方法
     public WaveSurfaceView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
@@ -79,22 +95,98 @@ public class WaveSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         mHolder = getHolder();
         mHolder.addCallback(this);
 
+        minHeight = DisplayUtils.dp2px(context, minHeight);
         lineW = DisplayUtils.dp2px(context, lineW);
-        startX = DisplayUtils.dp2px(context, startX);
+        spaceW = DisplayUtils.dp2px(context, spaceW);
 
+        //初始化画笔
+        initPaint();
+
+        //初始化动画
+        initAnim();
+    }
+
+    private void initPaint() {
         mPaint = new Paint();
         mPaint.setColor(color);
         mPaint.setStrokeWidth(lineW);
         mPaint.setAntiAlias(true);
         mPaint.setFilterBitmap(true);
         mPaint.setStrokeCap(Paint.Cap.ROUND);
-        mPaint.setStyle(Paint.Style.FILL);
+        mPaint.setStyle(Style.FILL);
+    }
+
+    private void initAnim() {
+        //总动画
+        animSum = ValueAnimator.ofFloat(0, 1);
+        animSum.setDuration(durationSum);
+        animSum.setRepeatMode(ValueAnimator.RESTART);
+        animSum.setRepeatCount(ValueAnimator.INFINITE);
+        animSum.addUpdateListener(
+                new ValueAnimator.AnimatorUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator animation) {
+                        float progress = (float) animation.getAnimatedValue();
+                        if (progress == 0) {
+                            nextPrepared = false;
+                        }
+                    }
+                });
+        animSum.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+//                Log.e(TAG, "onAnimationStart: nextPrepared=" + nextPrepared);
+                nextPrepared = false;
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+//                Log.e(TAG, "onAnimationEnd: nextPrepared=" + nextPrepared);
+                nextPrepared = false;
+                Arrays.fill(waves, 0);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+//                Log.e(TAG, "onAnimationCancel: nextPrepared=" + nextPrepared);
+                nextPrepared = false;
+                Arrays.fill(waves, 0);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+//                Log.e(TAG, "onAnimationRepeat: nextPrepared=" + nextPrepared);
+                nextPrepared = true;
+
+            }
+        });
+    }
+
+    private void initAnimS(int maxLines) {
+        animators = new ValueAnimator[maxLines];
+        for (int i = 0; i < maxLines; i++) {
+            final MyValueAnimator animator = new MyValueAnimator();
+            animator.setDuration(duration);
+            animator.setRepeatMode(ValueAnimator.RESTART);
+            animator.setRepeatCount(ValueAnimator.INFINITE);
+            animator.setTag(i);
+            animator.addUpdateListener(new MyValueAnimator.MyAnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation, int tag) {
+                    Log.e(TAG, "onAnimationUpdate: tag=" +tag+ "getAnimatedValue=" + animation.getAnimatedValue());
+                    waves[tag] = (int) (((float) animation.getAnimatedValue()) * wavesTarget[tag]);
+//                    waves[tag] = (Integer) animation.getAnimatedValue();
+                }
+            });
+
+            animators[i] = animator;
+        }
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        int maxHeight = Math.max(20 * lineW, getMeasuredHeight());
+        int maxHeight = Math.max(minHeight, getMeasuredHeight());
         setMeasuredDimension(getMeasuredWidth(), maxHeight);
     }
 
@@ -102,18 +194,23 @@ public class WaveSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        width = w;
-        height = h;
+        halfHeight = h / 2;
+        Log.e(TAG, "onSizeChanged: w=" + w);
+        Log.e(TAG, "onSizeChanged: lineW=" + lineW);
+        Log.e(TAG, "onSizeChanged: spaceW=" + spaceW);
         int maxLines = w / (lineW + spaceW);
-        maxLines = maxLines % 2 == 1 ? maxLines : maxLines - 1;
+        Log.e(TAG, "onSizeChanged: maxLines=" + maxLines);
 
         if (waves == null) {
-            waves = new float[maxLines];
+            waves = new int[maxLines];
+            wavesTarget = new int[maxLines];
+            initAnimS(maxLines);
         }
-//        Arrays.fill(waves, lineW);
 
+        halfMaxH = halfHeight - lineW / 2;
         // 绘画起始位置
-        startX = (width + spaceW - maxLines * (lineW + spaceW)) / 2 + spaceW / 2;
+        startX = (w + spaceW - maxLines * (lineW + spaceW) + lineW) / 2;
+        Log.e(TAG, "onSizeChanged: startX=" + startX);
     }
 
     @Override
@@ -122,9 +219,17 @@ public class WaveSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         setZOrderOnTop(true);
         mHolder.setFormat(PixelFormat.TRANSLUCENT);
 
+        syncDraw();
+        if (isFirst) {
+            isFirst = false;
+            //动画准备完成
+            nextPrepared = true;
+        }
+
         mThread = new DrawThread(holder);
-        mThread.setRun(true);
-        mThread.start();
+        if (!mThread.isAlive()) {
+            mThread.start();
+        }
     }
 
     @Override
@@ -135,16 +240,14 @@ public class WaveSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
         synchronized (mSurfaceLock) {  //这里需要加锁，否则doDraw中有可能会crash
-            if (mThread != null) {
-                mThread.setRun(false);
-                canDraw = false;
-            }
+            canDraw = false;
+            onDestroy();
         }
     }
 
     private class DrawThread extends Thread {
         private SurfaceHolder mHolder;
-        private boolean mIsRun = false;
+//        private boolean mIsRun = false;
 
         public DrawThread(SurfaceHolder holder) {
             super(TAG);
@@ -153,28 +256,54 @@ public class WaveSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
         @Override
         public void run() {
-            while (canDraw) {
-                synchronized (mSurfaceLock) {
-                    if (!mIsRun) {
-                        return;
-                    }
-                    Canvas canvas = mHolder.lockCanvas();
-                    if (canvas != null) {
-                        //绘制内容
-                        doDraw(canvas);
-                        mHolder.unlockCanvasAndPost(canvas);
-                    }
-                }
-                try {
-                    Thread.sleep(SLEEP_TIME);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+            Log.e(TAG, "run: ************");
+            while (true) {
+                syncDraw();
+            }
+//            while (canDraw) {
+//                synchronized (mSurfaceLock) {
+//                    if (!mIsRun) {
+//                        return;
+//                    }
+//                    Canvas canvas = mHolder.lockCanvas();
+//                    if (canvas != null) {
+//                        //绘制内容
+//                        doDraw(canvas);
+//                        mHolder.unlockCanvasAndPost(canvas);
+//                    }
+//                }
+//                try {
+//                    Thread.sleep(SLEEP_TIME);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+        }
+    }
+
+    private class SurfaceRunnable implements Runnable {
+        @Override
+        public void run() {
+            while (true) {
+                syncDraw();
             }
         }
+    }
 
-        public void setRun(boolean isRun) {
-            this.mIsRun = isRun;
+    private void syncDraw() {
+        synchronized (mSurfaceLock) {
+            if (!canDraw) return;
+            Canvas canvas = null;
+            try {
+                canvas = mHolder.lockCanvas();
+                //绘制内容
+                doDraw(canvas);
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                if (canvas != null)
+                    mHolder.unlockCanvasAndPost(canvas);
+            }
         }
     }
 
@@ -185,8 +314,9 @@ public class WaveSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         //清除之前绘制内容
         canvas.drawColor(Color.WHITE, PorterDuff.Mode.CLEAR);
         //移动画笔到中心高度
-        canvas.translate(startX, height / 2);
-
+        canvas.translate(startX, halfHeight);
+        Log.e(TAG, "doDraw: waves=" + Arrays.toString(waves));
+        Log.e(TAG, "doDraw: wavesTarget=" + Arrays.toString(wavesTarget));
         for (int i = 0; i < waves.length; i++) {
             int x = i * (lineW + spaceW);
             canvas.drawLine(x, -waves[i], x, waves[i], mPaint);
@@ -194,24 +324,51 @@ public class WaveSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     }
 
     public void setVolume(int volume) {
-        if (System.currentTimeMillis() - drawTime < invalidateTime) return;
+        canDraw = true;
+        if (!nextPrepared) return;
+        Log.e(TAG, "setVolume: ************************ volume=" + volume + "   canDraw=" + canDraw);
 
         if (volume >= 3000) {
-            volume = 100;
+            volume = maxVolume;
         } else {
             volume = (int) (volume / 30f);
         }
 
-        if (volume > 50) {
-            volume = (height / 2 - 10);
+        if (volume >= halfMaxH) {
+            currentVolume = halfMaxH;
+        } else if (volume > lineW / 2) {
+            currentVolume = halfHeight * volume / maxVolume;
+        } else {
+            currentVolume = 0;
         }
-        ThreadLocalRandom.current().nextInt(0, volume);
 
-//        volume / maxVolume
+        for (int i = 0; i < wavesTarget.length; i++) {
+            float nextFloat = ThreadLocalRandom.current().nextFloat();
+//            wavesTarget[i] = currentVolume == 0 ? 0 : (int) (nextFloat * currentVolume);
+            wavesTarget[i] = currentVolume == 0 ? 0 : ThreadLocalRandom.current().nextInt(currentVolume);
 
+            animators[i].setFloatValues(0, 1, 0);
+            animators[i].setStartDelay((long) (nextFloat * duration));
+            animators[i].start();
+        }
 
+        //开始动画
+        if (!animSum.isStarted()) {
+            animSum.start();
+        }
+    }
 
-        invalidate();
-        drawTime = System.currentTimeMillis();
+    /**
+     * 重置
+     */
+    public void resetView() {
+        canDraw = false;
+        syncDraw();
+    }
+
+    public void onDestroy() {
+        if (animSum != null) {
+            animSum.cancel();
+        }
     }
 }

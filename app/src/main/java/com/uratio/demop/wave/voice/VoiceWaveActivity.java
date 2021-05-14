@@ -1,11 +1,13 @@
 package com.uratio.demop.wave.voice;
 
+import android.animation.ValueAnimator;
 import android.media.MediaRecorder;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.uratio.demop.R;
@@ -15,7 +17,7 @@ import java.io.IOException;
 
 public class VoiceWaveActivity extends AppCompatActivity implements Runnable {
     private WaveView waveView;
-    private WaveView2 waveView2;
+    private WaveSurfaceView waveSurface;
     private WaveMoveView waveMoveView;
 
     private MediaRecorder mMediaRecorder;
@@ -32,6 +34,7 @@ public class VoiceWaveActivity extends AppCompatActivity implements Runnable {
                 case 1:
                     if(mMediaRecorder==null) return;
                     int maxAmplitude = mMediaRecorder.getMaxAmplitude();
+                    waveSurface.setVolume(maxAmplitude);
                     double ratio = (double) maxAmplitude / 100;
                     double db = 0;// 分贝
                     //默认的最大音量是100,可以修改，但其实默认的，在测试过程中就有不错的表现
@@ -42,12 +45,14 @@ public class VoiceWaveActivity extends AppCompatActivity implements Runnable {
                         db = 20 * v;
                     }
                     waveView.setVolume((int) db);
-//                    waveView2.setVolume((int) db);
                     waveMoveView.setVolume(maxAmplitude);
                     break;
             }
         }
     };
+
+    private View view;
+    private ValueAnimator animator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,8 +62,9 @@ public class VoiceWaveActivity extends AppCompatActivity implements Runnable {
         handler.sendEmptyMessage(0);
 
         waveView = findViewById(R.id.wave_view);
-        waveView2 = findViewById(R.id.wave_view2);
+        waveSurface = findViewById(R.id.wave_surface);
         waveMoveView = findViewById(R.id.wave_line_view);
+        view = findViewById(R.id.view);
 
         if (mMediaRecorder == null)
             mMediaRecorder = new MediaRecorder();
@@ -85,10 +91,33 @@ public class VoiceWaveActivity extends AppCompatActivity implements Runnable {
 
         Thread thread = new Thread(this);
         thread.start();
+
+        animator = new ValueAnimator();
+        animator.setDuration(1500);
+        animator.setTarget(view);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                Log.e("VoiceWaveActivity", "onAnimationUpdate: getAnimatedValue=" + animation.getAnimatedValue());
+//                view.setTranslationY((Float) animation.getAnimatedValue());
+            }
+        });
     }
 
     public void onClickView(View view) {
         switch (view.getId()) {
+            case R.id.btn_start1:
+                animator.start();
+                break;
+            case R.id.btn_start2:
+                animator.setIntValues(0, 400, 0);
+                animator.start();
+                break;
+            case R.id.btn_start3:
+                animator.setIntValues(0, 400);
+                animator.setStartDelay(1000);
+                animator.start();
+                break;
         }
     }
 
