@@ -23,6 +23,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.view.menu.MenuPopupHelper;
+import android.text.TextUtils;
 import android.util.ArrayMap;
 import android.util.Log;
 import android.view.DisplayCutout;
@@ -34,6 +35,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.PopupWindow;
@@ -70,6 +72,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
+    private static final String TAG = MainActivity.class.getSimpleName();
     private TextView textView;
     private Handler handler = new Handler();
     private PopupMenu popupMenu;
@@ -77,6 +80,8 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
 
     private View popupView;
     private PopupWindow popupWindow;
+
+    private EditText etInput;
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
@@ -247,6 +252,8 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         });
 
         verifyStoragePermissions(this);
+
+        etInput = findViewById(R.id.et_input);
     }
 
     /**
@@ -496,7 +503,14 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             case R.id.to_voice_wave:
                 startActivity(new Intent(MainActivity.this, VoiceWaveActivity.class));
                 break;
+            case R.id.to_regular:
+                Log.e(TAG, "clickView: regular=" + checkSocialCreditCode(etInput.getText().toString()));
+                break;
         }
+    }
+
+    public boolean checkSocialCreditCode(String code) {
+        return !TextUtils.isEmpty(code) && (code.matches("^[0-9]*$") || code.matches("^[a-zA-Z]*$") || code.matches("^[0-9a-zA-Z]*$"));
     }
 
     public static void verifyStoragePermissions(Activity activity) {

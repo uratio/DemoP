@@ -95,4 +95,18 @@
         <attr name="wp_amplitude" format="float" />
         <attr name="wp_amplitude_radio" format="float" />
     </declare-styleable>
+
+    <declare-styleable name="WaveSurfaceView">
+        <attr name="wsv_min_height" format="dimension" />
+        <attr name="wsv_color" format="color" />
+        <attr name="wsv_line_width" format="dimension" />
+        <attr name="wsv_space_width" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="AudioWaveView">
+        <attr name="awv_min_height" format="dimension" />
+        <attr name="awv_color" format="color" />
+        <attr name="awv_line_width" format="dimension" />
+        <attr name="awv_space_width" format="dimension" />
+    </declare-styleable>
 </resources>

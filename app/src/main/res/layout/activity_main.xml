@@ -221,4 +221,17 @@
         android:id="@+id/item_image"
         android:layout_width="170px"
         android:layout_height="100px" />
+
+    <Button
+        android:id="@+id/to_regular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="clickView"
+        android:text="正则" />
+
+    <EditText
+        android:id="@+id/et_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp"/>
 </LinearLayout>

@@ -18,6 +18,8 @@ import java.io.IOException;
 public class VoiceWaveActivity extends AppCompatActivity implements Runnable {
     private WaveView waveView;
     private WaveSurfaceView waveSurface;
+    private WaveView1 waveView1;
+    private AudioWaveView audioWaveView;
     private WaveMoveView waveMoveView;
 
     private MediaRecorder mMediaRecorder;
@@ -34,7 +36,9 @@ public class VoiceWaveActivity extends AppCompatActivity implements Runnable {
                 case 1:
                     if(mMediaRecorder==null) return;
                     int maxAmplitude = mMediaRecorder.getMaxAmplitude();
-                    waveSurface.setVolume(maxAmplitude);
+//                    waveSurface.setVolume(maxAmplitude);
+//                    waveView1.startAnim(maxAmplitude);
+                    audioWaveView.setVolume(maxAmplitude);
                     double ratio = (double) maxAmplitude / 100;
                     double db = 0;// 分贝
                     //默认的最大音量是100,可以修改，但其实默认的，在测试过程中就有不错的表现
@@ -44,8 +48,8 @@ public class VoiceWaveActivity extends AppCompatActivity implements Runnable {
                     if (ratio > 1) {
                         db = 20 * v;
                     }
-                    waveView.setVolume((int) db);
-                    waveMoveView.setVolume(maxAmplitude);
+//                    waveView.setVolume((int) db);
+//                    waveMoveView.setVolume(maxAmplitude);
                     break;
             }
         }
@@ -63,6 +67,8 @@ public class VoiceWaveActivity extends AppCompatActivity implements Runnable {
 
         waveView = findViewById(R.id.wave_view);
         waveSurface = findViewById(R.id.wave_surface);
+        waveView1 = findViewById(R.id.wave_view1);
+        audioWaveView = findViewById(R.id.wave_view2);
         waveMoveView = findViewById(R.id.wave_line_view);
         view = findViewById(R.id.view);
 
@@ -94,12 +100,13 @@ public class VoiceWaveActivity extends AppCompatActivity implements Runnable {
 
         animator = new ValueAnimator();
         animator.setDuration(1500);
-        animator.setTarget(view);
+        animator.setRepeatMode(ValueAnimator.RESTART);
+        animator.setRepeatCount(ValueAnimator.INFINITE);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                Log.e("VoiceWaveActivity", "onAnimationUpdate: getAnimatedValue=" + animation.getAnimatedValue());
-//                view.setTranslationY((Float) animation.getAnimatedValue());
+//                Log.e("VoiceWaveActivity", "onAnimationUpdate: getAnimatedValue=" + animation.getAnimatedValue());
+                view.setTranslationY((Integer) animation.getAnimatedValue());
             }
         });
     }
@@ -118,7 +125,38 @@ public class VoiceWaveActivity extends AppCompatActivity implements Runnable {
                 animator.setStartDelay(1000);
                 animator.start();
                 break;
+            case R.id.btn_start4:
+                animator.setIntValues(0, 400, 200);
+                animator.setStartDelay(1500);
+                break;
+            case R.id.btn_cancel:
+                animator.cancel();
+                break;
+            case R.id.btn_end:
+                animator.end();
+                break;
+            case R.id.btn_isStarted:
+                Log.e("VoiceWaveActivity", "isStarted=" + animator.isStarted());
+                break;
+            case R.id.btn_isRunning:
+                Log.e("VoiceWaveActivity", "isRunning=" + animator.isRunning());
+                break;
+            case R.id.btn_stop:
+                waveSurface.resetView();
+                break;
+            case R.id.btn_stop2:
+                audioWaveView.resetView();
+                break;
+            case R.id.btn_reset:
+                waveView1.resetView();
+                break;
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+//        waveView2.prepare();
     }
 
     @Override

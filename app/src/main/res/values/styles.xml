@@ -8,6 +8,10 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowIsTranslucent">false</item>
         <item name="android:windowNoTitle">true</item>
+        <item name="android:textAppearanceButton">@style/myTextAppearanceButton</item>
+    </style>
+    <style name="myTextAppearanceButton" parent="TextAppearance.AppCompat.Widget.Button">
+        <item name="textAllCaps">false</item>
     </style>
 
     <style name="MainStyle" parent="Theme.AppCompat.Light.NoActionBar">
@@ -18,7 +22,7 @@
         <item name="windowNoTitle">true</item>
         <!-- Panel attributes -->
         <!--<item name="listChoiceBackgroundIndicator">@drawable/abc_list_selector_holo_dark</item>-->
-
+        <item name="android:textAppearanceButton">@style/myTextAppearanceButton</item>
     </style>
 
     <style name="TestStyle" parent="Base.Theme.AppCompat.Light.DarkActionBar">

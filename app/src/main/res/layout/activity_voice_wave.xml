@@ -11,21 +11,37 @@
         android:id="@+id/wave_view"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="10dp" />
 
     <com.uratio.demop.wave.voice.WaveMoveView
         android:id="@+id/wave_line_view"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="10dp" />
 
     <com.uratio.demop.wave.voice.WaveSurfaceView
         android:id="@+id/wave_surface"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginTop="10dp"
         android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"/>
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="50dp" />
+
+    <com.uratio.demop.wave.voice.WaveView1
+        android:id="@+id/wave_view1"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="50dp" />
+
+    <com.uratio.demop.wave.voice.AudioWaveView
+        android:id="@+id/wave_view2"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="50dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -37,25 +53,95 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onClickView"
-            android:text="开始"/>
+            android:text="开始" />
+
         <Button
             android:id="@+id/btn_start2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onClickView"
-            android:text="开始"/>
+            android:text="开始" />
+
         <Button
             android:id="@+id/btn_start3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onClickView"
-            android:text="开始"/>
+            android:text="开始" />
+
+        <Button
+            android:id="@+id/btn_start4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onClickView"
+            android:text="开始" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onClickView"
+            android:text="动画取消" />
+
+        <Button
+            android:id="@+id/btn_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onClickView"
+            android:text="动画结束" />
+
+        <Button
+            android:id="@+id/btn_isStarted"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onClickView"
+            android:text="isStarted" />
+
+        <Button
+            android:id="@+id/btn_isRunning"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onClickView"
+            android:text="isRunning" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_stop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onClickView"
+            android:text="Wave结束" />
+
+        <Button
+            android:id="@+id/btn_stop2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onClickView"
+            android:text="WaveView结束" />
+
+        <Button
+            android:id="@+id/btn_reset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onClickView"
+            android:text="波动结束" />
     </LinearLayout>
 
     <View
         android:id="@+id/view"
         android:layout_width="10dp"
         android:layout_height="10dp"
-        android:background="#f00"/>
+        android:background="#f00" />
 
 </LinearLayout>
