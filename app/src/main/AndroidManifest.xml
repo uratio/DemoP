@@ -39,9 +39,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".wave.voice.VoiceWaveActivity"></activity>
-        <activity android:name=".ripple.RippleActivity" />
-        <activity android:name=".wave.WaveActivity" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -136,6 +133,18 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".lottery.LotteryActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".wave.voice.VoiceWaveActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ripple.RippleActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".wave.WaveActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />
     </application>

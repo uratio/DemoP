@@ -2,12 +2,12 @@ apply plugin: 'com.android.application'
 apply plugin: 'org.greenrobot.greendao'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 30
 //    buildToolsVersion '28.0.1'
     defaultConfig {
         applicationId "com.uratio.demop"
         minSdkVersion 21
-        targetSdkVersion 28
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -60,4 +60,7 @@ dependencies {
     //高斯模糊
     implementation 'jp.wasabeef:glide-transformations:2.0.1'
     implementation project(':Roundimageview')
+    //内存检测
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.3'
+    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:2.3'
 }
