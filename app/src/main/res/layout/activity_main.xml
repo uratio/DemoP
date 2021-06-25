@@ -35,7 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="clickView"
-            android:text="viewstub" />
+            android:text="viewStub" />
 
         <Button
             android:id="@+id/to_refresh"
@@ -200,6 +200,13 @@
             android:layout_height="wrap_content"
             android:onClick="clickView"
             android:text="声音波纹" />
+
+        <Button
+            android:id="@+id/to_video"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="clickView"
+            android:text="视频" />
 
     </LinearLayout>
 

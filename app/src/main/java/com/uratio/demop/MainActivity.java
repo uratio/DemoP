@@ -58,6 +58,7 @@ import com.uratio.demop.scanbank.ScanOpenCVActivity;
 import com.uratio.demop.shortcut.TestActivity;
 import com.uratio.demop.sliding.SlidingActivity;
 import com.uratio.demop.text.TextActivity;
+import com.uratio.demop.video.VideoViewActivity;
 import com.uratio.demop.viewpager.ViewPagerActivity;
 import com.uratio.demop.viewstub.ViewStubActivity;
 import com.uratio.demop.wave.WaveActivity;
@@ -420,34 +421,34 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
 
     public void clickView(View view) {
         switch (view.getId()) {
-            case R.id.to_ViewPager:
+            case R.id.to_ViewPager://viewpager
                 startActivity(new Intent(MainActivity.this, ViewPagerActivity.class));
                 break;
-            case R.id.to_ViewStub:
+            case R.id.to_ViewStub://viewStub
                 startActivity(new Intent(MainActivity.this, ViewStubActivity.class));
                 break;
-            case R.id.to_refresh:
+            case R.id.to_refresh://refresh
                 startActivity(new Intent(MainActivity.this, RefreshActivity.class));
                 break;
-            case R.id.to_IOCard:
+            case R.id.to_IOCard://扫描IOCard
                 startActivity(new Intent(MainActivity.this, ScanIOCardActivity.class));
                 break;
-            case R.id.to_OpenCV:
+            case R.id.to_OpenCV://扫描OpenCV
                 startActivity(new Intent(MainActivity.this, ScanOpenCVActivity.class));
                 break;
-            case R.id.to_text:
+            case R.id.to_text://文本选择
                 startActivity(new Intent(MainActivity.this, TextActivity.class));
                 break;
-            case R.id.to_openGL:
+            case R.id.to_openGL://openGL
                 startActivity(new Intent(MainActivity.this, OpenGLActivity.class));
                 break;
-            case R.id.to_thread:
+            case R.id.to_thread://线程
                 startActivity(new Intent(MainActivity.this, ThreadTestActivity.class));
                 break;
-            case R.id.to_count:
+            case R.id.to_count://倒计时
                 startActivity(new Intent(MainActivity.this, CountDownActivity.class));
                 break;
-            case R.id.to_menu:
+            case R.id.to_menu://菜单
 //                try {
 //                    Field field = popupMenu.getClass().getDeclaredField("mPopup");
 //                    field.setAccessible(true);
@@ -460,7 +461,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
 //                }
                 popupMenu.show();
                 break;
-            case R.id.to_menu2:
+            case R.id.to_menu2://菜单2
                 if (popupWindow != null) {
                     if (popupWindow.isShowing()) {
                         popupWindow.dismiss();
@@ -473,35 +474,38 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
 
                 }
                 break;
-            case R.id.to_pdf:
+            case R.id.to_pdf://PDF
                 startActivity(new Intent(MainActivity.this, PdfActivity.class));
                 break;
-            case R.id.to_pdf2:
+            case R.id.to_pdf2://PDF2
                 startActivity(new Intent(MainActivity.this, PDFViewActivity.class));
                 break;
-            case R.id.to_sliding:
+            case R.id.to_sliding://侧滑删除
                 startActivity(new Intent(MainActivity.this, SlidingActivity.class));
                 break;
-            case R.id.to_img:
+            case R.id.to_img://img
                 startActivity(new Intent(MainActivity.this, ImageActivity.class));
                 break;
-            case R.id.to_list:
+            case R.id.to_list://列表
                 startActivity(new Intent(MainActivity.this, RcvListActivity.class));
                 break;
-            case R.id.to_web:
+            case R.id.to_web://网页
                 startActivity(new Intent(MainActivity.this, WebActivity.class));
                 break;
-            case R.id.to_lottery:
+            case R.id.to_lottery://抽奖
                 startActivity(new Intent(MainActivity.this, LotteryActivity.class));
                 break;
-            case R.id.to_wave:
+            case R.id.to_wave://波浪
                 startActivity(new Intent(MainActivity.this, WaveActivity.class));
                 break;
-            case R.id.to_ripple:
+            case R.id.to_ripple://波纹
                 startActivity(new Intent(MainActivity.this, RippleActivity.class));
                 break;
-            case R.id.to_voice_wave:
+            case R.id.to_voice_wave://声音波纹
                 startActivity(new Intent(MainActivity.this, VoiceWaveActivity.class));
+                break;
+            case R.id.to_video://视频
+                startActivity(new Intent(MainActivity.this, VideoViewActivity.class));
                 break;
             case R.id.to_regular:
                 Log.e(TAG, "clickView: regular=" + checkSocialCreditCode(etInput.getText().toString()));
