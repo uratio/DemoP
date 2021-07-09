@@ -208,6 +208,13 @@
             android:onClick="clickView"
             android:text="视频" />
 
+        <Button
+            android:id="@+id/to_live_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="clickView"
+            android:text="LiveData" />
+
     </LinearLayout>
 
     <com.uratio.demop.CustomPopupView
@@ -240,5 +247,14 @@
         android:id="@+id/et_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="15dp"/>
+
+    <TextView
+        android:id="@+id/tv_span"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textColor="#111"
+        android:text="范德萨范德萨发士大夫范德萨范德萨发士大夫范德萨范德萨发士大夫范德萨范德萨发士大夫"
         android:padding="15dp"/>
 </LinearLayout>

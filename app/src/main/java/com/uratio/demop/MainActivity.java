@@ -9,6 +9,7 @@ import android.content.pm.ShortcutInfo;
 import android.content.pm.ShortcutManager;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.Icon;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraManager;
@@ -23,7 +24,11 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.view.menu.MenuPopupHelper;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
+import android.text.style.ImageSpan;
 import android.util.ArrayMap;
 import android.util.Log;
 import android.view.DisplayCutout;
@@ -46,6 +51,7 @@ import com.uratio.demop.count.CountDownActivity;
 import com.uratio.demop.gl.OpenGLActivity;
 import com.uratio.demop.img.ImageActivity;
 import com.uratio.demop.list.RcvListActivity;
+import com.uratio.demop.livedata.LiveDataActivity;
 import com.uratio.demop.lottery.LotteryActivity;
 import com.uratio.demop.pdf.PDFViewActivity;
 import com.uratio.demop.pdf.PdfActivity;
@@ -83,6 +89,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     private PopupWindow popupWindow;
 
     private EditText etInput;
+    private TextView tvSpan;
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
@@ -255,6 +262,18 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         verifyStoragePermissions(this);
 
         etInput = findViewById(R.id.et_input);
+        tvSpan = findViewById(R.id.tv_span);
+
+
+        // textView第一行嵌入图片
+        String str = "范德萨范德萨发士大夫范德萨范德萨发士大夫范德萨范德萨发士大夫范德萨范德萨发士大夫";
+        SpannableString sp = new SpannableString(str);
+        Drawable drawable = ContextCompat.getDrawable(this, R.drawable.all);
+        drawable.setBounds(0, 0, (int) tvSpan.getTextSize(), (int) tvSpan.getTextSize());
+//        ImageSpan imageSpan = new ImageSpan(drawable, ImageSpan.ALIGN_CENTER);
+        CenteredImageSpan imageSpan = new CenteredImageSpan(this, R.drawable.all);
+        sp.setSpan(imageSpan, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        tvSpan.setText(sp);
     }
 
     /**
@@ -506,6 +525,9 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
                 break;
             case R.id.to_video://视频
                 startActivity(new Intent(MainActivity.this, VideoViewActivity.class));
+                break;
+            case R.id.to_live_data://LiveData
+                startActivity(new Intent(MainActivity.this, LiveDataActivity.class));
                 break;
             case R.id.to_regular:
                 Log.e(TAG, "clickView: regular=" + checkSocialCreditCode(etInput.getText().toString()));

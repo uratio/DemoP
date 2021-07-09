@@ -6,11 +6,15 @@ import android.os.StrictMode;
 import android.support.annotation.RequiresApi;
 import android.view.DisplayCutout;
 
+import com.uratio.demop.utils.CommonConfig;
+
 public class MyApplication extends Application{
 //    @RequiresApi(api = 28)
     @Override
     public void onCreate() {
         super.onCreate();
+
+        CommonConfig.init(BuildConfig.DEBUG, "host_address");
 
 //        DisplayCutout displayCutout = new DisplayCutout();
         // android 7.0系统解决拍照的问题

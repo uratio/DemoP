@@ -1,6 +1,8 @@
 apply plugin: 'com.android.application'
 apply plugin: 'org.greenrobot.greendao'
 
+def room_version = "1.1.1"
+
 android {
     compileSdkVersion 30
 //    buildToolsVersion '28.0.1'
@@ -12,10 +14,22 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+    signingConfigs {
+        debug {
+            storeFile file('.\\demop.jks')
+            storePassword '123456'
+            keyAlias 'demop'
+            keyPassword '123456'
+        }
+    }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
+        }
+        debug {
+            signingConfig signingConfigs.debug
         }
     }
     sourceSets {
@@ -40,6 +54,7 @@ dependencies {
     //    implementation fileTree(include: ['*.aar'], dir: 'libs')
     implementation 'com.android.support:design:28.+'
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
+    implementation project(path: ':player')
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
@@ -62,5 +77,20 @@ dependencies {
     implementation project(':Roundimageview')
     //内存检测
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.3'
-    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:2.3'
+    // Room 数据库 androidx为 2.3.0，非androidx为 1.1.1
+
+    implementation "android.arch.persistence.room:runtime:$room_version"
+    annotationProcessor "android.arch.persistence.room:compiler:$room_version"
+
+    // optional - RxJava2 support for Room
+    implementation "android.arch.persistence.room:rxjava2:$room_version"
+
+    // optional - RxJava3 support for Room
+//    implementation "android.arch.persistence.room:rxjava3:$room_version"
+
+    // optional - Guava support for Room, including Optional and ListenableFuture
+    implementation "android.arch.persistence.room:guava:$room_version"
+
+    // optional - Test helpers
+    testImplementation "android.arch.persistence.room:testing:$room_version"
 }
