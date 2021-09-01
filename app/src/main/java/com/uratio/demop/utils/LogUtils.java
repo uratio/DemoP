@@ -2,8 +2,6 @@ package com.uratio.demop.utils;
 
 import android.util.Log;
 
-import com.uratio.demop.BuildConfig;
-
 import java.util.Arrays;
 import java.util.Locale;
 

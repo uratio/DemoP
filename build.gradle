@@ -28,7 +28,11 @@ allprojects {
         //新加
         mavenLocal()
         google()
+        maven { url "http://127.0.0.1:8081/repository/maven-releases/" }
         maven{url"http://jcenter.bintray.com"}
+        maven {
+            url "https://www.jitpack.io" //jitpack的maven库
+        }
     }
 }
 
