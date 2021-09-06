@@ -4,14 +4,15 @@ apply plugin: 'org.greenrobot.greendao'
 def room_version = "1.1.1"
 
 android {
-    compileSdkVersion 30
-//    buildToolsVersion '28.0.1'
+    compileSdkVersion Config.compileSdkVersion
+    buildToolsVersion Config.buildToolsVersion
+
     defaultConfig {
-        applicationId "com.uratio.demop"
-        minSdkVersion 21
-        targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
+        applicationId Config.applicationId
+        minSdkVersion Config.minSdkVersion
+        targetSdkVersion Config.targetSdkVersion
+        versionCode Config.versionCode
+        versionName Config.versionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     signingConfigs {
