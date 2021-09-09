@@ -5,11 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#ff6520"
     android:orientation="vertical"
     tools:context=".count.CountDownActivity">
 
-    <com.uratio.demop.count.CircleProgressbar
+    <com.uratio.demop.count.CountDownView
         android:id="@+id/tv_red_skip"
         android:layout_width="60dp"
         android:layout_height="60dp"
@@ -57,5 +56,13 @@
             android:layout_height="500dp"
             android:onClick="ClickView"
             app:paintColor="#333"/>
+
+        <com.uratio.demop.count.CircleProgressBar
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="150dp"
+            android:layout_width="60dp"
+            android:layout_height="80dp"
+            android:layout_below="@+id/shop"
+            app:cpb_progress="30"/>
     </RelativeLayout>
 </LinearLayout>

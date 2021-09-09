@@ -95,8 +95,8 @@ dependencies {
     // optional - Test helpers
     testImplementation "android.arch.persistence.room:testing:$room_version"
 
-    implementation 'com.github.uratio:TestDemo:1.0.3'
-    implementation 'com.uratio.mavenpublish:demo-one:1.0.1'
-    implementation 'com.uratio.mavenpublish:demo-local:1.0.2'
-    implementation 'com.uratio.mavenpublish:demo-publish:1.0.1'
+//    implementation 'com.github.uratio:TestDemo:1.0.3'
+//    implementation 'com.uratio.mavenpublish:demo-one:1.0.1'
+//    implementation 'com.uratio.mavenpublish:demo-local:1.0.2'
+//    implementation 'com.uratio.mavenpublish:demo-publish:1.0.1'
 }

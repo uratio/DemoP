@@ -10,7 +10,7 @@ import android.widget.Toast;
 import com.uratio.demop.R;
 
 public class CountDownActivity extends AppCompatActivity {
-    private CircleProgressbar tvRedSkip;
+    private CountDownView tvRedSkip;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,8 +21,8 @@ public class CountDownActivity extends AppCompatActivity {
 
         tvRedSkip.setTimeMillis(3000);
 
-        tvRedSkip.setProgressType(CircleProgressbar.ProgressType.COUNT);
-        tvRedSkip.setCountdownProgressListener(0, new CircleProgressbar.OnCountdownProgressListener() {
+        tvRedSkip.setProgressType(CountDownView.ProgressType.COUNT);
+        tvRedSkip.setCountdownProgressListener(0, new CountDownView.OnCountdownProgressListener() {
             @Override
             public void onProgress(int what, int progress) {
                 if (progress == 100){

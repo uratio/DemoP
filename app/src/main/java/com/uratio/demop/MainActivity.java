@@ -47,7 +47,6 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.uratio.commondialog.DialogUtils;
 import com.uratio.demop.count.CountDownActivity;
 import com.uratio.demop.gl.OpenGLActivity;
 import com.uratio.demop.img.ImageActivity;

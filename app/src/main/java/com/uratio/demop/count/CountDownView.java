@@ -3,7 +3,6 @@ package com.uratio.demop.count;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -18,7 +17,7 @@ import android.widget.TextView;
 import com.uratio.demop.R;
 
 @SuppressLint("AppCompatCustomView")
-public class CircleProgressbar extends TextView {
+public class CountDownView extends TextView {
  
     //外部轮廓的颜色
     private int outLineColor;
@@ -61,21 +60,21 @@ public class CircleProgressbar extends TextView {
     private OnCountdownProgressListener mCountdownProgressListener;
     private int listenerWhat = 0;
  
-    public CircleProgressbar(Context context) {
+    public CountDownView(Context context) {
         this(context, null);
     }
  
-    public CircleProgressbar(Context context, AttributeSet attrs) {
+    public CountDownView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
  
-    public CircleProgressbar(Context context, AttributeSet attrs, int defStyleAttr) {
+    public CountDownView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initialize(context, attrs);
     }
  
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public CircleProgressbar(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public CountDownView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         initialize(context, attrs);
     }
@@ -83,15 +82,15 @@ public class CircleProgressbar extends TextView {
  
     private void initialize(Context context, AttributeSet attributeSet) {
         mPaint.setAntiAlias(true);
-        TypedArray typedArray = context.obtainStyledAttributes(attributeSet, R.styleable.CircleProgressbar);
+        TypedArray typedArray = context.obtainStyledAttributes(attributeSet, R.styleable.CountDownView);
 
-        inCircleColors = typedArray.getColor(R.styleable.CircleProgressbar_inCircleColors, 0xEE000000);
-        outLineColor = typedArray.getColor(R.styleable.CircleProgressbar_inCircleColors, Color.TRANSPARENT);
-        outLineWidth = typedArray.getDimension(R.styleable.CircleProgressbar_outLineWidth, 0);
-        progressLineColor = typedArray.getColor(R.styleable.CircleProgressbar_progressLineColor, Color.GREEN);
-        progressLineWidth = typedArray.getDimension(R.styleable.CircleProgressbar_progressLineWidth, 8);
-        progress = typedArray.getInteger(R.styleable.CircleProgressbar_mProgress, 0);
-        timeMillis = typedArray.getInteger(R.styleable.CircleProgressbar_timeMillis, 3000);
+        inCircleColors = typedArray.getColor(R.styleable.CountDownView_inCircleColors, 0xEE000000);
+        outLineColor = typedArray.getColor(R.styleable.CountDownView_inCircleColors, Color.TRANSPARENT);
+        outLineWidth = typedArray.getDimension(R.styleable.CountDownView_outLineWidth, 0);
+        progressLineColor = typedArray.getColor(R.styleable.CountDownView_progressLineColor, Color.GREEN);
+        progressLineWidth = typedArray.getDimension(R.styleable.CountDownView_progressLineWidth, 8);
+        progress = typedArray.getInteger(R.styleable.CountDownView_mProgress, 0);
+        timeMillis = typedArray.getInteger(R.styleable.CountDownView_timeMillis, 3000);
 
         typedArray.recycle();
     }

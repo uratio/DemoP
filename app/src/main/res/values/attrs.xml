@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="CircleProgressbar">
+    <declare-styleable name="CountDownView">
         <attr name="inCircleColors" format="color"/>
         <attr name="outLineColor" format="color"/>
         <attr name="outLineWidth" format="dimension"/>
@@ -8,6 +8,17 @@
         <attr name="progressLineWidth" format="dimension"/>
         <attr name="mProgress" format="integer"/>
         <attr name="timeMillis" format="integer"/>
+    </declare-styleable>
+    <declare-styleable name="CircleProgressBar">
+        <attr name="cpb_max" format="integer"/>
+        <attr name="cpb_progress" format="integer"/>
+        <attr name="cpb_progress_width" format="dimension"/>
+        <attr name="cpb_progress_color" format="color"/>
+        <attr name="cpb_progress_bg_color" format="color"/>
+        <attr name="cpb_text" format="string"/>
+        <attr name="cpb_text_color" format="color"/>
+        <attr name="cpb_text_size" format="dimension"/>
+        <attr name="cpb_progress_type" format="dimension"/>
     </declare-styleable>
     <declare-styleable name="CustomerGuide">
         <attr name="paintColor" format="color"/>
