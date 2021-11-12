@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".location.LocationActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_start_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onClickView"
+            android:text="开始定位" />
+
+        <Button
+            android:id="@+id/btn_stop_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onClickView"
+            android:text="结束定位" />
+
+        <Button
+            android:id="@+id/btn_gps_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onClickView"
+            android:text="GPS" />
+
+        <Button
+            android:id="@+id/btn_clear_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onClickView"
+            android:text="清空定位" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_bd_api"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onClickView"
+            android:text="百度地图API" />
+
+        <Button
+            android:id="@+id/btn_check_service"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onClickView"
+            android:text="检测服务" />
+
+        <Button
+            android:id="@+id/btn_cur_page"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onClickView"
+            android:text="上一页" />
+
+        <Button
+            android:id="@+id/btn_next_page"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onClickView"
+            android:text="下一页" />
+    </LinearLayout>
+
+    <CheckBox
+        android:id="@+id/cb_need_near_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="2dp"
+        android:checked="true"
+        android:text="是否需要坐标周围最近的道路数据"
+        android:textSize="16sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_geocode_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onClickView"
+            android:text="使用定位逆地理编码检索" />
+
+        <Button
+            android:id="@+id/btn_geocode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onClickView"
+            android:text="使用经纬度逆地理编码检索" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/grey">
+
+        <CheckBox
+            android:id="@+id/cb_limit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:layout_weight="1"
+            android:checked="true"
+            android:text="区域召回限制"
+            android:textColor="#FFF"
+            android:textSize="16sp" />
+
+        <CheckBox
+            android:id="@+id/cb_scope"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:layout_weight="1"
+            android:checked="true"
+            android:text="检索结果详细"
+            android:textColor="#FFF"
+            android:textSize="16sp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/et_input"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content"
+            android:hint="输入搜索名称"
+            android:textColor="#111"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="范围："
+            android:textColor="#111"
+            android:textSize="16sp"/>
+
+        <EditText
+            android:id="@+id/et_radius"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:hint="输入范围"
+            android:text="5000"
+            android:textColor="#111"
+            android:textSize="16sp"/>
+
+        <Button
+            android:id="@+id/btn_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onClickView"
+            android:text="使用定位搜索周边" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/et_latitude"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:hint="输入经度"
+            android:text="45.746329"
+            android:textColor="#111"
+            android:textSize="16sp"/>
+
+        <EditText
+            android:id="@+id/et_longitude"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:hint="输入纬度"
+            android:text="126.580335"
+            android:textColor="#111"
+            android:textSize="16sp"/>
+
+        <Button
+            android:id="@+id/btn_search2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onClickView"
+            android:text="使用经纬度搜索周边" />
+
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="定位结果："
+                android:textColor="#111"
+                android:textSize="@dimen/font_16" />
+
+            <TextView
+                android:id="@+id/tv_location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="定位中..."
+                android:padding="10dp"
+                android:textColor="#111"
+                android:textColorHint="#666"
+                android:textSize="@dimen/font_16" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="#111" />
+
+            <TextView
+                android:id="@+id/tv_poi_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="获取周围POI信息结果:"
+                android:textColor="#111"
+                android:textSize="@dimen/font_16" />
+
+            <TextView
+                android:id="@+id/tv_poi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="获取信息中..."
+                android:padding="10dp"
+                android:textColor="#111"
+                android:textColorHint="#666"
+                android:textSize="@dimen/font_16" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

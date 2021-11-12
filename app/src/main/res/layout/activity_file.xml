@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".file.FileActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_create_file"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onClickView"
+            android:text="创建文件" />
+
+        <Button
+            android:id="@+id/btn_create_file2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onClickView"
+            android:text="创建文件2" />
+
+        <Button
+            android:id="@+id/btn_delete_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onClickView"
+            android:text="删除所有文件" />
+
+        <Button
+            android:id="@+id/btn_delete_all2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onClickView"
+            android:text="删除所有文件2" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_clear_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onClickView"
+        android:text="清空数据" />
+
+    <Button
+        android:id="@+id/btn_get_size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onClickView"
+        android:text="获取文件大小" />
+
+</LinearLayout>

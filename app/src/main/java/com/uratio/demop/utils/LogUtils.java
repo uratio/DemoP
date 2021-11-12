@@ -42,6 +42,13 @@ public class LogUtils {
         }
     }
 
+    public static void e(String tag, String mess) {
+        if (CommonConfig.isDebug) {
+//            Log.e(getTag(), buildMessage(mess));
+            log(Log.ERROR, tag, buildMessage(mess));
+        }
+    }
+
     private static String getTag() {
         StackTraceElement[] trace = new Throwable().fillInStackTrace()
                 .getStackTrace();

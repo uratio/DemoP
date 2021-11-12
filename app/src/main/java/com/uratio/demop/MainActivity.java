@@ -48,10 +48,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.uratio.demop.count.CountDownActivity;
+import com.uratio.demop.file.FileActivity;
 import com.uratio.demop.gl.OpenGLActivity;
 import com.uratio.demop.img.ImageActivity;
 import com.uratio.demop.list.RcvListActivity;
 import com.uratio.demop.livedata.LiveDataActivity;
+import com.uratio.demop.location.LocationActivity;
 import com.uratio.demop.lottery.LotteryActivity;
 import com.uratio.demop.pdf.PDFViewActivity;
 import com.uratio.demop.pdf.PdfActivity;
@@ -529,8 +531,14 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             case R.id.to_live_data://LiveData
                 startActivity(new Intent(MainActivity.this, LiveDataActivity.class));
                 break;
-            case R.id.to_regular:
+            case R.id.to_regular://正则
                 Log.e(TAG, "clickView: regular=" + checkSocialCreditCode(etInput.getText().toString()));
+                break;
+            case R.id.to_bd_location://百度地图定位
+                startActivity(new Intent(MainActivity.this, LocationActivity.class));
+                break;
+            case R.id.to_file://文件操作
+                startActivity(new Intent(MainActivity.this, FileActivity.class));
                 break;
         }
     }

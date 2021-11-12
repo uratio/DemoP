@@ -10,7 +10,7 @@
 
     <com.uratio.demop.count.CountDownView
         android:id="@+id/tv_red_skip"
-        android:layout_width="60dp"
+        android:layout_width="80dp"
         android:layout_height="60dp"
         android:layout_margin="60dp"
         android:text="跳过"
@@ -61,8 +61,9 @@
             android:layout_marginLeft="50dp"
             android:layout_marginTop="150dp"
             android:layout_width="60dp"
-            android:layout_height="80dp"
+            android:layout_height="60dp"
             android:layout_below="@+id/shop"
-            app:cpb_progress="30"/>
+            app:cpb_progress="0"
+            app:cpb_text="未上传"/>
     </RelativeLayout>
 </LinearLayout>

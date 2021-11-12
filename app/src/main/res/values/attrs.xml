@@ -18,6 +18,7 @@
         <attr name="cpb_text" format="string"/>
         <attr name="cpb_text_color" format="color"/>
         <attr name="cpb_text_size" format="dimension"/>
+        <attr name="cpb_symbol_text_size" format="dimension"/>
         <attr name="cpb_progress_type" format="dimension"/>
     </declare-styleable>
     <declare-styleable name="CustomerGuide">
