@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
-import android.graphics.Path;
 import android.graphics.PixelFormat;
 import android.graphics.PorterDuff;
 import android.graphics.Shader;
@@ -25,11 +24,13 @@ public class WavePointSurfaceView extends SurfaceView implements SurfaceHolder.C
     // 波纹宽度
     private static final float DEF_LINE_WIDTH = 2;
     // 移动速度
-    private static final int DEF_SPEED = 6;
+    private static final float DEF_SPEED_RATE = 0.5f;
     // 振幅
-    private static final float DEF_AMPLITUDE = 60f;
+    private static final float DEF_AMPLITUDE = 30f;
     // 开始结束时振幅比例
-    private static final float DEF_AMPLITUDE_RADIO = 0.5f;
+    private static final float DEF_AMPLITUDE_RADIO = 1f;
+    // 最大音量
+    private static final int MAX_VOLUME = 3000;
 
     private static final long SLEEP_TIME = 5;
     private Context mContext;
@@ -41,16 +42,13 @@ public class WavePointSurfaceView extends SurfaceView implements SurfaceHolder.C
     private int startColor;
     private int endColor;
     private int[] colors;
-    private int[] colors1 = {0xFF9C27B0, 0xFF00BCD4};
-    private int[] colors2 = {0xFF8BC34A, 0xFFFF5722};
-    private int[] colors3 = {0xFF3F51B5, 0xFFFFEB3B};
+    private int[] colors1 = {0xFF9C27B0, 0xFF00BCD4};//蓝
+    private int[] colors2 = {0xFF8BC34A, 0xFFFF5722};//红
+    private int[] colors3 = {0xFF3F51B5, 0xFFFFEB3B};//黄
     // 画笔
     private Paint mPaint1;
     private Paint mPaint2;
     private Paint mPaint3;
-    private Path mPath1;
-    private Path mPath2;
-    private Path mPath3;
 
     // view的宽度
     private int viewWidth;
@@ -61,6 +59,8 @@ public class WavePointSurfaceView extends SurfaceView implements SurfaceHolder.C
 
     // 波纹移动的速度
     private int speed;
+    // 波纹移动的速度比例（1：100）
+    private float speedRate;
     // 波纹当前移动的距离
     private int offSet;
     // 过渡阶段宽度
@@ -71,35 +71,11 @@ public class WavePointSurfaceView extends SurfaceView implements SurfaceHolder.C
     private float[] wave2;
     private float[] wave3;
 
-    // 波2、3的初相位百分比
-    private float phaseRatio2 = 0.25f;
-    private float phaseRatio3 = 0.5f;
-
     //振幅（根据声音大小动态修改）
     private float amplitude;
     private float amplitudeP;
     //周期
     private float period;
-
-    /**
-     * 过渡阶段
-     */
-    //过渡阶段1：周期
-    private float stepOneW1;
-    private float stepOneW2;
-    private float stepOneW3;
-    //过渡阶段1：振幅
-    private float stepOneH1;
-    private float stepOneH2;
-    private float stepOneH3;
-    //过渡阶段1：相对于正常振幅百分比
-    private float stepOneRadio = 0.2f;
-    //过渡阶段2：周期
-    private float stepTwoW;
-    //过渡阶段2：振幅
-    private float stepTwoH1;
-    private float stepTwoH2;
-    private float stepTwoH3;
 
     /**
      * 阶段：
@@ -113,6 +89,9 @@ public class WavePointSurfaceView extends SurfaceView implements SurfaceHolder.C
     private int step = 1;
     private boolean canDraw = true;
     private boolean speaking = true;
+    //第三段计数，必须走过一段
+    private int count = 0;
+
     private WaveListener listener;
 
     public WavePointSurfaceView(Context context) {
@@ -131,13 +110,13 @@ public class WavePointSurfaceView extends SurfaceView implements SurfaceHolder.C
 
     // 初始化
     private void init(Context context, AttributeSet attrs) {
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.WavePointView);
-        startColor = a.getColor(R.styleable.WavePointView_wp_start_color, 0);
-        endColor = a.getColor(R.styleable.WavePointView_wp_end_color, 0);
-        lineW = DisplayUtils.dp2px(context, a.getDimension(R.styleable.WavePointView_wp_line_width, DEF_LINE_WIDTH));
-        speed = DisplayUtils.dp2px(context, a.getInteger(R.styleable.WavePointView_wp_speed, DEF_SPEED));
-        amplitude = a.getFloat(R.styleable.WavePointView_wp_amplitude, DEF_AMPLITUDE);
-        amplitudeP = a.getFloat(R.styleable.WavePointView_wp_amplitude_radio, DEF_AMPLITUDE_RADIO);
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.WavePointSurfaceView);
+        startColor = a.getColor(R.styleable.WavePointSurfaceView_wpv_start_color, 0);
+        endColor = a.getColor(R.styleable.WavePointSurfaceView_wpv_end_color, 0);
+        lineW = DisplayUtils.dp2px(a.getDimension(R.styleable.WavePointSurfaceView_wpv_line_width, DEF_LINE_WIDTH));
+        speedRate = a.getFloat(R.styleable.WavePointSurfaceView_wpv_speed_rate, DEF_SPEED_RATE);
+        amplitude = a.getFloat(R.styleable.WavePointSurfaceView_wpv_amplitude, DEF_AMPLITUDE);
+        amplitudeP = a.getFloat(R.styleable.WavePointSurfaceView_wpv_amplitude_radio, DEF_AMPLITUDE_RADIO);
 
         if (startColor != 0 && endColor != 0) {
             colors = new int[]{startColor, endColor};
@@ -147,10 +126,6 @@ public class WavePointSurfaceView extends SurfaceView implements SurfaceHolder.C
         mPaint1 = createPaint();
         mPaint2 = createPaint();
         mPaint3 = createPaint();
-
-        mPath1 = new Path();
-        mPath2 = new Path();
-        mPath3 = new Path();
 
         mHolder = getHolder();
         mHolder.addCallback(this);
@@ -183,33 +158,22 @@ public class WavePointSurfaceView extends SurfaceView implements SurfaceHolder.C
         // 获取view的宽高
         viewWidth = w;
         halfH = h / 2f;
+        speed = (int) (viewWidth * speedRate / 100);
 
         // 设置波形图周期（一个周期有多长的）
         period = w * 0.8f;
 
-        //过渡阶段：周长
-        stepOneW1 = period / 4;
-        stepOneW2 = period * (0.75f - phaseRatio2 + ((phaseRatio2 > 0.5f) ? 0.5f : 0));
-        stepOneW3 = period * (0.75f - phaseRatio3 + ((phaseRatio3 > 0.5f) ? 0.5f : 0));
-        stepOneH1 = amplitude * amplitudeP * stepOneRadio;
-        stepOneH2 = amplitude * amplitudeP * stepOneRadio * (1 + phaseRatio2 / 2);
-        stepOneH3 = amplitude * amplitudeP * stepOneRadio * (1 + phaseRatio3 / 2);
-
-        stepTwoW = period / 2;
-        stepTwoH1 = amplitude * amplitudeP / 2f + stepOneH1;
-        stepTwoH2 = amplitude * amplitudeP / 2f + stepOneH2;
-        stepTwoH3 = amplitude * amplitudeP / 2f + stepOneH3;
-
         // 初始化保存波形图的数组(保证最后一个坐标有整个波长的位移空间)
-        wave1 = new float[(int) (w + period * 2)];
-        wave2 = new float[(int) (w + period * 2)];
-        wave3 = new float[(int) (w + period * 2)];
+        wave1 = new float[(int) (period * 2)];
+        wave2 = new float[(int) (period * 2)];
+        wave3 = new float[(int) (period * 2)];
 
-        // 计算每个点y坐标
-        for (int i = 0; i < w + period * 2; i++) {
+//        // 计算每个点y坐标
+        for (int i = 0; i < period * 2; i++) {
             wave1[i] = (float) (amplitude * Math.sin(2f * Math.PI / period * i));
-            wave2[i] = (float) (amplitude * Math.sin(2f * Math.PI / period * i + 2f * Math.PI * phaseRatio2));
-            wave3[i] = (float) (amplitude * Math.sin(2f * Math.PI / period * i + 2f * Math.PI * phaseRatio3));
+            // 波2、3的初相位百分比
+            wave2[i] = (float) (amplitude * Math.sin(2f * Math.PI / period * i + 2f * Math.PI / 4));
+            wave3[i] = (float) (amplitude * Math.sin(2f * Math.PI / period * i + 2f * Math.PI / 2));
         }
 
         if (mPaint1 != null) {
@@ -291,20 +255,16 @@ public class WavePointSurfaceView extends SurfaceView implements SurfaceHolder.C
         //移动画笔到中心高度
         canvas.translate(0, halfH);
 
-        mPath1.reset();
-        mPath2.reset();
-        mPath3.reset();
-
         if (step == 1) {
-            drawStep1();
+            drawStep1(canvas);
         } else if (step == 2) {
-            drawStep2();
+            drawStep2(canvas);
         } else if (step == 3) {
-            drawStep3();
+            drawStep3(canvas);
         } else if (step == 4) {
-            drawStep4();
+            drawStep4(canvas);
         } else if (step == 5){
-            drawStep5();
+            drawStep5(canvas);
         } else {
             //回到阶段1，停止绘制
             step = 1;
@@ -314,18 +274,15 @@ public class WavePointSurfaceView extends SurfaceView implements SurfaceHolder.C
                 listener.onAnimFinished();
             }
         }
-
-        canvas.drawPath(mPath1, mPaint1);
-        canvas.drawPath(mPath2, mPaint2);
-        canvas.drawPath(mPath3, mPaint3);
     }
 
     /**
      * 动画开始阶段
      */
-    private void drawStep1() {
-        mPath3.moveTo(viewWidth / 2 - interim, 0);
-        mPath3.rLineTo(2 * interim, 0);
+    private void drawStep1(Canvas canvas) {
+        for (int i = viewWidth / 2 - interim; i < viewWidth / 2 + interim; i++) {
+            canvas.drawPoint(i, lineW, mPaint3);
+        }
         // 更新偏移量
         resetOffsetStep1();
     }
@@ -333,50 +290,30 @@ public class WavePointSurfaceView extends SurfaceView implements SurfaceHolder.C
     /**
      * 动画开始过渡阶段
      */
-    private void drawStep2() {
-        if (offSet < viewWidth) {
-            mPath1.moveTo(0, 0);
-            mPath2.moveTo(0, 0);
-            mPath3.moveTo(0, 0);
-            mPath1.lineTo(viewWidth - offSet, 0);
-            mPath2.lineTo(viewWidth - offSet, 0);
-            mPath3.lineTo(viewWidth - offSet, 0);
-        } else {
-            mPath1.moveTo(viewWidth - offSet, 0);
-            mPath2.moveTo(viewWidth - offSet, 0);
-            mPath3.moveTo(viewWidth - offSet, 0);
+    private void drawStep2(Canvas canvas) {
+        int front = viewWidth - offSet;
+        //直线部分
+        for (int i = 0; i < front; i++) {
+            canvas.drawPoint(i, lineW, mPaint3);
         }
-
-        float pm2 = phaseRatio2 > 0.5f ? 1 : -1;
-        float pm3 = phaseRatio3 > 0.5f ? 1 : -1;
-
-        // 汇合阶段
-        mPath1.rQuadTo(stepOneW1 / 4, 0, stepOneW1 / 2, stepOneH1);
-        mPath1.rQuadTo(stepOneW1 / 4, stepOneH1, stepOneW1 / 2, stepOneH1);
-
-        mPath2.rQuadTo(stepOneW2 / 4, 0, stepOneW2 / 2, stepOneH2 * pm2);
-        mPath2.rQuadTo(stepOneW2 / 4, stepOneH2 * pm2, stepOneW2 / 2, stepOneH2 * pm2);
-
-        mPath3.rQuadTo(stepOneW3 / 4, 0, stepOneW3 / 2, stepOneH3 * pm3);
-        mPath3.rQuadTo(stepOneW3 / 4, stepOneH3 * pm3, stepOneW3 / 2, stepOneH3 * pm3);
-
-        // 过渡2阶段
-        mPath1.rQuadTo(stepTwoW / 4, 0, stepTwoW / 2, -stepTwoH1);
-        mPath1.rQuadTo(stepTwoW / 4, -stepTwoH1, stepTwoW / 2, -stepTwoH1);
-
-        mPath2.rQuadTo(stepTwoW / 4, 0, stepTwoW / 2, stepTwoH2 * pm2 * -1);
-        mPath2.rQuadTo(stepTwoW / 4, stepTwoH2 * pm2 * -1, stepTwoW / 2, stepTwoH2 * pm2 * -1);
-
-        mPath3.rQuadTo(stepTwoW / 4, 0, stepTwoW / 2, stepTwoH3 * pm3 * -1);
-        mPath3.rQuadTo(stepTwoW / 4, stepTwoH3 * pm3 * -1, stepTwoW / 2, stepTwoH3 * pm3 * -1);
-
-        if (offSet > stepOneW1 + stepTwoW) {
-            for (int i = 0; i < viewWidth + period - stepOneW1 - stepTwoW; i++) {
-                mPath1.lineTo(i + stepOneW1 + stepTwoW + viewWidth - offSet, wave1[(int) (i + stepOneW1 + stepTwoW)] * amplitudeP);
-                mPath2.lineTo(i + stepOneW2 + stepTwoW + viewWidth - offSet, wave2[(int) (i + stepOneW2 + stepTwoW)] * amplitudeP);
-                mPath3.lineTo(i + stepOneW3 + stepTwoW + viewWidth - offSet, wave3[(int) (i + stepOneW3 + stepTwoW)] * amplitudeP);
+        //正弦曲线部分
+        for (int i = front; i < viewWidth; i++) {
+            int i1 = i - offSet;
+            while (i1 < 0) {
+                i1 = (int) (period + i1);
             }
+            float ratio;
+            if (offSet < period / 4) {
+                //曲线长度在 1/4 个周期长度之内，根据固定长度计算高度比率
+                ratio = 1f * (i - front) * 4 / period;
+            } else {
+                ratio = 1f * (i - front) / offSet;
+            }
+            canvas.drawPoint(i, wave1[i1] * ratio + lineW, mPaint1);
+            canvas.drawPoint(i, wave2[i1] * ratio + lineW, mPaint2);
+            canvas.drawPoint(i, wave3[i1] * ratio + lineW, mPaint3);
         }
+
         // 更新偏移量
         resetOffsetStep2();
     }
@@ -384,14 +321,16 @@ public class WavePointSurfaceView extends SurfaceView implements SurfaceHolder.C
     /**
      * 根据声音震动阶段
      */
-    private void drawStep3() {
-        mPath1.moveTo(0, amplitudeP * wave1[offSet]);
-        mPath2.moveTo(0, amplitudeP * wave2[offSet]);
-        mPath3.moveTo(0, amplitudeP * wave3[offSet]);
-        for (int i = 1; i < viewWidth; i++) {
-            mPath1.lineTo(i, amplitudeP * wave1[offSet + i]);
-            mPath2.lineTo(i, amplitudeP * wave2[offSet + i]);
-            mPath3.lineTo(i, amplitudeP * wave3[offSet + i]);
+    private void drawStep3(Canvas canvas) {
+        for (int i = 0; i < period; i++) {
+            canvas.drawPoint(i, amplitudeP * wave1[offSet + i] + lineW, mPaint1);
+            canvas.drawPoint(i, amplitudeP * wave2[offSet + i] + lineW, mPaint2);
+            canvas.drawPoint(i, amplitudeP * wave3[offSet + i] + lineW, mPaint3);
+        }
+        for (int i = (int) period; i < viewWidth; i++) {
+            canvas.drawPoint(i, amplitudeP * wave1[(int) (offSet + i - period)] + lineW, mPaint1);
+            canvas.drawPoint(i, amplitudeP * wave2[(int) (offSet + i - period)] + lineW, mPaint2);
+            canvas.drawPoint(i, amplitudeP * wave3[(int) (offSet + i - period)] + lineW, mPaint3);
         }
 
         // 更新偏移量
@@ -401,64 +340,29 @@ public class WavePointSurfaceView extends SurfaceView implements SurfaceHolder.C
     /**
      * 动画结束过渡阶段
      */
-    private void drawStep4() {
-        mPath1.moveTo(-offSet, 0);
-        mPath2.moveTo(-offSet, 0);
-        mPath3.moveTo(-offSet, 0);
-
-        float spring1 = period - stepOneW1 - stepTwoW;
-        if (spring1 > 0) {
-            spring1 = (period / 4 - spring1)*2;
-        } else {
-            spring1 = -spring1*2;
+    private void drawStep4(Canvas canvas) {
+        //正弦曲线部分
+        int front = viewWidth - offSet;
+        for (int i = 0; i < front; i++) {
+            int i1 = i - offSet;
+            while (i1 < 0) {
+                i1 = (int) (period + i1);
+            }
+            float ratio;
+            if (front < period / 4) {
+                //曲线长度在 1/4 个周期长度之内，根据固定长度计算高度比率
+                ratio = 1f * (front - i) * 4 / period;
+            } else {
+                ratio = 1f * (front - i) / front;
+            }
+            canvas.drawPoint(i, wave1[i1] * ratio + lineW, mPaint1);
+            canvas.drawPoint(i, wave2[i1] * ratio + lineW, mPaint2);
+            canvas.drawPoint(i, wave3[i1] * ratio + lineW, mPaint3);
         }
-        float spring2 = period - stepOneW2 - stepTwoW;
-        if (spring2 > 0) {
-            spring2 = (period / 4 - spring2)*2;
-        } else {
-            spring2 = -spring2*2;
+        //直线部分
+        for (int i = front; i < viewWidth; i++) {
+            canvas.drawPoint(i, lineW, mPaint3);
         }
-        float spring3 = period - stepOneW3 - stepTwoW;
-        if (spring3 > 0) {
-            spring3 = (period / 4 - spring3)*2;
-        } else {
-            spring3 = -spring3*2;
-        }
-        for (int i = 0; i < viewWidth + period - (stepOneW1 + stepTwoW) + spring1; i++) {
-            mPath1.lineTo(i - offSet, wave1[(int) (period / 4 + i)] * amplitudeP);
-        }
-        for (int i = 0; i < viewWidth + period - (stepOneW2 + stepTwoW) + spring2; i++) {
-            mPath2.lineTo(i - offSet, wave2[(int) (period / 4 + i)] * amplitudeP);
-        }
-        for (int i = 0; i < viewWidth + period - (stepOneW3 + stepTwoW) + spring3; i++) {
-            mPath3.lineTo(i - offSet, wave3[(int) (period / 4 + i)] * amplitudeP);
-        }
-
-        float pm1 = wave1[(int) (period / 4 + viewWidth + period - (stepOneW1 + stepTwoW) + spring1)] > 0 ? -1 : 1;
-        float pm2 = wave2[(int) (period / 4 + viewWidth + period - (stepOneW2 + stepTwoW) + spring2)] > 0 ? -1 : 1;
-        float pm3 = wave3[(int) (period / 4 + viewWidth + period - (stepOneW3 + stepTwoW) + spring3)] > 0 ? -1 : 1;
-
-        // 过渡2阶段
-        mPath1.rQuadTo(stepTwoW / 4, 0, stepTwoW / 2, stepTwoH1 * pm1);
-        mPath1.rQuadTo(stepTwoW / 4, stepTwoH1 * pm1, stepTwoW / 2, stepTwoH1 * pm1);
-
-        mPath2.rQuadTo(stepTwoW / 4, 0, stepTwoW / 2, stepTwoH2 * pm2);
-        mPath2.rQuadTo(stepTwoW / 4, stepTwoH2 * pm2, stepTwoW / 2, stepTwoH2 * pm2);
-
-        mPath3.rQuadTo(stepTwoW / 4, 0, stepTwoW / 2, stepTwoH3 * pm3);
-        mPath3.rQuadTo(stepTwoW / 4, stepTwoH3 * pm3, stepTwoW / 2, stepTwoH3 * pm3);
-
-        // 汇合阶段
-        mPath1.rQuadTo(stepOneW1 / 4, 0, stepOneW1 / 2, stepOneH1 * pm1 * -1);
-        mPath1.rQuadTo(stepOneW1 / 4, stepOneH1 * pm1 * -1, stepOneW1 / 2, stepOneH1 * pm1 * -1);
-
-        mPath2.rQuadTo(stepOneW2 / 4, 0, stepOneW2 / 2, stepOneH2 * pm2 * -1);
-        mPath2.rQuadTo(stepOneW2 / 4, stepOneH2 * pm2 * -1, stepOneW2 / 2, stepOneH2 * pm2 * -1);
-
-        mPath3.rQuadTo(stepOneW3 / 4, 0, stepOneW3 / 2, stepOneH3 * pm3 * -1);
-        mPath3.rQuadTo(stepOneW3 / 4, stepOneH3 * pm3 * -1, stepOneW3 / 2, stepOneH3 * pm3 * -1);
-
-        mPath1.rLineTo(viewWidth, 0);
 
         // 更新偏移量
         resetOffsetStep4();
@@ -467,9 +371,11 @@ public class WavePointSurfaceView extends SurfaceView implements SurfaceHolder.C
     /**
      * 动画结束阶段
      */
-    private void drawStep5() {
-        mPath3.moveTo(viewWidth / 2 - interim, 0);
-        mPath3.rLineTo(2 * interim, 0);
+    private void drawStep5(Canvas canvas) {
+        for (int i = viewWidth / 2 - interim; i < viewWidth / 2 + interim; i++) {
+            canvas.drawPoint(i, lineW, mPaint3);
+        }
+
         // 更新偏移量
         resetOffsetStep5();
     }
@@ -486,33 +392,38 @@ public class WavePointSurfaceView extends SurfaceView implements SurfaceHolder.C
     private void resetOffsetStep2() {
         offSet = offSet + speed;
 
-        if (offSet >= period + viewWidth) {
-            offSet = 0;
+        if (offSet >= viewWidth) {
+            offSet = (int) period;
             //根据声音震动阶段
             step = 3;
+            //扩大移动速度为2倍
+            speed = speed * 2;
         }
     }
 
     private void resetOffsetStep3() {
-        offSet = offSet + speed;
+        offSet = offSet - speed;
 
-        if (!speaking) {
+        if (!speaking && count > 1) {
             if (offSet > period / 4) {
                 offSet = 0;
                 step = 4;
+                //恢复移动速度
+                speed = speed / 2;
                 return;
             }
         }
 
-        if (offSet >= period) {
-            offSet = 0;
+        if (offSet < 0) {
+            count++;
+            offSet = (int) period;
         }
     }
 
     private void resetOffsetStep4() {
         offSet = offSet + speed;
 
-        if (offSet >= viewWidth + period) {
+        if (offSet >= viewWidth) {
             offSet = 0;
             //根据声音震动阶段
             step = 5;
@@ -532,10 +443,41 @@ public class WavePointSurfaceView extends SurfaceView implements SurfaceHolder.C
         step = 1;
         canDraw = true;
         speaking = true;
+        count = 0;
+
+        mThread = new DrawThread(mHolder);
+        mThread.setRun(true);
+        mThread.start();
+    }
+
+    public void resume() {
+        canDraw = true;
+        mThread = new DrawThread(mHolder);
+        mThread.setRun(true);
+        mThread.start();
+    }
+
+    public void pause() {
+        canDraw = false;
     }
 
     public void stop() {
         speaking = false;
+    }
+
+    public void setVolume(int volume) {
+        //转换为实际可变高度
+        if (step == 3) {
+            if (volume >= MAX_VOLUME) {
+                amplitudeP = 2;
+            } else if (volume > MAX_VOLUME / 2) {
+                amplitudeP = volume * 2f / MAX_VOLUME;
+            } else {
+                amplitudeP = 1;
+            }
+        } else {
+            amplitudeP = 1;
+        }
     }
 
     public void setWaveListener(WaveListener listener) {

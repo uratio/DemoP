@@ -82,7 +82,7 @@ public class RecordButton extends View {
         endColor = a.getColor(R.styleable.RecordButton_rb_endColor, DEF_END_COLOR);
         duration = (long) a.getDimension(R.styleable.RecordButton_rb_duration, DEF_DURATION);
         scope = a.getFloat(R.styleable.RecordButton_rb_scope, DEF_SCOPE);
-        lineW = DisplayUtils.dp2px(context, a.getDimension(R.styleable.RecordButton_rb_line_width, DEF_LINE_WIDTH));
+        lineW = DisplayUtils.dp2px(a.getDimension(R.styleable.RecordButton_rb_line_width, DEF_LINE_WIDTH));
 
         init(context);
     }

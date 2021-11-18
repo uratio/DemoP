@@ -83,8 +83,8 @@ public class WaveSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.WaveSurfaceView);
         minHeight = a.getDimension(R.styleable.WaveSurfaceView_wsv_min_height, DEF_MIN_HEIGHT);
         color = a.getColor(R.styleable.WaveSurfaceView_wsv_color, DEF_COLOR);
-        lineW = DisplayUtils.dp2px(context, a.getDimension(R.styleable.WaveSurfaceView_wsv_line_width, DEF_LINE_WIDTH));
-        spaceW = DisplayUtils.dp2px(context, a.getDimension(R.styleable.WaveSurfaceView_wsv_space_width, DEF_LINE_SPACE));
+        lineW = DisplayUtils.dp2px(a.getDimension(R.styleable.WaveSurfaceView_wsv_line_width, DEF_LINE_WIDTH));
+        spaceW = DisplayUtils.dp2px(a.getDimension(R.styleable.WaveSurfaceView_wsv_space_width, DEF_LINE_SPACE));
 
         mHolder = getHolder();
         mHolder.addCallback(this);

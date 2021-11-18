@@ -82,7 +82,7 @@ public class WavePointView2 extends View {
 
     // 初始化
     private void init(Context context) {
-        lineW = DisplayUtils.dp2px(context, DEF_LINE_WIDTH);
+        lineW = DisplayUtils.dp2px(DEF_LINE_WIDTH);
         // 创建画笔
         mPaint1 = new Paint();
         // 设置绘画风格为实线
@@ -114,11 +114,11 @@ public class WavePointView2 extends View {
 
 
         // 第一个波的像素移动值 换算成手机像素值让其在各个手机移动速度差不多
-        oneSeepPx = DisplayUtils.dp2px(context, oneSeep);
+        oneSeepPx = DisplayUtils.dp2px(oneSeep);
         // 第二个波的像素移动值
-        twoSeepPx = DisplayUtils.dp2px(context, twoSeep);
+        twoSeepPx = DisplayUtils.dp2px(twoSeep);
         // 第三个波的像素移动值
-        threeSeepPx = DisplayUtils.dp2px(context, threeSeep);
+        threeSeepPx = DisplayUtils.dp2px(threeSeep);
     }
 
     // 绘画方法

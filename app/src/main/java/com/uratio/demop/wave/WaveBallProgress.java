@@ -211,8 +211,8 @@ public class WaveBallProgress extends View {
              */
             mWaveSpeedA = w / 30;
             mWaveSpeedB = w / 51;
-            mWaveHeightA = DisplayUtils.dp2px(getContext(), 10);
-            mWaveHeightB = DisplayUtils.dp2px(getContext(), 5);
+            mWaveHeightA = DisplayUtils.dp2px(10);
+            mWaveHeightB = DisplayUtils.dp2px(5);
             if (h / 10 < mWaveHeightA) {
                 mWaveHeightA = h / 10;
                 mWaveHeightB = h / 20;

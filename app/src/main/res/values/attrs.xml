@@ -99,11 +99,21 @@
         <attr name="rb_line_width" format="dimension" />
     </declare-styleable>
 
+    <declare-styleable name="WavePointSurfaceView">
+        <attr name="wpv_line_width" format="dimension" />
+        <attr name="wpv_start_color" format="color" />
+        <attr name="wpv_end_color" format="color" />
+        <attr name="wpv_speed_rate" format="float" />
+        <attr name="wpv_amplitude" format="float" />
+        <attr name="wpv_amplitude_radio" format="float" />
+    </declare-styleable>
+
     <declare-styleable name="WavePointView">
         <attr name="wp_line_width" format="dimension" />
         <attr name="wp_start_color" format="color" />
         <attr name="wp_end_color" format="color" />
         <attr name="wp_speed" format="integer" />
+        <attr name="wp_speed_rate" format="float" />
         <attr name="wp_amplitude" format="float" />
         <attr name="wp_amplitude_radio" format="float" />
     </declare-styleable>

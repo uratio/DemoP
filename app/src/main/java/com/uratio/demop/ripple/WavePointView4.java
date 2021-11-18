@@ -130,13 +130,13 @@ public class WavePointView4 extends View {
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.WavePointView);
         startColor = a.getColor(R.styleable.WavePointView_wp_start_color, DEF_START_COLOR);
         endColor = a.getColor(R.styleable.WavePointView_wp_end_color, DEF_END_COLOR);
-        lineW = DisplayUtils.dp2px(context, a.getDimension(R.styleable.WavePointView_wp_line_width, DEF_LINE_WIDTH));
-        speed = DisplayUtils.dp2px(context, a.getInteger(R.styleable.WavePointView_wp_speed, DEF_SPEED));
+        lineW = DisplayUtils.dp2px(a.getDimension(R.styleable.WavePointView_wp_line_width, DEF_LINE_WIDTH));
+        speed = DisplayUtils.dp2px(a.getInteger(R.styleable.WavePointView_wp_speed, DEF_SPEED));
         amplitude = a.getFloat(R.styleable.WavePointView_wp_amplitude, DEF_AMPLITUDE);
         amplitudeP = a.getFloat(R.styleable.WavePointView_wp_amplitude_radio, DEF_AMPLITUDE_RADIO);
 
 
-        lineW = DisplayUtils.dp2px(context, DEF_LINE_WIDTH);
+        lineW = DisplayUtils.dp2px(DEF_LINE_WIDTH);
         // 创建画笔
         mPaint1 = new Paint();
         // 设置绘画风格为实线

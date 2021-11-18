@@ -71,7 +71,7 @@ public class CircleProgressBar extends View {
         progress = a.getInteger(R.styleable.CircleProgressBar_cpb_progress, 0);
         progressBgColor = a.getColor(R.styleable.CircleProgressBar_cpb_progress_bg_color, DEF_PROGRESS_BG_COLOR);
         progressColor = a.getColor(R.styleable.CircleProgressBar_cpb_progress_color, DEF_PROGRESS_COLOR);
-        progressWidth = DisplayUtils.dp2px(context, a.getDimension(R.styleable.CircleProgressBar_cpb_progress_width, DEF_PROGRESS_WIDTH));
+        progressWidth = DisplayUtils.dp2px(a.getDimension(R.styleable.CircleProgressBar_cpb_progress_width, DEF_PROGRESS_WIDTH));
         textColor = a.getColor(R.styleable.CircleProgressBar_cpb_text_color, DEF_TEXT_COLOR);
         textSize = a.getDimensionPixelSize(R.styleable.CircleProgressBar_cpb_text_size,
                 context.getResources().getDimensionPixelSize(R.dimen.font_16));
