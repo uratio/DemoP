@@ -193,11 +193,7 @@ public class WavePointSurfaceView extends SurfaceView implements SurfaceHolder.C
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        //设置画布  背景透明
 
-        mThread = new DrawThread(holder);
-        mThread.setRun(true);
-        mThread.start();
     }
 
     @Override
@@ -207,7 +203,10 @@ public class WavePointSurfaceView extends SurfaceView implements SurfaceHolder.C
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
-
+        if (!isShown()) {
+            //隐藏的时候，当前动画已完成，主动调用了GONE，清除线程数据
+            onDestroy();
+        }
     }
 
     private class DrawThread extends Thread {
