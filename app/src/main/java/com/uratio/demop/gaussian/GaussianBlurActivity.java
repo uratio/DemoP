@@ -57,6 +57,7 @@ public class GaussianBlurActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 tvGlide.setText("Glide高斯模糊（0~25）: radius=" + i);
+                ivShow.setVisibility(View.VISIBLE);
                 GlideApp.with(activity).load(R.drawable.icon_service_header)
                         .apply(RequestOptions.bitmapTransform(new BlurTransformation(i, 5)))
                         .into(ivShow);
