@@ -258,8 +258,8 @@ public class WaveSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         canvas.drawColor(Color.WHITE, PorterDuff.Mode.CLEAR);
         //移动画笔到中心高度
         canvas.translate(startX, halfHeight);
-        Log.e(TAG, "doDraw: waves=" + Arrays.toString(waves));
-        Log.e(TAG, "doDraw: wavesTarget=" + Arrays.toString(wavesTarget));
+//        Log.e(TAG, "doDraw: waves=" + Arrays.toString(waves));
+//        Log.e(TAG, "doDraw: wavesTarget=" + Arrays.toString(wavesTarget));
         for (int i = 0; i < waves.length; i++) {
             int x = i * (lineW + spaceW);
             canvas.drawLine(x, -waves[i], x, waves[i], mPaint);

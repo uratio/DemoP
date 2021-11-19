@@ -114,7 +114,11 @@ public class VoiceWaveActivity extends AppCompatActivity implements Runnable {
     public void onClickView(View view) {
         switch (view.getId()) {
             case R.id.btn_start1:
-                animator.start();
+                try {
+                    animator.start();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
             case R.id.btn_start2:
                 animator.setIntValues(0, 400, 0);

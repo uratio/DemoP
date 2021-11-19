@@ -33,7 +33,7 @@
         android:layout_height="100dp"/>
 
     <com.uratio.demop.ripple.WavePointSurfaceView2
-        android:id="@+id/wave_view"
+        android:id="@+id/wave_view2"
         android:layout_width="match_parent"
         android:layout_height="100dp"/>
 
@@ -71,7 +71,7 @@
     </LinearLayout>
 
     <com.uratio.demop.ripple.WavePointSurfaceView
-        android:id="@+id/wave_view2"
+        android:id="@+id/wave_view"
         android:layout_width="match_parent"
         android:layout_height="100dp"/>
 

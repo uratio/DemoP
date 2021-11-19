@@ -471,7 +471,7 @@ public class WavePointSurfaceView extends SurfaceView implements SurfaceHolder.C
             if (volume >= MAX_VOLUME) {
                 amplitudeP = 2;
             } else if (volume > MAX_VOLUME / 2) {
-                amplitudeP = volume * 2f / MAX_VOLUME;
+                amplitudeP = 1.5f;
             } else {
                 amplitudeP = 1;
             }

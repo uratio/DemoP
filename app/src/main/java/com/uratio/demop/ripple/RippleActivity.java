@@ -1,14 +1,34 @@
 package com.uratio.demop.ripple;
 
+import android.os.Handler;
+import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
 import com.uratio.demop.R;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public class RippleActivity extends AppCompatActivity {
-    private WavePointSurfaceView2 waveView;
-    private WavePointSurfaceView waveView2;
+    private WavePointSurfaceView waveView;
+    private WavePointSurfaceView2 waveView2;
+
+    private ThreadLocalRandom random = ThreadLocalRandom.current();
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case 0:
+                    int nextInt = random.nextInt(0, 3500);
+                    waveView.setVolume(nextInt);
+                    handler.sendEmptyMessageDelayed(0, 200);
+                    break;
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,25 +37,27 @@ public class RippleActivity extends AppCompatActivity {
 
         waveView = findViewById(R.id.wave_view);
         waveView2 = findViewById(R.id.wave_view2);
+
+        handler.sendEmptyMessage(0);
     }
 
     public void onClickView(View view) {
         switch (view.getId()) {
             case R.id.btn_start:
-                waveView.start();
                 waveView2.start();
+                waveView.start();
                 break;
             case R.id.btn_pause:
-                waveView.pause();
                 waveView2.pause();
+                waveView.pause();
                 break;
             case R.id.btn_resume:
-                waveView.resume();
                 waveView2.resume();
+                waveView.resume();
                 break;
             case R.id.btn_stop:
-                waveView.stop();
                 waveView2.stop();
+                waveView.stop();
                 break;
         }
     }
