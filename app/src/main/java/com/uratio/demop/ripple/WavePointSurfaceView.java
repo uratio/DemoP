@@ -492,6 +492,7 @@ public class WavePointSurfaceView extends SurfaceView implements SurfaceHolder.C
             if (mThread != null) {
                 mThread.setRun(false);
                 canDraw = false;
+                mThread = null;
             }
         }
     }
