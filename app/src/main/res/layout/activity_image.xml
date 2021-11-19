@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -15,79 +14,81 @@
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="300dp"
-            android:layout_height="100dp"
-            android:scaleType="fitXY"/>
+            android:layout_height="300dp"
+            android:layout_gravity="center_horizontal"
+            android:scaleType="fitXY" />
 
         <com.example.roundimageview.RoundedImageView
             android:layout_width="200px"
             android:layout_height="200px"
+            android:scaleType="center"
+            android:src="@drawable/icon_company_photo_add"
             app:riv_corner_radius="10px"
             app:riv_mutate_background="true"
-            app:riv_tile_mode="repeat"
-            android:scaleType="center"
-            android:src="@drawable/icon_company_photo_add"/>
+            app:riv_tile_mode="repeat" />
 
         <com.example.roundimageview.RoundedImageView
             android:layout_width="200px"
             android:layout_height="200px"
+            android:src="@drawable/icon_company_photo_add"
             app:riv_border_color="#000"
             app:riv_border_width="10px"
             app:riv_mutate_background="true"
             app:riv_oval="true"
-            app:riv_tile_mode="repeat"
-            android:src="@drawable/icon_company_photo_add"/>
+            app:riv_tile_mode="repeat" />
 
         <DatePicker
             android:id="@+id/datePicker"
             style="@android:style/Widget.DatePicker"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"/>
+            android:layout_centerInParent="true" />
 
         <DatePicker
+            style="@android:style/Widget.Holo.DatePicker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:scaleX="1.1"
-            android:scaleY="1.1"
             android:calendarViewShown="false"
-            style="@android:style/Widget.Holo.DatePicker"/>
+            android:scaleX="1.1"
+            android:scaleY="1.1" />
+
         <DatePicker
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:spinnersShown="true"
             android:calendarViewShown="false"
-            android:datePickerMode="spinner"/>
+            android:datePickerMode="spinner"
+            android:spinnersShown="true" />
 
         <DatePicker
             style="@android:style/Widget.Holo.DatePicker"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"/>
+            android:layout_centerInParent="true" />
 
         <DatePicker
             style="@android:style/Widget.Material.DatePicker"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"/>
+            android:layout_centerInParent="true" />
 
         <DatePicker
             style="@android:style/Widget.DeviceDefault.DatePicker"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"/>
+            android:layout_centerInParent="true" />
 
         <DatePicker
             style="@android:style/Widget.Material.Light.DatePicker"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"/>
+            android:layout_centerInParent="true" />
 
         <Button
             android:id="@+id/button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="显示"/>
+            android:text="显示" />
     </LinearLayout>
 </ScrollView>

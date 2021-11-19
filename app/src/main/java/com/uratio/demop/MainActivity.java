@@ -49,6 +49,7 @@ import android.widget.Toast;
 
 import com.uratio.demop.count.CountDownActivity;
 import com.uratio.demop.file.FileActivity;
+import com.uratio.demop.gaussian.GaussianBlurActivity;
 import com.uratio.demop.gl.OpenGLActivity;
 import com.uratio.demop.img.ImageActivity;
 import com.uratio.demop.list.RcvListActivity;
@@ -539,6 +540,9 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
                 break;
             case R.id.to_file://文件操作
                 startActivity(new Intent(MainActivity.this, FileActivity.class));
+                break;
+            case R.id.to_gaussian_blur://高斯模糊
+                startActivity(new Intent(MainActivity.this, GaussianBlurActivity.class));
                 break;
         }
     }

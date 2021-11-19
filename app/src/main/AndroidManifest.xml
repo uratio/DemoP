@@ -50,7 +50,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".file.FileActivity"></activity>
+        <activity android:name=".gaussian.GaussianBlurActivity"></activity>
+        <activity android:name=".file.FileActivity" />
         <activity android:name=".location.LocationActivity" /> <!-- 百度地图 -->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"

@@ -1,9 +1,13 @@
 package com.uratio.demop;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.StrictMode;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.view.DisplayCutout;
 
@@ -11,7 +15,7 @@ import com.baidu.mapapi.CoordType;
 import com.baidu.mapapi.SDKInitializer;
 import com.uratio.demop.utils.CommonConfig;
 
-public class MyApplication extends Application{
+public class MyApplication extends Application implements Application.ActivityLifecycleCallbacks {
     private static Context ctx;
 //    @RequiresApi(api = 28)
     @Override
@@ -31,6 +35,7 @@ public class MyApplication extends Application{
         }
 
         initBDMap();
+        registerActivityLifecycleCallbacks(this);
     }
 
     private void initBDMap() {
@@ -43,5 +48,40 @@ public class MyApplication extends Application{
 
     public static Context getCtx() {
         return ctx;
+    }
+
+    @Override
+    public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle bundle) {
+
+    }
+
+    @Override
+    public void onActivityStarted(@NonNull Activity activity) {
+
+    }
+
+    @Override
+    public void onActivityResumed(@NonNull Activity activity) {
+
+    }
+
+    @Override
+    public void onActivityPaused(@NonNull Activity activity) {
+
+    }
+
+    @Override
+    public void onActivityStopped(@NonNull Activity activity) {
+
+    }
+
+    @Override
+    public void onActivitySaveInstanceState(@NonNull Activity activity, @NonNull Bundle bundle) {
+
+    }
+
+    @Override
+    public void onActivityDestroyed(@NonNull Activity activity) {
+
     }
 }

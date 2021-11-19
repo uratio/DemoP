@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer-array name="arrImageBg">
+        <item>@drawable/navicon_0</item>
+        <item>@drawable/navicon_1</item>
+        <item>@drawable/navicon_2</item>
+        <item>@drawable/navicon_3</item>
+        <item>@drawable/navicon_4</item>
+        <item>@drawable/navicon_5</item>
+        <item>@drawable/navicon_6</item>
+        <item>@drawable/navicon_7</item>
+        <item>@drawable/navicon_8</item>
+        <item>@drawable/navicon_9</item>
+    </integer-array>
+</resources>

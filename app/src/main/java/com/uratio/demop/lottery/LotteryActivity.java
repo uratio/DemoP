@@ -35,8 +35,6 @@ public class LotteryActivity extends AppCompatActivity {
         tvIntegral = (TextView) findViewById(R.id.tv_integral);
         tvIntegral.setText("您当前拥有"+integral+"积分，10积分抽取一次");
 
-        int[] prizesIcon = {R.drawable.navicon_a, R.drawable.navicon_b, R.drawable.navicon_c, R.drawable.navicon_d,
-                R.drawable.icon_lottery_start, R.drawable.navicon_f, R.drawable.navicon_g, R.drawable.navicon_h, R.drawable.navicon_i};
         final List<Prize> prizes = new ArrayList<Prize>();
         for (int x = 0; x < 9; x++) {
             Prize lottery = new Prize();

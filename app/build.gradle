@@ -74,8 +74,10 @@ dependencies {
     implementation 'com.bigkoo:ConvenientBanner:2.1.4'
     implementation project(':ultimaterecyclerview')
     //高斯模糊
-    implementation 'jp.wasabeef:glide-transformations:2.0.1'
+    implementation 'jp.wasabeef:glide-transformations:3.0.1'
     implementation project(':Roundimageview')
+    //高斯模糊遮罩
+    implementation 'com.github.mmin18:realtimeblurview:1.2.1'
     //内存检测
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.3'
     // Room 数据库 androidx为 2.3.0，非androidx为 1.1.1

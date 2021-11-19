@@ -236,6 +236,13 @@
             android:onClick="clickView"
             android:text="文件" />
 
+        <Button
+            android:id="@+id/to_gaussian_blur"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="clickView"
+            android:text="高斯模糊" />
+
     </LinearLayout>
 
     <com.uratio.demop.CustomPopupView

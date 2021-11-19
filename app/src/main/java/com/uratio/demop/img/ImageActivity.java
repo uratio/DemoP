@@ -35,7 +35,7 @@ public class ImageActivity extends AppCompatActivity {
 //        options.placeholder(R.drawable.video_default)// 正在加载中的图片  
 //        options.error(R.drawable.video_error) // 加载失败的图片  
 //        options.diskCacheStrategy(DiskCacheStrategy.ALL); // 磁盘缓存策略  
-        options.bitmapTransform(new BlurTransformation(this, 25, 3));
+        options.bitmapTransform(new BlurTransformation(25, 3));
 
         GlideApp.with(this)
                 .load(R.drawable.icon_service_header)
