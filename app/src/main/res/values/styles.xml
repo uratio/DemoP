@@ -29,6 +29,22 @@
 
     </style>
 
+    <style name="DialogStyle" parent="@android:style/Theme.Holo.Light.Dialog">
+        <!-- 背景透明 -->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <!-- 浮于Activity之上 -->
+        <item name="android:windowIsFloating">true</item>
+        <!-- 边框 -->
+        <item name="android:windowFrame">@null</item>
+        <!-- Dialog以外的区域模糊效果 -->
+        <item name="android:backgroundDimEnabled">true</item>
+        <!-- 无标题 -->
+        <item name="android:windowNoTitle">true</item>
+        <!-- 半透明 -->
+<!--        <item name="android:windowIsTranslucent">true</item>-->
+    </style>
+
     <!--<style name="AnimationActivity" parent="@android:style/Animation.Activity">
         <item name="android:activityOpenEnterAnimation">@anim/anim_enter_right_translater</item>
         <item name="android:activityOpenExitAnimation">@anim/anim_enter_left_translater</item>

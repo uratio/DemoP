@@ -81,7 +81,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
+public class MainActivity extends BaseActivity implements PopupMenu.OnMenuItemClickListener {
     private static final String TAG = MainActivity.class.getSimpleName();
     private TextView textView;
     private Handler handler = new Handler();
@@ -94,13 +94,17 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     private EditText etInput;
     private TextView tvSpan;
 
+    @Override
+    protected int getContentLayout() {
+        return R.layout.activity_main;
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void initView(Bundle savedInstanceState) {
 
         Locale aDefault = Locale.getDefault();
-        
+
         /*requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
@@ -109,7 +113,6 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         this.getWindow().setAttributes(lp);*/
 
 //        openFullScreenModel();
-        setContentView(R.layout.activity_main);
 
         /*int flag = Settings.Global.getInt(getContentResolver(), Settings.Global.INSTALL_NON_MARKET_APPS, 0);
         if (flag == 0) {

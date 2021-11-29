@@ -6,6 +6,7 @@ package com.uratio.demop.utils;
  */
 public class Constants {
 
+    public static int foregroundActivities = 0;
 
     public static class FilePath {
         public static final String VIDEO_TEMP = "video_temp";

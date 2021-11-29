@@ -5,4 +5,7 @@
     <color name="colorAccent">#00BCD4</color>
     <color name="transparent">#00000000</color><!-- 透明 -->
     <color name="transparent_20">#20000000</color><!-- 透明 -->
+
+    <color name="shadow_default_color">#4D000000</color>
+    <color name="shadow_card_default_color">#EEEEEE</color>
 </resources>

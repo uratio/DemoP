@@ -10,14 +10,20 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.view.DisplayCutout;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 
 import com.baidu.mapapi.CoordType;
 import com.baidu.mapapi.SDKInitializer;
 import com.uratio.demop.utils.CommonConfig;
+import com.uratio.demop.utils.LogUtils;
 
 public class MyApplication extends Application implements Application.ActivityLifecycleCallbacks {
     private static Context ctx;
 //    @RequiresApi(api = 28)
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -36,6 +42,9 @@ public class MyApplication extends Application implements Application.ActivityLi
 
         initBDMap();
         registerActivityLifecycleCallbacks(this);
+
+
+
     }
 
     private void initBDMap() {
@@ -57,7 +66,11 @@ public class MyApplication extends Application implements Application.ActivityLi
 
     @Override
     public void onActivityStarted(@NonNull Activity activity) {
-
+//        ViewGroup contentView = activity.getWindow().findViewById(Window.ID_ANDROID_CONTENT);
+//        ViewGroup contentView = (ViewGroup) activity.getWindow().getDecorView();
+//        if (contentView.getChildCount() == 2) {
+//            contentView.removeViewAt(1);
+//        }
     }
 
     @Override
@@ -67,12 +80,15 @@ public class MyApplication extends Application implements Application.ActivityLi
 
     @Override
     public void onActivityPaused(@NonNull Activity activity) {
-
+        LogUtils.e("******** onActivityPaused *******");
     }
 
     @Override
     public void onActivityStopped(@NonNull Activity activity) {
-
+//        ViewGroup contentView = activity.getWindow().findViewById(Window.ID_ANDROID_CONTENT);
+//        ViewGroup contentView = (ViewGroup) activity.getWindow().getDecorView();
+//        View windowView = LayoutInflater.from(activity).inflate(R.layout.layout_shade_window, null);
+//        contentView.addView(windowView);
     }
 
     @Override

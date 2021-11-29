@@ -13,4 +13,9 @@ public class DisplayUtils {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                 dpVal, MyApplication.getCtx().getResources().getDisplayMetrics());
     }
+
+    public static float dp2px2(float dpVal) {
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                dpVal, MyApplication.getCtx().getResources().getDisplayMetrics());
+    }
 }
