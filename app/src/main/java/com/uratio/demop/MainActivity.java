@@ -68,6 +68,7 @@ import com.uratio.demop.shortcut.TestActivity;
 import com.uratio.demop.sliding.SlidingActivity;
 import com.uratio.demop.text.TextActivity;
 import com.uratio.demop.video.VideoViewActivity;
+import com.uratio.demop.view.CustomViewActivity;
 import com.uratio.demop.viewpager.ViewPagerActivity;
 import com.uratio.demop.viewstub.ViewStubActivity;
 import com.uratio.demop.wave.WaveActivity;
@@ -546,6 +547,9 @@ public class MainActivity extends BaseActivity implements PopupMenu.OnMenuItemCl
                 break;
             case R.id.to_gaussian_blur://高斯模糊
                 startActivity(new Intent(MainActivity.this, GaussianBlurActivity.class));
+                break;
+            case R.id.to_custom_view://自定义View
+                startActivity(new Intent(MainActivity.this, CustomViewActivity.class));
                 break;
         }
     }

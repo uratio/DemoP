@@ -1,4 +1,4 @@
-package com.uratio.demop.gaussian;
+package com.uratio.demop.view.shadow;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -109,10 +109,12 @@ public class ShadowLayout extends FrameLayout {
 
         //绘制阴影
         int shadowSize = (int) (shadowDepth * 1.2f);
+        RectF rectShadow = new RectF();
         for (int i = 0; i < shadowSize; i++) {
             shadowPaint.setAlpha((int) (1f * shadowAlpha * (shadowSize - i - 1) / (shadowSize + (i + 1) * 2)));
             float line = lineW * (i + 0.5f);
-            canvas.drawRoundRect(-line, -line, width + line, height + line, radius + line, radius + line, shadowPaint);
+            rectShadow.set(-line, -line, width + line, height + line);
+            canvas.drawRoundRect(rectShadow, radius + line, radius + line, shadowPaint);
         }
         canvas.save();
 

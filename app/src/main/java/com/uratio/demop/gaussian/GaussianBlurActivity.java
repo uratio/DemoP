@@ -5,12 +5,6 @@ import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.LayerDrawable;
-import android.graphics.drawable.PaintDrawable;
-import android.graphics.drawable.ShapeDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -54,12 +48,6 @@ public class GaussianBlurActivity extends BaseActivity {
     private RealtimeBlurView realtimeBlur;
     private TextView tvGlide;
     private SeekBar seekBar;
-    private View viewShape1, viewShape2, viewShape3, viewShape4;
-    private ShadowLayout shadowLayout;
-    private TextView tvDepth;
-    private SeekBar seekBarDepth;
-    private TextView tvAlpha;
-    private SeekBar seekBarAlpha;
 
     private TypedArray arrImg;
     private int index = 0;
@@ -100,15 +88,6 @@ public class GaussianBlurActivity extends BaseActivity {
         realtimeBlur = findViewById(R.id.realtime_blur);
         tvGlide = findViewById(R.id.tv_glide);
         seekBar = findViewById(R.id.seekBar);
-        viewShape1 = findViewById(R.id.view_shape1);
-        viewShape2 = findViewById(R.id.view_shape2);
-        viewShape3 = findViewById(R.id.view_shape3);
-        viewShape4 = findViewById(R.id.view_shape4);
-        shadowLayout = findViewById(R.id.shadow_layout);
-        tvDepth = findViewById(R.id.tv_depth);
-        seekBarDepth = findViewById(R.id.sb_depth);
-        tvAlpha = findViewById(R.id.tv_alpha);
-        seekBarAlpha = findViewById(R.id.sb_alpha);
 
         arrImg = getResources().obtainTypedArray(R.array.arrImageBg);
 
@@ -134,11 +113,11 @@ public class GaussianBlurActivity extends BaseActivity {
         });
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if(!Settings.canDrawOverlays(getApplicationContext())) {
+            if (!Settings.canDrawOverlays(getApplicationContext())) {
                 //启动Activity让用户授权
                 Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
                 intent.setData(Uri.parse("package:" + getPackageName()));
-                startActivityForResult(intent,100);
+                startActivityForResult(intent, 100);
             }
         }
 
@@ -147,7 +126,7 @@ public class GaussianBlurActivity extends BaseActivity {
         layoutParams = new WindowManager.LayoutParams();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             layoutParams.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
-        }else {
+        } else {
             layoutParams.type = WindowManager.LayoutParams.TYPE_PHONE;
         }
         layoutParams.format = PixelFormat.RGBA_8888;
@@ -156,50 +135,8 @@ public class GaussianBlurActivity extends BaseActivity {
         layoutParams.gravity = Gravity.LEFT | Gravity.CENTER;
         layoutParams.width = WindowManager.LayoutParams.WRAP_CONTENT;
         layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
-        layoutParams.x =200;
-        layoutParams.y =0;
-
-        logType(viewShape1.getBackground());
-        logType(viewShape2.getBackground());
-        logType(viewShape3.getBackground());
-        logType(viewShape4.getBackground());
-
-
-        seekBarDepth.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                tvDepth.setText("投影深度（1~15）=" + i);
-                shadowLayout.setShadowDepth(i);
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
-
-        seekBarAlpha.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                tvAlpha.setText("投影透明度（1~255）=" + i);
-                shadowLayout.setShadowAlpha(i);
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
+        layoutParams.x = 200;
+        layoutParams.y = 0;
 
     }
 
@@ -207,11 +144,11 @@ public class GaussianBlurActivity extends BaseActivity {
         ViewGroup contentView = null;
         switch (view.getId()) {
             case R.id.btn_change_bg:
+                ivBg.setImageDrawable(ContextCompat.getDrawable(activity, arrImg.getResourceId(index, R.drawable.navicon_0)));
                 index++;
                 if (index >= arrImg.length()) {
                     index = 0;
                 }
-                ivBg.setImageDrawable(ContextCompat.getDrawable(activity, arrImg.getResourceId(index, R.drawable.navicon_0)));
                 break;
             case R.id.btn_show:
                 ivShow.setVisibility(View.VISIBLE);
@@ -267,20 +204,6 @@ public class GaussianBlurActivity extends BaseActivity {
                 bundle.putString("data", "范德萨");
                 handler.postDelayed(postRun, 3000);
                 break;
-        }
-    }
-
-    private void logType(Drawable drawable) {
-        if (drawable instanceof ColorDrawable) {
-            LogUtils.e("background类型：ColorDrawable");
-        } else if (drawable instanceof ShapeDrawable) {
-            LogUtils.e("background类型：ShapeDrawable");
-        } else if (drawable instanceof BitmapDrawable) {
-            LogUtils.e("background类型：BitmapDrawable");
-        } else if (drawable instanceof LayerDrawable) {
-            LogUtils.e("background类型：LayerDrawable");
-        } else {
-            LogUtils.e("background类型：其他Drawable");
         }
     }
 

@@ -29,7 +29,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             setContentView(getContentLayout());
         }
         activity = this;
-        gaussianBlurDialog = new GaussianBlurDialog(activity);
+//        gaussianBlurDialog = new GaussianBlurDialog(activity);
         initView(savedInstanceState);
 
     }
@@ -44,14 +44,14 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Constants.foregroundActivities++;
+        /*Constants.foregroundActivities++;
         ViewGroup contentView = (ViewGroup) activity.getWindow().getDecorView();
         if (Constants.foregroundActivities == 1 && contentView.getChildCount() >= 2) {
 //            contentView.removeViewAt(contentView.getChildCount() - 1);
             if (gaussianBlurDialog != null) {
                 gaussianBlurDialog.dismiss();
             }
-        }
+        }*/
     }
 
     @Override
@@ -76,7 +76,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
-        Constants.foregroundActivities--;
+        /*Constants.foregroundActivities--;
         if (Constants.foregroundActivities == 0) {
 //            ViewGroup contentView = (ViewGroup) activity.getWindow().getDecorView();
 //            View windowView = LayoutInflater.from(activity).inflate(R.layout.layout_shade_window, null);
@@ -84,7 +84,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             if (gaussianBlurDialog != null) {
                 gaussianBlurDialog.show();
             }
-        }
+        }*/
         super.onStop();
     }
 
