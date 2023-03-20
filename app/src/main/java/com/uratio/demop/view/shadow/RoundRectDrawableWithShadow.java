@@ -3,7 +3,7 @@
 // (powered by FernFlower decompiler)
 //
 
-package com.uratio.demop.gaussian;
+package com.uratio.demop.view.shadow;
 
 import android.annotation.SuppressLint;
 import android.content.res.ColorStateList;

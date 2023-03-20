@@ -1,4 +1,4 @@
-package com.uratio.demop.gaussian;
+package com.uratio.demop.view.shadow;
 
 import android.content.Context;
 import android.content.res.TypedArray;
